@@ -1,27 +1,26 @@
 # Desktop Kaby Lake
 
-* Supported version: 0.5.9
+* Versión soportada: 0.5.9
 
 <extoc></extoc>
 
-## Starting Point
+## Punto de comienzo
 
-So making a config.plist may seem hard, its not. It just takes some time but this guide will tell you how to configure everything, you won't be left in the cold. This also means if you have issues, review your config settings to make sure they're correct. Main things to note with OpenCore:
+Hacer un config.plist puede parecer difícil, pero en realidad no lo es. Sólo toma tiempo, pero esta guía te dirá cómo configurar todo, no dejará espacios sin cubrir. Esto también significa que si tienes problemas, asegúrate de que todos los espacios de tu config estén correctos, respaldándote con esta guía. Principales cosas a tener en cuenta con OpenCore:
 
-* **All properties must be defined**, there are no default OpenCore will fall back on so **do not delete sections unless told explicitly so**. If the guide doesn't mention the option, leave it at default.
-* **The Sample.plist cannot be used As-Is**, you must configure it to your system
-* **DO NOT USE CONFIGURATORS**, these rarely respect OpenCore's configuration and even some like Mackie's will add Clover properties and corrupt plists!
-
-Now with all that, a quick reminder of the tools we need
+* **Todas las propiedades deben ser definidas**, no hay opciones predeterminadas para OpenCore, así que **no elimines secciones a menos que se te indique específicamente**. Si la guía no menciona la opción, déjala como está.
+* **El sample.plist no puede ser utilizado como está**, debes configurarlo para tu sistema
+* **NO USES CONFIGURADORES**, éstos raramente respetan la configuración de OpenCore y algunos como los de Mackie agregarán propiedades de Clover y generarán plists corruptas!
+Ahora con todo esto, haremos un pequeño recordatorio de todo lo que necesitamos:
 
 * [ProperTree](https://github.com/corpnewt/ProperTree)
-  * Universal plist editor
+  * Editor de plists universal
 * [GenSMBIOS](https://github.com/corpnewt/GenSMBIOS)
-  * For generating our SMBIOS data
+  * Para generar datos de SMBIOS
 * [Sample/config.plist](https://github.com/acidanthera/OpenCorePkg/releases)
-  * See previous section on how to obtain: [config.plist Setup](../config.plist/README.md)
+  * Dirígete a la sección anterior sobre cómo obtener: [Setup de tu config.plist](/config.plist/README.md)
 
-**And read this guide more than once before setting up OpenCore and make sure you have it set up correctly. Do note that images will not always be the most up-to-date so please read the text below them, if nothing's mentioned then leave as default.**
+**Lee esta guía más de una vez antes de configurar OpenCore y asegúrate de tenerlo configurado correctamente. Ten en cuenta que las imágenes no siempre serán las más actualizadas, así que lee el texto debajo de ellas, si no se menciona nada, déjalo como predeterminado.**
 
 ## ACPI
 
@@ -31,67 +30,68 @@ Now with all that, a quick reminder of the tools we need
 
 ::: tip Info
 
-This is where you'll add SSDTs for your system, these are very important to **booting macOS** and have many uses like [USB maps](https://dortania.github.io/OpenCore-Post-Install/usb/), [disabling unsupported GPUs](../extras/spoof.md) and such. And with our system, **its even required to boot**. Guide on making them found here: [**Getting started with ACPI**](https://dortania.github.io/Getting-Started-With-ACPI/)
+Aquí es donde agregarás los SSDTs para su sistema, estos son muy importantes para **arrancar macOS** y tienen muchos usos como [hacer USB mapping](https://dortania.github.io/OpenCore-Post-Install/usb/), [deshabilitar GPUs no compatibles](/extras/spoof.md) y demás. Y con nuestro sistema, **incluso es necesario  para bootear**. Guía sobre cómo encontrarlos aquí: [**Comenzando con ACPI**](https://dortania.github.io/Getting-Started-With-ACPI/)
 
-For us we'll need a couple of SSDTs to bring back functionality that Clover provided:
 
-| Required_SSDTs | Description |
+En nuestro caso necesitaremos un par de SSDTs para recuperar la funcionalidad que Clover proporcionó
+
+| SSDTs requeridos | Descripción |
 | :--- | :--- |
-| **[SSDT-PLUG](https://dortania.github.io/Getting-Started-With-ACPI/)** | Allows for native CPU power management on Haswell and newer, see [Getting Started With ACPI Guide](https://dortania.github.io/Getting-Started-With-ACPI/) for more details. |
-| **[SSDT-EC-USBX](https://dortania.github.io/Getting-Started-With-ACPI/)** | * Fixes both the embedded controller and USB power, see [Getting Started With ACPI Guide](https://dortania.github.io/Getting-Started-With-ACPI/) for more details. |
+| **[SSDT-PLUG](https://dortania.github.io/Getting-Started-With-ACPI/)** | Permite administración de la energía de la CPU nativa en Haswell y posterior. Dirígete a [Comenzando con ACPI](https://dortania.github.io/Getting-Started-With-ACPI/) para más información. |
+| **[SSDT-EC-USBX](https://dortania.github.io/Getting-Started-With-ACPI/)** | Arregla el controlador integrado (Embeeded Controller o EC en inglés) y la energía de los USBs. Dirígete a [Comenzando con ACPI](https://dortania.github.io/Getting-Started-With-ACPI/) para más información. |
 
-Note that you **should not** add your generated `DSDT.aml` here, it is already in your firmware. So if present, remove the entry for it in your `config.plist` and under EFI/OC/ACPI.
+Ten en cuenta que **no debes** agregar tu `DSDT.aml` generado aquí, ya está en tu firmware. Entonces, si está presente, elimina la entrada correspondiente en tu `config.plist` y en EFI/OC/ACPI.
 
-For those wanting a deeper dive into dumping your DSDT, how to make these SSDTs, and compiling them, please see the [**Getting started with ACPI**](https://dortania.github.io/Getting-Started-With-ACPI/) **page.** Compiled SSDTs have a **.aml** extension(Assembled) and will go into the `EFI/OC/ACPI` folder and **must** be specified in your config under `ACPI -> Add` as well.
+Aquellos que deseen una explicación más profunda de cómo hacer un dump de su DSDT, y de cómo hacer estos SSDTs y compilarlos, consulten [**Comenzando con ACPI**](https://dortania.github.io/Getting-Started-With-ACPI/). Los SSDTs compilados tienen una extensión **.aml** (compilados) e irán a la carpeta `EFI/OC/ACPI` y **debe** especificarse en tu configuración en `ACPI -> Add` también.
 
 :::
 
 ### Delete
 
-This blocks certain ACPI tables from loading, for us we can ignore this.
+Esto bloquea la carga de ciertas tablas ACPI, en nuestro caso podemos ignorar esto.
 
 ### Patch
 
-This section allows us to dynamically modify parts of the ACPI (DSDT, SSDT, etc.) via OpenCore. For us, our patches are handled by our SSDTs. This is a much cleaner solution as this will allow us to boot Windows and other OSes with OpenCore
+Esta sección nos permite modificar dinámicamente partes del ACPI (DSDT, SSDTs, etc.) a través de OpenCore. En nuestro caso, los parches son manejados por nuestros SSDTs. Esta es una solución mucho más limpia, ya que nos permitirá iniciar Windows y otros sistemas operativos con OpenCore
 
 ### Quirks
 
-Settings relating to ACPI, leave everything here as default as we have no use for these quirks.
+Configuración relacionada con ACPI: deja todo aquí como predeterminado, ya que no tenemos uso para estas quirks.
 
 ## Booter
 
-![Booter](../images/config/config-universal/aptio-v-booter.png)
+![Booter](../images/config/config-universal/aptio-iv-booter.png)
 
-This section is dedicated to quirks relating to boot.efi patching with OpenRuntime, the replacement for AptioMemoryFix.efi
+Esta sección está dedicada a los quirks relacionados con el parche boot.efi con OpenRuntime, el reemplazo de AptioMemoryFix.efi
 
 ### MmioWhitelist
 
-This section is allowing spaces to be passthrough to macOS that are generally ignored, useful when paired with `DevirtualiseMmio`
+Esta sección permite pasar espacios a macOS que generalmente se ignoran, lo que es útil cuando se combina con `DevirtualiseMmio`
 
 ### Quirks
 
 ::: tip Info
-Settings relating to boot.efi patching and firmware fixes, for us, we need to change the following:
+Configuraciones relacionadas a el parcheo de boot.efi y arreglos en el firmware. En nuestro caso, cambiaremos lo siguiente
 
-| Quirk | Enabled |
+| Quirk | Habilitado |
 | :--- | :--- |
 | EnableWriteUnprotector | NO |
 | RebuildAppleMemoryMap | YES |
 | SyncRuntimePermissions | YES |
 :::
 
-::: details More in-depth Info
+::: details Información más detallada
 
 * **AvoidRuntimeDefrag**: YES
-  * Fixes UEFI runtime services like date, time, NVRAM, power control, etc
+  * Corrige runtime services de UEFI como fecha, hora, NVRAM, control de energía, etc.
 * **EnableWriteUnprotector**: NO
-  * This quirk and RebuildAppleMemoryMap can commonly conflict, recommended to enable the latter on newer platforms and disable this entry.
+  * Este quirk y RebuildAppleMemoryMap pueden entrar en conflicto, recomendamos habilitar este último en plataformas más nuevas y deshabilitar esta entrada.
 * **RebuildAppleMemoryMap**: YES
-  * Generates Memory Map compatible with macOS, can break on some laptop OEM firmwares so if you receive early boot failures disable this
+  * Genera un mapa de memoria compatible con macOS, puede romperse en algunos firmwares de laptops de OEMs, así que si recives fallas en el arranque temprando deshabilita esto. 
 * **SetupVirtualMap**: YES
-  * Fixes SetVirtualAddresses calls to virtual addresses
+  * Corrige las llamadas de `SetVirtualAddresses` a `virtual addresses`
 * **SyncRuntimePermissions**: YES
-  * Fixes alignment with MAT tables and required to boot Windows and Linux with MAT tables, also recommended for macOS. Mainly relevant for Skylake and newer
+  * Soluciona la alineación con las tablas MAT y es necesario para iniciar Windows y Linux estas, también recomendado para macOS. Principalmente relevante para Skylake y posterior
 :::
 
 ## DeviceProperties
@@ -100,7 +100,7 @@ Settings relating to boot.efi patching and firmware fixes, for us, we need to ch
 
 ### Add
 
-Sets device properties from a map.
+Configura las device properties desde un mapa.
 
 ::: tip PciRoot(0x0)/Pci(0x2,0x0)
 
