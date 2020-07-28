@@ -89,4 +89,6 @@ Traducciones conocidas actualmente:
 * [macOS86](https://macos86.gitbook.io/guida-opencore/) (italiano)
 * [Technopat](https://www.technopat.net/sosyal/konu/opencore-ile-macos-kurulum-rehberi.963661/) (turco)
 
-Y ten en cuenta que estas traducciones están sujetas a las preferencias de los autores, los cambios de traducción y los errores humanos. Por favor, ten esto en cuenta al leer dado que ya no son guías oficiales de Dortania.
+Ten en cuenta que estas traducciones están sujetas a las preferencias de los autores, los cambios de traducción y los errores humanos. Por favor, ten esto en cuenta al leer dado que ya no son guías oficiales de Dortania.
+
+**Créditos de la traducción: [Guía original](https://dortania.github.io/OpenCore-Install-Guide/)**
