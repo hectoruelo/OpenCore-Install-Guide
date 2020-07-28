@@ -31,7 +31,7 @@ Para el soporte de CPUs, tenemos el siguiente desglose:
   * Esta guía soporta desde Haswell-E hasta Cascade Lake X.
 * CPUs de la serie i y Xeon para laptops
   * Esta guía soporta desde Ivy Bridge hasta Ice Lake.
-  * A tener en cuenta: Las CPUs de la serie Atom, Celeron y Pentium no son compatibles.
+  * A tener en cuenta: los CPUs de la serie Atom, Celeron y Pentium no son compatibles.
 * Las series Bulldozer (15h), Jaguar (16h) y Ryzen (17h) AMD de escritorio.
   * CPUs de laptop **no** son compatibles.
   * Ten en cuenta que ThreadRipper de tercera generación no está oficialmente soportado sin un KVM (máquina virtual), pero ThreadRipper de primera y segunda generación son compatibles.
@@ -47,7 +47,7 @@ El soporte de GPUs se vuelve mucho más complicado debido a la cantidad casi inf
   * Las GPUs de AMD con [núcleos basados en Lexa](https://www.techpowerup.com/gpu-specs/amd-lexa.g806) de la serie Polaris tampoco son compatibles.
 * El soporte de GPUs de Nvidia es complicado:
   * Las GPUs de la serie [Maxwell(9XX)](https://en.wikipedia.org/wiki/GeForce_900_series) y [Pascal(10XX)](https://en.wikipedia.org/wiki/GeForce_10_series) están limitadas a macOS 10.13: High Sierra
-  * La serie de GPUs [Tuning de Nvidia(20XX,](https://en.wikipedia.org/wiki/GeForce_20_series)[16XX)](https://en.wikipedia.org/wiki/GeForce_16_series) **no son compatibles con ninguna versión de macOS**
+  * La serie de GPUs [Turing de Nvidia(20XX,](https://en.wikipedia.org/wiki/GeForce_20_series)[16XX)](https://en.wikipedia.org/wiki/GeForce_16_series) **no son compatibles con ninguna versión de macOS**
   * Las GPUs de la serie [Kepler(7XX)](https://en.wikipedia.org/wiki/GeForce_700_series) son compatibles en las series más nuevas de macOS (Incluyendo macOS 11: Big Sur)
     * Esto es debido a que Apple sigue soportando algunas [MacBook Pros con GPUs de Nvidia](https://dortania.github.io/GPU-Buyers-Guide/modern-gpus/nvidia-gpu.html)
 * iGPUs de Intel de la serie [GT2+](https://en.wikipedia.org/wiki/Intel_Graphics_Technology) 

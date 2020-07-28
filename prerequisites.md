@@ -4,18 +4,18 @@ Antes de comenzar a hacer un sistema basado en OpenCore, debemos repasar algunas
 
 ## Prerequisitos
   
-1. _**[CRUCIAL]**_ Tiempo y paciencia 
+1. _**[CRUCIAL]**_ Tiempo y paciencia.
    * No comienzes a trabajar en esto si tienes plazos que cumplir o trabajo importante para hacer. Los hackintoshes no son algo en lo que debas confiar como máquina de trabajo. 
-2. _**[CRUCIAL]**_ **Conoce tu hardware**
+2. _**[CRUCIAL]**_ **CONOCE TU HARWARE**
    * El nombre de tu CPU al igual que su generación
    * Tu(s) GPU(s)
    * La configuración de tus dispositivos de almacenamiento (HDD/SSD, NVMe/AHCI/RAID/IDE)
    * El modelo de tu PC/Laptop si es de un OEM
    * Tu **Chipset de ethernet**
    * Tu chipset WLAN/Bluetooth
-3. _**[CRUCIAL]**_ **Conocimiento básico de lineas de comandos y cómo usar terminal/cmd**
-   * Esto nó solo es [CRUCIAL], es la base de la guía. No te podremos ayudar si no sabes como usar `cd` o si no sabes cómo borrar un archivo, por ejemplo.
-4. _**[CRUCIAL]**_ Una computadora que es compatible, como se vé en la sección de _**Compatibilidad**_ .
+3. _**[CRUCIAL]**_ **CONOCIMINETO BÁSICO DE LAS LINEAS DE COMANDOS Y CÓMO USAR TERMINAL/CMD**
+   * Esto nó solo es [CRUCIAL], es la base de toda esta guía. No te podemos ayudar si no sabes como usar `cd` o si no sabes cómo borrar un archivo, por ejemplo.
+4. _**[CRUCIAL]**_ Una computadora que es compatible, como se ve en la sección de _**Compatibilidad**_ .
    * [Página de limitaciones de hardwarwe](/macos-limits.md)
 5. _**[CRUCIAL]**_ Un USB con un mínimo de:
    * 12GB si usarás macOS para crear el USB
@@ -34,9 +34,9 @@ Antes de comenzar a hacer un sistema basado en OpenCore, debemos repasar algunas
 
 ## Otros tips de OpenCore
 
-* Las extensiones del Kernel son cargadas en el order especificado en tu archivo de configuración, así que debes cargar las dependencias de estas extenciones antes de cargar la extensión en sí. Por ejemplo, Lilu debe ser cargado antes de WhateverGreen o VirtualSMC. 
-* Los datos del SMBIOS, patches del ACPI y los SSDTs/DSDT son aplicados a todos los sistemas operativos. Puedes ajustar tus SSDTs con `If (_OSI ("Darwin")) {}`
+* Las extensiones del kernel son cargadas en el orden especificado en tu archivo de configuración, así que debes cargar las dependencias de estas extenciones antes de cargar la extensión en sí. Por ejemplo, Lilu debe ser cargado antes de WhateverGreen o VirtualSMC. 
+* Los datos del SMBIOS, parches del ACPI y los SSDTs/DSDT son aplicados a todos los sistemas operativos. Puedes ajustar tus SSDTs con `If (_OSI ("Darwin")) {}`
   * Ten en cuenta que todos los SSDTs mencionados en esta guía han sido actualizados respectivamente y no deberían afectar el arranque del sistema.
 * Algunos sistemas requieren UEFI puro para arrancar (esta configuración es comúnmente llamada "Windows 8.1/10 UEFI Mode" por los fabricantes de placas base. Véase también [flashear una ROM UEFI en GPUs más antiguas](https://github.com/acidanthera/WhateverGreen/blob/master/Manual/FAQ.Radeon.en.md))
-* OpenCore requiere una versión de macOS que soporta ya sea el "Prelinked Kernel" o las "Kernel Collections". Esto significa que cualquier instalación de OS X 10.7 Lion en adelante es soportado.
-* Aquellos que tengan problemas cambiando a OpenCore pueden referirse a la página de [Conversión a Clover](https://github.com/dortania/OpenCore-Install-Guide/tree/master/clover-conversion) 
+* OpenCore requiere una versión de macOS que soporta ya sea el "Prelinked Kernel" o las "Kernel Collections". Esto significa que cualquier instalación de OS X 10.7 Lion en adelante es soportada.
+* Aquellos que tengan problemas cambiando a OpenCore pueden referirse a la página de [Conversión desde Clover](https://github.com/dortania/OpenCore-Install-Guide/tree/master/clover-conversion) 
