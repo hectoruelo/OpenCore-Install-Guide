@@ -32,16 +32,15 @@ Créditos a [midi1996](https://github.com/midi1996) por su trabajo en la [guía 
 
 ### Método 1
 
-En la terminal
-
-1. Corre `lsblk` y determina el bloque de tu USB
-2. Corre `sudo gdisk /dev/<el bloque de tu USB>`
-   1. Si eres preguntado qué mapa de particiones usar, selecciona GPT.
-      ![](../images/installer-guide/linux-install-md/unknown-5.png)
-   2. Manda `p` para imprimir los bloques de las particiones \(y verifica que es la que necesitas\)
-      ![](../images/installer-guide/linux-install-md/unknown-6.png)
-   3. Manda `o` para borrar la tabla de particiones y crear una nueva GPT (si no está vacía)
-      1. Confirma con `y`
+1. run `lsblk` and determine your USB device block
+  ![lsblk](../images/installer-guide/linux-install-md/unknown-5.png)
+2. run `sudo gdisk /dev/<your USB block>`
+   1. if you're asked what partition table to use, select GPT.
+      ![Select GPT](../images/installer-guide/linux-install-md/unknown-6.png)
+   2. send `p` to print your block's partitions \(and verify it's the one needed\)
+      ![](../images/installer-guide/linux-install-md/unknown-13.png)
+   3. send `o` to clear the partition table and make a new GPT one (if not empty)
+      1. confirm with `y`
          ![](../images/installer-guide/linux-install-md/unknown-8.png)
    4. Manda `n`
       1. `número de la partición`:  mantener en blanco para usar el predeterminado 
@@ -73,32 +72,32 @@ En la terminal:
 
 1. corre `lsblk` y determina el bloque de tu dispositivo USB
    ![](../images/installer-guide/linux-install-md/unknown-11.png)
-2. corre `sudo gdisk /dev/<your USB block>`
-   0. si eres preguntado qué tabla de particiones usar, selecciona GPT.
+2. run `sudo gdisk /dev/<your USB block>`
+   1. if you're asked what partition table to use, select GPT.
       ![](../images/installer-guide/linux-install-md/unknown-12.png)
-   1. manda `p` para imprimir el bloque de tus particiones \(y verifica que es la que necesitas\)
+   2. send `p` to print your block's partitions \(and verify it's the one needed\)
       ![](../images/installer-guide/linux-install-md/unknown-13.png)
-   2. manda `o` para eliminar el mapa de particiones y para crear una nueva con GPT (si no está vacía)
-      1. confirma con `y`
+   3. send `o` to clear the partition table and make a new GPT one (if not empty)
+      1. confirm with `y`
          ![](../images/installer-guide/linux-install-md/unknown-14.png)
-   3. manda `n`
-      1. `número de la partición`:  mantener en blanco para usar el predeterminado 
-      2. `primer sector`:  mantener en blanco para usar el predeterminado
-      3. `segundo sector`:  mantener en blanco para usar el disco entero
-      4. `Código hexadecimal o GUID`: `0700` para el tipo de partición de datos básicos de Microsoft
+   4. send `n`
+      1. partition number: keep blank for default
+      2. first sector: keep blank for default
+      3. last sector: `+200M` to create a 200MB partition that will be named later on OPENCORE
+      4. Hex code or GUID: `0700` for Microsoft basic data partition type
       ![](../images/installer-guide/linux-install-md/unknown-15.png)
-   4. manda `n`
-      1. numero de la partición: mantener en blanco para usar el predeterminadokeep 
-      2. primer sector: mantener en blanco para usar el predeterminado
-      3. último sector: mantener en blanco por defecto \(o puedes hacerlo `+3G` si deseas particionar aún más el resto del USB\)
-      4. Código hexadecimal o GUID: `af00` para el tipo de particiones de Apple (HFS/HFS+)
+   5. send `n`
+      1. partition number: keep blank for default
+      2. first sector: keep blank for default
+      3. last sector: keep black for default \(or you can make it `+3G` if you want to partition further the rest of the USB\)
+      4. Hex code or GUID: `af00` for Apple HFS/HFS+ partition type
       ![](../images/installer-guide/linux-install-md/unknown-16.png)
-   5. manda `w`
-      * Confirma con `y`
+   6. send `w`
+      * Confirm with `y`
       ![](../images/installer-guide/linux-install-md/unknown-17.png)
-      * En algunos casos es necesario reiniciar, pero raramente. Si quieres estar seguro, reinicia tu computadora. También puedes intentar volver a enchufar tu USB.
-   6. Cierra `gdisk` mandando `q` (normalmente debería cerrarse solo)
-3. Usa `lsblk` de nuevo para determinar el disco de 200MB y la otra partición
+      * In some cases a reboot is needed, but rarely, if you want to be sure, reboot your computer. You can also try re-plugging your USB key.
+   7. Close `gdisk` by sending `q` (normally it should quit on its own)
+3. Use `lsblk` again to determine the 200MB drive and the other partition
    ![](../images/installer-guide/linux-install-md/unknown-18.png)
 4. corre `sudo mkfs.vfat -F 32 -n "OPENCORE" /dev/<tu bloque de particiones de 200MB>` para formatear la partición de 200MB a FAT32 y ponerle el nombre "OPENCORE"
 5. luego usa `cd` a `gibmacos-master/macOS\ Downloads/publicrelease/xxx-xxxxx - 10.x.x macOS xxx` y deberías obtener un archivo `pkg`
