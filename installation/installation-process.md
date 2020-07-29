@@ -1,59 +1,60 @@
-# Installation Process
+# Proceso de instalación
 
-Now that you've finished setting up OpenCore, you're finally able to boot, main things to keep in mind:
+Ahora que has terminado de configurar OpenCore, finalmente puedes iniciar, lo más importante a tener en cuenta:
 
-* Enable BIOS settings optimal for macOS
-* Read up on the [Multiboot Guide](https://hackintosh-multiboot.gitbook.io/hackintosh-multiboot/)
-  * Mainly relevant for those running a single drive for multiple OSes
-* And a copy of the [General Troubleshooting](../troubleshooting/troubleshooting.md) page
-* Read up on the [macOS Boot Process](../troubleshooting/boot.md)
-  * Can help first time installers better understand where they may be getting stuck
-* And a ton of patience
+* Habilitea la configuración de BIOS óptima para macOS
+* Lee la [guía de Multiboot](https://hackintosh-multiboot.gitbook.io/hackintosh-multiboot/)
+  * Principalmente relevante para aquellos que tienen un solo disco para múltiples sistemas operativos
+* Una copia de la [página de solución de problemas](../troubleshooting/troubleshooting.md)
+* Lee el [proceso de arranque de macOS](../troubleshooting/boot.md)
+  * Puede ayudar a aquellos que están instalando por primera vez a comprender mejor dónde pueden estar atascados
+* Un montón de paciencia
 
 ## Double checking your work
 
 One last thing we should go over before booting is how your EFI is setup:
 
-Good EFI          |  Bad EFI
+EFI buena          |  EFI mala
 :-------------------------:|:-------------------------:
 ![](../images/installation/install-md/good-efi.png)  |  ![](../images/installation/install-md/bad-efi.png)
-*EFI folder found on EFI partition |* EFI folder missing
-*ACPI Files are compiled(.aml) |* ACPI Files are not compiled(.dsl)
-*DSDT is not included |* DSDT is included
-*Removed unneeded Drivers(.efi) |* Leaves default Drivers
-*Removed unneeded Tools(.efi) |* Leaves default Tools
-*All files in the Kexts folder end in .kext |* Includes source code and folders
-*config.plist found under EFI/OC |* Neither renamed or placed the .plist in right location
-*Only uses kexts that are needed |* Downloaded every kext listed
+*Carpeta EFI encontrada en la partición EFI |* Falta la carpeta EFI
+*Los archivos ACPI están compilados(.aml) |* Los archivos ACPI no están compilados (.dsl)
+*El DSDT no está incluido |* El DSDT está incluido
+*Se eliminaron los drivers innecesarios (.efi) |* Deja los drivers predeterminados
+*Se eliminaron las herramientas (tools) innecesarias (.efi) |* Deja las herramientas predeterminadas
+*Todos los archivos en la carpeta Kexts terminan en .kext |* Incluye código base y carpetas
+*config.plist debajo de EFI/OC |* No se cambió el nombre del .plist ni está en el lugar correcto
+*Sólo se usan kexts que necesitas |* Se descargan todos los kexts listados
 
-And a reminder that slowgeek site is your friend:
+Acuérdate de que el sanity checker es tu amigo:
 
 * [**Sanity Checker**](https://opencore.slowgeek.com)
 
 ## Booting the OpenCore USB
 
-So you're now ready to finally put the USB stick into your computer and boot off of it, remember that your laptop will still default to the internal drive with Windows so you'll need to enter the BIOS or boot menu and select the USB. You'll need to check in the user manual or use a bit of google to find out what Fn key accesses the BIOS and boot menu(ie. Esc, F2, F10 or F12)
 
-Once you boot the USB, you'll likely be greeted to the following boot options:
+Entonces, ahora estás listo para finalmente colocar el USB en tu computadora y arrancarla, recuerda que tu PC seguirá utilizando la unidad interna con el SO que estás usando por defecto, por lo que tendrás que ingresar a la BIOS o al menú de arranque y seleccionar el USB. Tendrás que consultar el manual de usuario o buscar en Google para averiguar que tecla Fn accede a la BIOS y al menú de arranque (Esc, F2, F10, F12, etc.)
+
+Una vez que inicie el USB, es probable que recibas las siguientes opciones de inicio:
 
 1. Windows
 2. macOS Base System (External) / Install macOS Catalina (External)
 3. OpenShell.efi
 4. Reset NVRAM
 
-For use, **Option 2.** is the one we want. Depending how the installer was made, it may report as either **"macOS Base System (External)"** if created in Linux or Windows and **"Install macOS Catalina (External)"** if created in macOS.
+En nuestro caso, **la Opción 2** es la que queremos. Dependiendo de cómo se realizó el instalador, puede mostrarse como como **"macOS Base System (External)"**  si se creó en Linux o Windows e **"Install macOS Catalina (External)"** si se creó en macOS.
 
-## macOS Installer
+## Instalador de macOS
 
-So you've finally got the installer booted, got through the verbose and hit the installer! Now that you've gotten this far,  the main things to keep in mind:
+Finalmente has arrancado el instalador, has pasado por verbose y llegado al instalador. Ahora que has llegado hasta aquí, esto es lo más importante a tener en cuenta:
 
-* Drives you wish to install macOS on **must** be both of GUID partition Scheme **and** APFS
-  * High Sierra on HDD and all Sierra users will need to use macOS Journaled(HFS+)
-* The drive **must** also have a 200MB partition
-  * By default, macOS will setup freshly formatted drives with 200MB
-  * See the [Multiboot Guide](https://hackintosh-multiboot.gitbook.io/hackintosh-multiboot/) for more info on partitioning a Windows Drive
+* Las unidades en las que deseas instalar macOS **deben** tener un esquema de partición GUID **y** APFS
+  * High Sierra en discos duros mecánicos (HDD) y todos los usuarios de Sierra deberán usar macOS Journaled (HFS+)
+* La unidad **debe** también tener una partición de 200 MB
+  * De forma predeterminada, macOS configurará unidades recién formateadas con una partición de 200 MB
+  * Ve a la [guía de Multiboot](https://hackintosh-multiboot.gitbook.io/hackintosh-multiboot/) para obtener más información sobre cómo particionar una unidad de Windows
 
-Once you start the installation, you will want to wait until the system restarts. You will once again want to boot into OpenCore, but rather than selecting your USB installer/recovery - you will want to select the macOS installer on the hard drive to continue installation. You should get an apple logo, and after a few minutes you should get a timer at the bottom saying "x minutes remaining". This may be a good time to get a drink or snack as this will take a while. It may restart a couple more times, but if all goes well, it should finally plop you at the "Setup your Mac screen"
+Una vez que comience la instalación, tendrás que esperar hasta que el sistema se reinicie. Una vez más, querrás iniciar en OpenCore, pero en lugar de seleccionar su instalador/disco de recuperación USB, tendrás que seleccionar la opción "macOS Installer" en el disco duro para continuar con la instalación. Debería obtener un logotipo de manzana, y después de unos minutos debería aparecer un temporizador en la parte inferior que diga "x minutos restantes". Este puede ser un buen momento para tomar una bebida o comer algo, ya que esto llevará un tiempo. Puede reiniciarse un par de veces más, pero si todo va bien, finalmente deberías llegar a la pantalla de bienvenida, donde podrás configurar todo. 
 
-You're in! 🎉
-You will want to go through the Post-Installation pages to finish setting up your system.
+Estás dentro! 🎉
+Deberás ir a la página de post instalación para terminar de configurar tu sistema.
