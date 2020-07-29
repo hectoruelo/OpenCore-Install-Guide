@@ -72,32 +72,32 @@ En la terminal:
 
 1. corre `lsblk` y determina el bloque de tu dispositivo USB
    ![](../images/installer-guide/linux-install-md/unknown-11.png)
-2. run `sudo gdisk /dev/<your USB block>`
+2. run `sudo gdisk /dev/<el bloque de tu USB>`
    1. if you're asked what partition table to use, select GPT.
       ![](../images/installer-guide/linux-install-md/unknown-12.png)
-   2. send `p` to print your block's partitions \(and verify it's the one needed\)
+   2. Manda `p` para imprimir los bloques de las particiones \(y verifica que es la que necesitas\)
       ![](../images/installer-guide/linux-install-md/unknown-13.png)
-   3. send `o` to clear the partition table and make a new GPT one (if not empty)
-      1. confirm with `y`
+   3. Manda `o` para borrar la tabla de particiones y crear una nueva GPT (si no está vacía)
+      1. Confirma con `y`
          ![](../images/installer-guide/linux-install-md/unknown-14.png)
-   4. send `n`
-      1. partition number: keep blank for default
-      2. first sector: keep blank for default
-      3. last sector: `+200M` to create a 200MB partition that will be named later on OPENCORE
-      4. Hex code or GUID: `0700` for Microsoft basic data partition type
+   4. manda `n`
+      1. partition number: mantener en blanco para usar el predeterminado 
+      2. first sector: mantener en blanco para usar el predeterminado
+      3. last sector: `+200M` para crear una partición de 200MB que luego llamarás OPENCORE
+      4. Hex code or GUID: `0700` para el tipo de partición de datos básicos de Microsoft
       ![](../images/installer-guide/linux-install-md/unknown-15.png)
    5. send `n`
-      1. partition number: keep blank for default
-      2. first sector: keep blank for default
-      3. last sector: keep black for default \(or you can make it `+3G` if you want to partition further the rest of the USB\)
-      4. Hex code or GUID: `af00` for Apple HFS/HFS+ partition type
+      1. partition number: mantener en blanco para usar el predeterminado 
+      2. first sector: mantener en blanco para usar el predeterminado 
+      3. last sector: mantener en blanco por defecto \(o puedes hacerlo `+3G` si deseas particionar aún más el resto del USB\)
+      4. Hex code or GUID: `af00` para el tipo de particiones de Apple (HFS/HFS+)
       ![](../images/installer-guide/linux-install-md/unknown-16.png)
-   6. send `w`
-      * Confirm with `y`
+   6. manda `w`
+      * Confirma con `y`
       ![](../images/installer-guide/linux-install-md/unknown-17.png)
-      * In some cases a reboot is needed, but rarely, if you want to be sure, reboot your computer. You can also try re-plugging your USB key.
-   7. Close `gdisk` by sending `q` (normally it should quit on its own)
-3. Use `lsblk` again to determine the 200MB drive and the other partition
+      * En algunos casos es necesario reiniciar, pero raramente. Si quieres estar seguro, reinicia tu computadora. También puedes intentar volver a enchufar tu USB.
+   7. Cierra `gdisk` mandando `q` (normalmente debería cerrarse solo)
+3. Usa `lsblk` de nuevo para determinar el disco de 200MB y la otra partición
    ![](../images/installer-guide/linux-install-md/unknown-18.png)
 4. corre `sudo mkfs.vfat -F 32 -n "OPENCORE" /dev/<tu bloque de particiones de 200MB>` para formatear la partición de 200MB a FAT32 y ponerle el nombre "OPENCORE"
 5. luego usa `cd` a `gibmacos-master/macOS\ Downloads/publicrelease/xxx-xxxxx - 10.x.x macOS xxx` y deberías obtener un archivo `pkg`
