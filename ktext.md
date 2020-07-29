@@ -1,6 +1,6 @@
-# Gathering files
+# Recolectando archivos
 
-* Supported version: 0.5.9
+* Versión soportada: 0.5.9
 
 Esta sección es para obtener otros archivos necesarios para arrancar macOS, esperamos que conozcas bien tu hardware  antes de comenzar y que hayas hecho un hackintosh antes, ya que no entraremos en detalle aquí. 
 
