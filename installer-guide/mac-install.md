@@ -14,7 +14,7 @@ Para comenzar, queremos obtener una copia de macOS, puedes omitir esto y dirigir
 
 Aquellos que necesiten versiones de macOS que no son alojadas en el catálogo de Apple, pueden seguir la siguiente guía (en inglés): [Legacy macOS install](https://github.com/dortania/OpenCore-Install-Guide/blob/master/installer-guide/legacy-mac-install.md) 
 
-## Downloading macOS
+## Descargando macOS
 
 Desde una computadora con macOS que cumple los requerimientos de la versión del SO que quieres instalar, vé directamente a el AppStore y descarga la versión de macOS que desees, y continúa en [**Configurando el instalador**](#setting-up-the-installer)
 
@@ -46,7 +46,7 @@ Mueve esta aplicación a la carpeta de Aplicaciones, esto nos será útil para l
 
 ![](../images/installer-guide/mac-install-md/gib-done.png)
 
-## Setting up the installer
+## Configurando el instalador
 
 Ahora formatearemos el USB para prepararlo para el instalador de macOS y OpenCore. Querremos utilizar el formato macOS Extended (HFS+) con el mapa de particiones GUID. Esto creará dos particiones, la principal, `MyVolume` y una segunda llamada `EFI`, la cual es la partición de arranque donde el firmware buscará archivos de arranque. 
 
@@ -64,7 +64,7 @@ Esto tomará un tiempo así que si quieres ve a buscar un café o continúa leye
 
 También puedes reemplazar la ruta de el comando `createinstallmedia` con la ruta de donde está localizado el instalador que descargaste previamente, lo mismo con el nombre del disco. 
 
-## Configurar el entorno de OpenCore
+## Configurando el entorno de OpenCore
 
 Configurar el entorno de OpenCore es simple, todo lo que necesitas hacer es montar la partición EFI de tu USB. Esto es hecho automáticamente cuando formateamos un disco con GUID, pero esta partición esta desmontada por defecto, aquí es cuando nuestro amigo [MountEFI](https://github.com/corpnewt/MountEFI) entra a jugar:
 
