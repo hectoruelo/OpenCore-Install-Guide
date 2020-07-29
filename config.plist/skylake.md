@@ -403,7 +403,7 @@ Vuelve a escribir a la fuerza las variables de NVRAM. Ten en cuenta que `Add` **
 
 ## PlatformInfo
 
-![PlatformInfo](../images/config/config.plist/kaby-lake/smbios.png)
+![PlatformInfo](../images/config/config.plist/skylake/smbios.png)
 
 ::: tip Información
 
@@ -507,7 +507,7 @@ Relacionado a la salida visual de OpenCore, deja todo aquí como predeterminado,
 
 ### ProtocolOverrides
 
-Principalmente relevante para máquinas virtuales, Macs Legacy y usuarios de FileVault. Consulte aquí para obtener más detalles: [Seguridad y FileVault](https://dortania.github.io/OpenCore-Post-Install/)
+Principalmente relevante para máquinas virtuales, Macs Legacy y usuarios de FileVault. Consulta aquí para obtener más detalles: [Seguridad y FileVault](https://dortania.github.io/OpenCore-Post-Install/)
 
 ### Quirks
 

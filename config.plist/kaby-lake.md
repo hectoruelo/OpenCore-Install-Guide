@@ -114,7 +114,7 @@ Esta sección se configura a través de la [Guía de parcheo de Framebuffers](ht
 
 También agregamos 2 propiedades más, `framebuffer-patch-enable` y `framebuffer-stolenmem`. El primero habilita la aplicación de parches a través de WhateverGreen.kext, y el segundo establece la "stolenmem" mínima a 19 MB. Esto generalmente no es necesario, ya que se puede configurar en BIOS (se recomiendan 64 MB) pero se requiere cuando no puedes hacer esto.
 
-* **Nota**: Los framebuffers "headless: (donde dGPU es la pantalla) no necesitan `framebuffer-patch-enable` y `framebuffer-stolenmem`
+* **Nota**: Los framebuffers "headless" (donde dGPU maneja la pantalla) no necesitan `framebuffer-patch-enable` y `framebuffer-stolenmem`
 | Key | Type | Value |
 | :--- | :--- | :--- |
 | AAPL,ig-platform-id | Data | 00001259 |
@@ -181,7 +181,7 @@ Parchea tanto el kernel como los kexts.
 
 ::: tip Info
 
-Settings relating to the kernel, for us we'll be enabling the following:
+Ajustes relacionados a el kernel, en nuestro caso habilitaremos lo siguiente:
 
 | Quirk | Habilitado | Comentario |
 | :--- | :--- | :--- |
@@ -387,19 +387,19 @@ Vuelve a escribir a la fuerza las variables de NVRAM. Ten en cuenta que `Add` **
 
 **LegacyEnable**: NO
 
-* Permite que la NVRAM se almacene en nvram.plist, necesario para sistemas sin NVRAM nativa
+  * Permite que la NVRAM se almacene en nvram.plist, necesario para sistemas sin NVRAM nativa
 
 **LegacyOverwrite**: NO
 
-* Permite sobrescribir variables de firmware de la nvram.plist, solo necesario para sistemas sin NVRAM nativa
+  * Permite sobrescribir variables de firmware de la nvram.plist, solo necesario para sistemas sin NVRAM nativa
 
 **LegacySchema**
 
-* Se usa para asignar variables NVRAM, se usa con LegacyEnable establecido en YES
+  * Se usa para asignar variables NVRAM, se usa con LegacyEnable establecido en YES
 
 **WriteFlash**: YES
 
-* Permite escribir en la memoria flash para todas las variables agregadas.
+  * Permite escribir en la memoria flash para todas las variables agregadas.
 
 :::
 
@@ -409,7 +409,7 @@ Vuelve a escribir a la fuerza las variables de NVRAM. Ten en cuenta que `Add` **
 
 ::: tip Información
 
-Para configurar la información SMBIOS, usaremos la aplicación [GenSMBIOS](https://github.com/corpnewt/GenSMBIOS) hecha por [CorpNewt](https://github.com/corpnewt/).
+Para configurar la información del SMBIOS, usaremos la aplicación [GenSMBIOS](https://github.com/corpnewt/GenSMBIOS) hecha por [CorpNewt](https://github.com/corpnewt/).
 
 Para este ejemplo de Kaby Lake, eligiremos el SMBIOS iMac18,1. Esto está hecho intencionalmente por un tema de compatibilidad. Hay dos SMBIOS principales utilizadas para Kaby Lake
 
@@ -510,7 +510,7 @@ Relacionado a la salida visual de OpenCore, deja todo aquí como predeterminado,
 
 ### ProtocolOverrides
 
-Principalmente relevante para máquinas virtuales, Macs Legacy y usuarios de FileVault. Consulte aquí para obtener más detalles: [Seguridad y FileVault](https://dortania.github.io/OpenCore-Post-Install/)
+Principalmente relevante para máquinas virtuales, Macs Legacy y usuarios de FileVault. Consulta aquí para obtener más detalles: [Seguridad y FileVault](https://dortania.github.io/OpenCore-Post-Install/)
 
 ### Quirks
 
