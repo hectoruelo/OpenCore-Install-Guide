@@ -87,7 +87,7 @@ Configuraciones relacionadas a el parcheo de boot.efi y arreglos en el firmware.
   * Genera un mapa de memoria compatible con macOS, puede romperse en algunos firmwares de laptops de OEMs, así que si recives fallas en el arranque temprando deshabilita esto.
 * **SetupVirtualMap**: YES
   * Corrige las llamadas de `SetVirtualAddresses` a `virtual addresses`, no tendría que ser necesario en Skylake y posterior. Algunos firmwares como Gigabyte podrían requerirlo, y pueden causar un kernel panic sin esto. 
-  * **Note**: ASUS, Gigabyte and AsRock Z490 board will not boot with this on.
+  * **Nota**: Placas madre Z490 ASUS, Gigabyte y AsRock Z490 no arrancarán con esto habilitado
 * **SyncRuntimePermissions**: YES
   * Soluciona la alineación con las tablas MAT y es necesario para iniciar Windows y Linux estas, también recomendado para macOS. Principalmente relevante para Skylake y posterior
 
