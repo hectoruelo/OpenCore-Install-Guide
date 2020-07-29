@@ -34,7 +34,7 @@ Aquí es donde agregarás los SSDTs para su sistema, estos son muy importantes p
 
 En nuestro caso necesitaremos un par de SSDTs para recuperar la funcionalidad que Clover proporcionó
 
-| Required_SSDTs | Description |
+| SSDTs requeridos | Descripción |
 | :--- | :--- |
 | **[SSDT-PLUG](https://dortania.github.io/Getting-Started-With-ACPI/)** | Permite administración de la energía de la CPU nativa en Haswell y posterior. Dirígete a [Comenzando con ACPI](https://dortania.github.io/Getting-Started-With-ACPI/) para más información. |
 | **[SSDT-EC-USBX](https://dortania.github.io/Getting-Started-With-ACPI/)** | Arregla el controlador integrado (Embeeded Controller o EC en inglés) y la energía de los USBs. Dirígete a [Comenzando con ACPI](https://dortania.github.io/Getting-Started-With-ACPI/) para más información. |
@@ -67,7 +67,7 @@ Esta sección está dedicada a los quirks relacionados con el parche boot.efi co
 
 ### MmioWhitelist
 
-Esta sección permite pasar espacios a macOS que generalmente se ignoran, lo que es útil cuando se combina con `DevirtualiseMmio`
+Esta sección permite pasar dispositivos a macOS que generalmente se ignoran, en nuestro caso podemos ignorar esto. 
 
 ### Quirks
 
@@ -109,7 +109,7 @@ Configuraciones relacionadas a el parcheo de boot.efi y arreglos en el firmware.
 
 ### Add
 
-Sets device properties from a map.
+Configura las device properties desde un mapa.
 
 ::: tip PciRoot(0x0)/Pci(0x2,0x0)
 
@@ -117,7 +117,7 @@ Esta sección se configura a través de la [Guía de parcheo de Framebuffers](ht
 
 `AAPL,ig-platform-id` es lo que macOS usa para determinar cómo los drivers de tu iGPU interactúan con tu sistema, y los dos valores que se eligen son los siguientes:
 
-| AAPL,ig-platform-id | Comment |
+| AAPL,ig-platform-id | Comentario |
 | :--- | :--- |
 | 07009B3E | Utilizado cuando el iGPU es utilizado para manejar un monitor |
 | 0300913E | Usado cuando el iGPU de escritorio es utilizado para tareas computacionales y no maneja un monitor |
@@ -161,8 +161,6 @@ Elimina las propiedades del dispositivo del mapa. En nuestro caso podemos ignora
 
 ### Add
 
-### Add
-
 Aquí es donde especificas qué kexts cargar. El orden importa aquí, así que asegúrate de que Lilu.kext siempre sea el primero. Otros kexts de mayor prioridad vienen después de Lilu, como VirtualSMC, AppleALC, WhateverGreen, etc. Un dato a tener en cuenta es que los usuarios de [ProperTree](https://github.com/corpnewt/ProperTree) pueden ejecutar **Cmd/Ctrl+Shift+R** para agregar todos sus kexts en el orden correcto sin escribir manualmente cada kext.
 
 * **BundlePath**
@@ -197,7 +195,7 @@ Parchea tanto el kernel como los kexts.
 
 ::: tip Info
 
-Settings relating to the kernel, for us we'll be enabling the following:
+Ajustes relacionados a el kernel, en nuestro caso habilitaremos lo siguiente:
 
 | Quirk | Habilitado | Comentario |
 | :--- | :--- | :--- |
@@ -292,7 +290,7 @@ Security se explica por sí sola, **no te lo saltes**. Vamos a cambiar lo siguie
 
 :::
 
-::: details More in-depth Info
+::: details Información más detallada
 
 * **AllowNvramReset**: YES
   * Permite restablecer NVRAM tanto en el selector de arranque como al presionar `Cmd+Opt+P+R`
