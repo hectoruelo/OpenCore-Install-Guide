@@ -1,4 +1,4 @@
-# Desktop Kaby Lake
+# Kaby lake de escritorio
 
 * Versión soportada: 0.5.9
 
@@ -195,7 +195,7 @@ Settings relating to the kernel, for us we'll be enabling the following:
 
 :::
 
-::: details More in-depth Info
+::: details Información más detallada
 
 * **AppleCpuPmCfgLock**: YES
   * Solo es necesario cuando CFG-Lock no se puede deshabilitar en BIOS, la contraparte de Clover sería AppleIntelCPUPM.
@@ -523,7 +523,7 @@ En relación con los quirks con el entorno UEFI, cambiaremos lo siguiente:
 
 :::
 
-::: details More in-depth Info
+::: details Información más detallada
 
 * **DeduplicateBootOrder**: YES
   * Solicita la reserva de algunas variables prefijadas de arranque de `OC_VENDOR_VARIABLE_GUID` a `EFI_GLOBAL_VARIABLE_GUID`. Se utiliza para arreglar las opciones de arranque.
