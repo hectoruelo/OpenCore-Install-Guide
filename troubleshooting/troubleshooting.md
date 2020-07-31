@@ -1,170 +1,171 @@
 # General Troubleshooting
 
-* Supported version: 0.5.9
+* Versión soportada: 0.5.9
 
-This section is for those having issues booting either OpenCore, macOS or having issues inside macOS. If you're confused as to where exactly in the macOS boot process you're stuck, reading the [macOS Boot Process](../troubleshooting/boot.md) page can help clarify things.
+Esta sección es para aquellos que tienen problemas al iniciar OpenCore, macOS o que tienen problemas dentro de macOS. Si estás confundido acerca de dónde exactamente en el proceso de arranque de macOS estás atascado, leer la página [Proceso de arranque de macOS](../troubleshooting/boot.md) puede ayudar a aclarar tus dudas.
 
 <extoc></extoc>
 
-While still a work in progress, laptop users wanting to convert an existing Clover install can see the  [Clover to OpenCore conversion](https://github.com/dortania/OpenCore-Install-Guide/blob/master/clover-conversion) for more info
+Si bien todavía es un trabajo en progreso, los usuarios de laptops que desean convertir una instalación de Clover existente pueden ver la [Conversión de Clover a OpenCore](https://github.com/dortania/OpenCore-Install-Guide/blob/master/clover-conversion) para más información
 
-**And if your issue is not covered, please read the official OpenCore documentation: [Configuration.pdf](https://github.com/acidanthera/OpenCorePkg/blob/master/Docs/Configuration.pdf)**
+**Y si su problema no está cubierto, lee la documentación oficial de OpenCore: [Configuration.pdf](https://github.com/acidanthera/OpenCorePkg/blob/master/Docs/Configuration.pdf)**
 
-# OpenCore booting
+# Arranque de OpenCore
 
-* [Stuck on `no vault provided!`](#stuck-on-no-vault-provided)
-* [Stuck on EndRandomSeed](#stuck-on-endrandomseed)
-* [Stuck on `[EB|#LOG:EXITBS:START]`](#stuck-on-eblogexitbsstart)
-* [Can't see macOS partitions](#cant-see-macos-partitions)
-* [Black screen after picker](#black-screen-after-picker)
-* [Stuck on `OC: OcAppleGenericInput... - Success`](#stuck-on-oc-ocapplegenericinput---success)
-* [Stuck on `OCB: OcScanForBootEntries failure - Not Found`](#stuck-on-ocb-ocscanforbootentries-failure---not-found)
-* [Stuck on `OCB: failed to match a default boot option`](#stuck-on-ocb-failed-to-match-a-default-boot-option)
-* [Stuck on `OCABC: Memory pool allocation failure - Not Found`](#stuck-on-ocabc-memory-pool-allocation-failure---not-found)
-* [Stuck on `OCS: No schema for DSDT, KernelAndKextPatch, RtVariable, SMBIOS, SystemParameters...`](#stuck-on-ocs-no-schema-for-dsdt-kernelandkextpatch-rtvariable-smbios-systemparameters)
-* [Stuck on `OC: Driver XXX.efi at 0 cannot be found`](#stuck-on-oc-driver-xxxefi-at-0-cannot-be-found)
-* [Stuck on `Buffer Too Small`](#stuck-on-buffer-too-small)
-* [Stuck on `Plist only kext has CFBundleExecutable key`](#stuck-on-plist-only-kext-has-cfbundleexecutable-key)
-* [Receiving `Failed to parse real field of type 1`](#receiving-failed-to-parse-real-field-of-type-1)
-* [Stuck after selection macOS partition on OpenCore](#stuck-after-selection-macos-partition-on-opencore)
-* [Can't select anything in the picker](#cant-select-anything-in-the-picker)
+* [Trancado en `no vault provided!`](#stuck-on-no-vault-provided)
+* [Trancado en EndRandomSeed](#stuck-on-endrandomseed)
+* [Trancado en `[EB|#LOG:EXITBS:START]`](#stuck-on-eblogexitbsstart)
+* [No puedo ver particiones de macOS](#cant-see-macos-partitions)
+* [Pantalla negra luego del picker](#black-screen-after-picker)
+* [Trancado en `OC: OcAppleGenericInput... - Success`](#stuck-on-oc-ocapplegenericinput---success)
+* [Trancado en `OCB: OcScanForBootEntries failure - Not Found`](#stuck-on-ocb-ocscanforbootentries-failure---not-found)
+* [Trancado en `OCB: failed to match a default boot option`](#stuck-on-ocb-failed-to-match-a-default-boot-option)
+* [Trancado en `OCABC: Memory pool allocation failure - Not Found`](#stuck-on-ocabc-memory-pool-allocation-failure---not-found)
+* [Trancado en `OCS: No schema for DSDT, KernelAndKextPatch, RtVariable, SMBIOS, SystemParameters...`](#stuck-on-ocs-no-schema-for-dsdt-kernelandkextpatch-rtvariable-smbios-systemparameters)
+* [Trancado en `OC: Driver XXX.efi at 0 cannot be found`](#stuck-on-oc-driver-xxxefi-at-0-cannot-be-found)
+* [Trancado en `Buffer Too Small`](#stuck-on-buffer-too-small)
+* [Trancado en `Plist only kext has CFBundleExecutable key`](#stuck-on-plist-only-kext-has-cfbundleexecutable-key)
+* [Recibiendo `Failed to parse real field of type 1`](#receiving-failed-to-parse-real-field-of-type-1)
+* [Trancado luego de la selección de la partición de macOS en OpenCore](#stuck-after-selection-macos-partition-on-opencore)
+* [No puedo seleccionar nada en el menú](#cant-select-anything-in-the-picker)
 * [Stuck on `This version of Mac OS X is not supported: Reason Mac...`](#stuck-on-this-version-of-mac-os-x-is-not-supported-reason-mac)
-* [`Couldn't allocate runtime area` errors?](#couldnt-allocate-runtime-area-errors)
-* [SSDTs not being added](#ssdts-not-being-added)
-* [Booting OpenCore reboots to BIOS](#booting-opencore-reboots-to-bios)
+* [Errores `Couldn't allocate runtime area`](#couldnt-allocate-runtime-area-errors)
+* [SSDTs no siendo agregados](#ssdts-not-being-added)
+* [Bootear opencore reinicia a la BIOS](#booting-opencore-reboots-to-bios)
 * [OCABC: Incompatible OpenRuntime r4, require r10](#ocabc-incompatible-openruntime-r4-require-r10)
 
 ## Stuck on `no vault provided!`
 
-Turn off Vaulting in your config.plist under `Misc -> Security -> Vault` by setting it to:
+Apaga el vaulting en tu config.plist debajo de `Misc -> Security -> Vault`, debes configurarlo a:
 
 * `Optional`
 
-If you have already executed the `sign.command` you will need to restore the OpenCore.efi file as the 256 byte RSA-2048 signature has been shoved in. Can grab a new copy of OpenCore.efi here: [OpenCorePkg](https://github.com/acidanthera/OpenCorePkg/releases)
+Si ya has ejecutado el `sign.command`, deberás restaurar el archivo OpenCore.efi ya que se ha introducido la firma RSA-2048 de 256 bytes. Puedes obtener una nueva copia de OpenCore.efi aquí: [OpenCorePkg](https://github.com/acidanthera/OpenCorePkg/releases)
 
-**Note**: Vault and FileVault are 2 separate things, see [Security and FileVault](https://dortania.github.io/OpenCore-Post-Install/universal/security.html) for more details
+**Nota**: Vault y FileVault son 2 cosas distintas, consulta [Seguridad y FileVault](https://dortania.github.io/OpenCore-Post-Install/universal/security.html) para obtener más detalles.
 
-## Stuck on `OC: Invalid Vault mode`
+## Trancado en `OC: Invalid Vault mode`
 
-This is likely a spelling mistake, options in OpenCore are case-sensitive so make sure you check closely, **O**ptional is the correct way to enter it under `Misc -> Security -> Vault`
+Es probable que sea un error ortográfico, las opciones en OpenCore distinguen entre mayúsculas y minúsculas, así que asegúrate de verificar detenidamente, **O**ptional es la forma correcta de ingresarlo en `Misc -> Security -> Vault`
 
-## Stuck on EndRandomSeed
+## Trancado en EndRandomSeed
 
-Couple problems:
+Algunos problemas:
 
-**Booter Issues:**
+**Problemas del Booter:**
 
-* `DevirtualiseMmio` may be taking precious areas in memory that are needed for other uses, you may need to disable this quirk or whitelist the bad regions: [Using DevirtualiseMmio](../extras/kaslr-fix.md#using-devirtualisemmio)
-* `SetupVirtualMap` may be needed depending on the firmware, generally this quirk should be avoided but most Gigabyte users and older hardware(Broadwell and older) will need this quirk to boot.
-  * Z490 boards are known to fail with `SetupVirtualMap` enabled, especially on Asus and AsRock boards.
-* `RebuildAppleMemoryMap` may not be a fan of your firmware, use of this quirk is dependent on having `EnableWriteUnprotector` disabled and `SyncRuntimePermissions` enabled with the addition of having a `Memory Attribute Table` in your firmware. If your firmware doesn't have MATs, disable both `RebuildAppleMemoryMap` and `SyncRuntimePermissions` then enable `EnableWriteUnprotector`.
+* `DevirtualiseMmio` puede estar tomando áreas importantes en la memoria que son necesarias para otras cosas, puede que necesites deshabilitar este quirk o incluir en la lista blanca las regiones defectuosas: [Usando DevirtualiseMmio](../extras/kaslr-fix.md#using-devirtualisemmio)
+* `SetupVirtualMap` puede ser necesario dependiendo del firmware, generalmente este quirk debe evitarse, pero la mayoría de los usuarios de Gigabyte y hardware antiguo (Broadwell y anterior) necesitarán esta peculiaridad para arrancar.
+   * Se sabe que las placas madre Z490 fallan con `SetupVirtualMap` habilitado, especialmente en las placas Asus y AsRock.
+* `RebuildAppleMemoryMap` puede no ser un fanático de tu firmware, y el uso de este quirk depende de tener `EnableWriteUnprotector` deshabilitado y `SyncRuntimePermissions` habilitado con la adición de tener una `Tabla de atributos de memoria (MAT)` en tu firmware. Si su firmware no tiene MATs, desactiva tanto `RebuildAppleMemoryMap` como `SyncRuntimePermissions` y luego habilita `EnableWriteUnprotector`.
 
-To verify whether your board has MATs, check the logs for something like this:
-
-```
-OCABC: MAT support is 1
-```
-
-**Kernel Issues:**
-
-* **AMD:** Missing [kernel patches](https://github.com/AMD-OSX/AMD_Vanilla/tree/opencore)(only applies for AMD CPUs, make sure they're OpenCore patches and not Clover. Clover uses `MatchOS` while OpenCore has `MinKernel` and `Maxkernel`)
-* **Intel:** Missing CFG or XCPM patches
-  * Enable `AppleXcpmCfgLock` and `AppleCpuPmCfgLock`, this disables `PKG_CST_CNFIG_CONTROL` within the XNU and AppleIntelCPUPowerManagement respectively. Not recommended long term solution as this can cause instability.
-  * Alternatively you can properly disable CFG-Lock: [Fixing CFG Lock](https://dortania.github.io/OpenCore-Post-Install/misc/msr-lock.html)
-* **Intel:** `AppleXcpmExtraMsrs` may be required, this is generally meant for Pentiums, HEDT and other odd systems not natively supported in macOS. **Do not use on AMD**
-  
-**UEFI Issues:**
-
-* `ProvideConsoleGop` is likely missing as this is needed for transitioning to the next screen, this was originally part of AptioMemoryFix but is now within OpenCore as this quirk. Can be found under UEFI -> Output
-* `IgnoreInvalidFlexRatio` missing, this is needed for Broadwell and older. **Not for AMD and Skylake or newer**
-
-## Stuck on `[EB|#LOG:EXITBS:START]`
-
-This is actually the exact same error as `EndRandomSeed` so all the same fixes apply(10.15.4 and newer changed the debug protocol for those curious):
-
-**Booter Issues:**
-
-* `DevirtualiseMmio` may be taking precious areas in memory that are needed for other uses, you may need to disable this quirk or whitelist the bad regions: [Using DevirtualiseMmio](../extras/kaslr-fix.md#using-devirtualisemmio)
-* `SetupVirtualMap` may be needed depending on the firmware, generally this quirk should be avoided but most Gigabyte users and older hardware(Broadwell and older) will need this quirk to boot.
-  * Z490 boards are known to fail with `SetupVirtualMap` enabled, especially on Asus and AsRock boards.
-* `RebuildAppleMemoryMap` may not be a fan of your firmware, use of this quirk is dependent on having `EnableWriteUnprotector` disabled and `SyncRuntimePermissions` enabled with the addition of having a `Memory Attribute Table` in your firmware. If your firmware doesn't have MATs, disable both `RebuildAppleMemoryMap` and `SyncRuntimePermissions` then enable `EnableWriteUnprotector`.
-
-To verify whether your board has MATs, check the logs for something like this:
+Para verificar si tu placa madre tiene MATs, busca algo así en los logs:
 
 ```
 OCABC: MAT support is 1
 ```
 
-**Kernel Issues:**
+**Problemas con Kernel:**
 
-* **AMD:** Missing [kernel patches](https://github.com/AMD-OSX/AMD_Vanilla/tree/opencore)(only applies for AMD CPUs, make sure they're OpenCore patches and not Clover. Clover uses `MatchOS` while OpenCore has `MinKernel` and `Maxkernel`)
-* **Intel:** Missing CFG or XCPM patches
-  * Enable `AppleXcpmCfgLock` and `AppleCpuPmCfgLock`, this disables `PKG_CST_CNFIG_CONTROL` within the XNU and AppleIntelCPUPowerManagement respectively. Not recommended long term solution as this can cause instability.
-  * Alternatively you can properly disable CFG-Lock: [Fixing CFG Lock](https://dortania.github.io/OpenCore-Post-Install/misc/msr-lock.html)
-* **Intel:** `AppleXcpmExtraMsrs` may be required, this is generally meant for Pentiums, HEDT and other odd systems not natively supported in macOS. **Do not use on AMD**
+* **AMD:** Faltan los [parches del kernel](https://github.com/AMD-OSX/AMD_Vanilla/tree/opencore)(sólo aplica para CPUs de AMD, asegúrate que son parches de OpenCore y no de Clover. Clover usa `MatchOS` mientras que OpenCore tiene `MinKernel` y `Maxkernel`)
+* **Intel:** Faltan parches de CFG or XCPM
+  * Habilita `AppleXcpmCfgLock` y `AppleCpuPmCfgLock`, lo cual deshabilita `PKG_CST_CNFIG_CONTROL` en el XNU y AppleIntelCPUPowerManagement respectivamente. No es recomendado como una solución a largo plazo porque puede causar inestabilidad.
+  * Alternativamente puedes deshabilitar el CFG Lock correctamente: [Arreglando CFG Lock](https://dortania.github.io/OpenCore-Post-Install/misc/msr-lock.html)
+* **Intel:** `AppleXcpmExtraMsrs` puede ser necesario, generalmente para Pentiums, HEDT y otros sistemas que no están soportados nativamente en macOS. **No usar en AMD**
   
 **UEFI Issues:**
 
-* `ProvideConsoleGop` is likely missing as this is needed for transitioning to the next screen, this was originally part of AptioMemoryFix but is now within OpenCore as this quirk. Can be found under UEFI -> Output
-* `IgnoreInvalidFlexRatio` missing, this is needed for Broadwell and older. **Not for AMD and Skylake or newer**
+* `ProvideConsoleGop` probablemente no está presente ya que es necesario para trancisionar a la próxima pantalla. Originalmente esto era parte de AptioMemoryFix pero ahora está fusionado dentro de OpenCore con este quirk. Puede ser encontrado en UEFI -> Output
+* `IgnoreInvalidFlexRatio` falta, esto es necesario para Broadwell y anteriores. **No para AMD o para Skylake y posterior**
 
-## Can't see macOS partitions
+## Trancado en `[EB|#LOG:EXITBS:START]`
 
-Main things to check:
+Esto es en realidad el mismo error que `EndRandomSeed` así que aplican los mismos arreglos (10.15.4 y posterior cambiaron el protocolo del debug por si eres curioso):
 
-* ScanPolicy set to `0` to show all drives
-* Have the proper firmware drivers such as HfsPlus(Note ApfsDriverLoader shouldn't be used in 0.5.8)
-* Set UnblockFsConnect to True in config.plist -> UEFI -> Quirks. Needed for some HP systems
-* Set `UEFI -> APFS` to see APFS based drives:
+**Problemas del Booter:**
+
+* `DevirtualiseMmio` puede estar tomando áreas importantes en la memoria que son necesarias para otras cosas, puede que necesites deshabilitar este quirk o incluir en la lista blanca las regiones defectuosas: [Usando DevirtualiseMmio](../extras/kaslr-fix.md#using-devirtualisemmio)
+* `SetupVirtualMap` puede ser necesario dependiendo del firmware, generalmente este quirk debe evitarse, pero la mayoría de los usuarios de Gigabyte y hardware antiguo (Broadwell y anterior) necesitarán esta peculiaridad para arrancar.
+   * Se sabe que las placas madre Z490 fallan con `SetupVirtualMap` habilitado, especialmente en las placas Asus y AsRock.
+* `RebuildAppleMemoryMap` puede no ser un fanático de tu firmware, y el uso de este quirk depende de tener `EnableWriteUnprotector` deshabilitado y `SyncRuntimePermissions` habilitado con la adición de tener una `Tabla de atributos de memoria (MAT)` en tu firmware. Si su firmware no tiene MATs, desactiva tanto `RebuildAppleMemoryMap` como `SyncRuntimePermissions` y luego habilita `EnableWriteUnprotector`.
+
+Para verificar si tu placa madre tiene MATs, busca algo así en los logs:
+
+```
+OCABC: MAT support is 1
+```
+
+**Problemas con Kernel:**
+
+* **AMD:** Faltan los [parches del kernel](https://github.com/AMD-OSX/AMD_Vanilla/tree/opencore)(sólo aplica para CPUs de AMD, asegúrate que son parches de OpenCore y no de Clover. Clover usa `MatchOS` mientras que OpenCore tiene `MinKernel` y `Maxkernel`)
+* **Intel:** Faltan parches de CFG or XCPM
+  * Habilita `AppleXcpmCfgLock` y `AppleCpuPmCfgLock`, lo cual deshabilita `PKG_CST_CNFIG_CONTROL` en el XNU y AppleIntelCPUPowerManagement respectivamente. No es recomendado como una solución a largo plazo porque puede causar inestabilidad.
+  * Alternativamente puedes deshabilitar el CFG Lock correctamente: [Arreglando CFG Lock](https://dortania.github.io/OpenCore-Post-Install/misc/msr-lock.html)
+* **Intel:** `AppleXcpmExtraMsrs` puede ser necesario, generalmente para Pentiums, HEDT y otros sistemas que no están soportados nativamente en macOS. **No usar en AMD**
+  
+**UEFI Issues:**
+
+* `ProvideConsoleGop` probablemente no está presente ya que es necesario para trancisionar a la próxima pantalla. Originalmente esto era parte de AptioMemoryFix pero ahora está fusionado dentro de OpenCore con este quirk. Puede ser encontrado en UEFI -> Output
+* `IgnoreInvalidFlexRatio` falta, esto es necesario para Broadwell y anteriores. **No para AMD o para Skylake y posterior**
+
+## No puedo ver particiones de macOS
+
+Cosas principales a verificar:
+
+* ScanPolicy configurado a `0` para mostrar todos los discos
+* Tener los drivers del firmware correctos como HfsPlus (ten en cuenta que no deberías usar ApfsDriverLoader desde 0.5.8)
+* Configurar UnblockFsConnect a True en tu config.plist -> UEFI -> Quirks. Necesario por algunos sistemas HP
+* Configura `UEFI -> APFS` para ver discos basados en APFS:
   * **EnableJumpstart**: YES
   * **HideVerbose**: YES
   * **MinDate**: `-1`
   * **MinVersion**: `-1`
 
-## Black screen after picker
+## Pantalla negra luego de el menú
 
-This is due to missing ConsoleGOP, enable it under your config:
+Esto es debido a la falta de ConsoleGOP, habilítalo en tu config:
 
 * `UEFI -> Output -> ProvideConsoleGop`
 
-Another possibility is that the problem occurs due to `RebuildAppleMemoryMap` being enabled, disable it under your config:
+Otra posibilidad es que el problema sea porque `RebuildAppleMemoryMap` está habilitado, así que deshabilitalo en tu config:
 
 * `Booter -> Quirks -> RebuildAppleMemoryMap`
 
-If this doesn't help, grab the [debug versions](https://github.com/acidanthera/OpenCorePkg/releases) of `OpenCore.efi` and `BOOTx64.efi` and replace them in your EFI. This will show much more info on where your hack is actually getting stuck.
+Si esto no ayuda, toma las [versiones debug](https://github.com/acidanthera/OpenCorePkg/releases) de `OpenCore.efi` y `BOOTx64.efi` y reemplázalas en su EFI. Esto mostrará mucha más información sobre dónde se está atascando tu hack.
 
-## Stuck on `OC: OcAppleGenericInput... - Success`
+## Trancado en `OC: OcAppleGenericInput... - Success`
 
-So this isn't actually an error, instead OpenCore isn't showing you all the debug info. This is right before/while the kernel is being loaded so things we need to check for:
+Esto en realidad no es un error, es en realidad que OpenCore no te está mostrando toda la información de depuración. Esto es antes/mientras se está cargando el kernel así que tenemos que verificar que:
 
 * Intel:
-  * CFG-Lock disabled in the BIOS **or** `AppleCpuPmCfgLock` and `AppleCpuPmCfgLock` enabled under Kernel -> Quirks
+  * CFG-Lock deshabilitado en la BIOS **o** `AppleCpuPmCfgLock` y `AppleCpuPmCfgLock` habilitados en Kernel -> Quirks (si puedes es mejor que deshabilites CFG lock desde la BIOS, pero muchos no tienen la opción de hacer esto)
 * AMD:
-  * Verify you have added the correct kernel patches to your config(remember, OpenCore patches use `MinKernel` and `MaxKernel` while Clover has `MatchOS`)
+  * Verifica que tienes los parches del kernel correctos en tu config (recuerda que OpenCore usa `MinKernel` y `MaxKernel` mientras que Clover usa `MatchOS`)
     * [Ryzen/Threadripper(17h)](https://github.com/AMD-OSX/AMD_Vanilla/tree/opencore/17h)
     * [Bulldozer/Jaguar(15h/16h)](https://github.com/AMD-OSX/AMD_Vanilla/tree/opencore/15h_16h)
 
-If this doesn't help, grab the [debug versions](https://github.com/acidanthera/OpenCorePkg/releases) of `OpenCore.efi` and `BOOTx64.efi` and replace them in your EFI. This will show much more info on where your hack is actually getting stuck.
+Si esto no ayuda, toma las [versiones debug](https://github.com/acidanthera/OpenCorePkg/releases) de `OpenCore.efi` y `BOOTx64.efi` y reemplázalas en su EFI. Esto mostrará mucha más información sobre dónde se está atascando tu hack.
 
 ## Stuck on `OCB: OcScanForBootEntries failure - Not Found`
 
-This is due to OpenCore being unable to find any drives with the current ScanPolicy, setting to `0` will allow all boot options to be shown
+Esto es debido a que OpenCore no puede encontrar ningún disco con tu ScanPolicy actual, configurándolo a `0` permite que se muestren todas las opciones de arranque
 
 * `Misc -> Security -> ScanPolicy -> 0`
 
 ## Stuck on `OCB: failed to match a default boot option`
 
-Same fix as `OCB: OcScanForBootEntries failure - Not Found`, OpenCore is unable to find any drives with the current ScanPolicy, setting to `0` will allow all boot options to be shown
+
+El mismo arreglo que `OCB: OcScanForBootEntries failure - Not Found`, OpenCore no puede encontrar ningún disco con el ScanPolicy actual, la configuración a` 0` permitirá mostrar todas las opciones de arranque
 
 * `Misc -> Security -> ScanPolicy -> 0`
 
 ## Stuck on `OCABC: Memory pool allocation failure - Not Found`
 
-This is due to either incorrect BIOS settings and/or incorrect Booter values. Make sure config.plist -> Booter -> Quirks is correct and verify your BIOS settings:
+Esto se debe a configuraciones incorrectas del BIOS y/o valores incorrectos del Booter. Asegúrate de que config.plist -> Booter -> Quirks sea correcto y verifica la configuración de tu BIOS:
 
-* Above4GDecoding is Enabled
-* CSM is Disabled(Enabling Windows8.1/10 WHQL Mode can do the same on some boards)
-* BIOS is up-to-date(Z390 and HEDT are known for having poorly written firmwares)
+* Above 4G Decoding está habilitado
+* CSM está deshabilitado (Habilitar el modo WHQL de Windows8.1/10 puede hacer lo mismo en algunas placas madre)
+* Que tu BIOS está actualizado (Z390 y HEDT son conocidos por tener firmware mal escrito)
 
 ## Stuck on `OCS: No schema for DSDT, KernelAndKextPatch, RtVariable, SMBIOS, SystemParameters...`
 
