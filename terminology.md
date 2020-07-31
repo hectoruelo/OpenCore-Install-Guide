@@ -8,7 +8,7 @@ Término | Descripción
 **Distros**      | Abreviatura de distribuciones. Distros de linux son cómo linux es distribuido. Sin embargo, si hablamos de macOS, es una mezcla de un instalador de dicho SO con algunas herramientas que no son de Apple, **NO USES DISTROS DE macOS**
 **Hackintosh**   | El proceso de instalar macOS en un PC. **Hackintosh NO ES el SO**, este término también puede referirse a que la computadora en la que instalamos macOS fue "hackeada" para correr macOS. Por ejemplo: *"Instalé macOS en esta PC con Windows, por lo que ahora tengo un hackintosh. Pero NO instalé "hackintosh".* 
 **Gestor de arranque**   | Pieza de software que carga el SO, en la mayoría de los casos hecho por los creadores de este. OpenCore no es técnicamente un Gestor de arranque en sí (ver explicación de el significado de boot manager abajo). El archivo Boot.efi de Apple sería el gestor de arranque de una Mac o hackintosh.
-**Boot Manager (No hay un término en español que lo describa, por lo que utilizaremos el término en inglés)** | Pieza de software que gestiona los gestores de arranque o bootloaders. Hay muchos de estos; Clover, systemd-boot, OpenCore, rEFInd, rEFIt... Lo que hacen estos es preparar al sistema para el gestor de arranque.
+**Boot Manager** | Pieza de software que gestiona los gestores de arranque o bootloaders. Hay muchos de estos; Clover, systemd-boot, OpenCore, rEFInd, rEFIt... Lo que hacen estos es preparar al sistema para el gestor de arranque.
 ---
 Término | Descripción
 --- | ---
