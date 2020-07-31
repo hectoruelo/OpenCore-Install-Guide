@@ -4,7 +4,7 @@
 
 <extoc></extoc>
 
-## Punto de comienzo
+## Punto de partida
 
 Hacer un config.plist puede parecer difícil, pero en realidad no lo es. Sólo toma tiempo, pero esta guía te dirá cómo configurar todo, no dejará espacios sin cubrir. Esto también significa que si tienes problemas, asegúrate de que todos los espacios de tu config estén correctos, respaldándote con esta guía. Principales cosas a tener en cuenta con OpenCore:
 
@@ -111,7 +111,7 @@ El device-id falso se configura así
 
 También agregaremos tres propiedades más, `framebuffer-patch-enable`, `framebuffer-stolenmem` y `framebuffer-fbmem`. El primero habilita la aplicación de parches a través de WhateverGreen.kext, el segundo establece la memoria mínima robada a 19MB y el tercero establece la memoria del framebuffer a 9MB. Esto generalmente no es necesario, ya que se puede configurar en BIOS (se recomiendan 64 MB) pero se requiere cuando no puedes hacer esto.
 
-* **Note**: Los framebuffers "headless" (donde dGPU es lo que da la imagen) no necesitan `framebuffer-patch-enable`,` framebuffer-stolenmem` y `framebuffer-fbmem`
+* **Note**: Los framebuffers "headless" (donde dGPU es lo que da la imagen) no necesitan `framebuffer-patch-enable`,`framebuffer-stolenmem` y `framebuffer-fbmem`
 
 | Key | Type | Value |
 | :--- | :--- | :--- |
@@ -189,7 +189,6 @@ Parchea tanto el kernel como los kexts.
 ::: tip Información
 
 Configuraciones relacionadas con el kernel, en nuestro caso habilitaremos lo siguiente:
-
 
 | Quirk | Habilitado | Comentario |
 | :--- | :--- | :--- |
@@ -303,7 +302,6 @@ Security se explica por sí sola, **no te lo saltes**. Vamos a cambiar lo siguie
   * Esta es una palabra, no es opcional omitir esta configuración. Lo lamentarás si no lo configuras en `Optional`, ten en cuenta que distingue entre mayúsculas y minúsculas
 * **ScanPolicy**: `0`
   * `0` te permite ver todas las unidades disponibles, consulta la sección [Seguridad](https://dortania.github.io/OpenCore-Post-Install/universal/security.html) para obtener más detalles. **No arrancará dispositivos USB con este ajuste predeterminado**
-
 
 :::
 
@@ -469,27 +467,21 @@ Configuramos Generic -> ROM a una ROM de Apple (extraída de una Mac real), la d
 ::: details Información más detallada
 
 * **SpoofVendor**: YES
-  
   * Intercambia el campo del proveedor de Acidanthera. Generalmente no es seguro usar Apple como proveedor.
 
 * **AdviseWindows**: NO
-  
   * Se usa cuando la partición EFI no es la primera en la unidad de Windows
 
 * **UpdateDataHub**: YES
-
   * Actualiza campos de Data Hub
 
 * **UpdateNVRAM**: YES
-
   * Actualiza campos de NVRAM
 
 * **UpdateSMBIOS**: YES
-
   * Actualiza campos SMBIOS
 
 * **UpdateSMBIOSMode**: Create
-
   * Reemplaza las tablas con EfiReservedMemoryType recientemente asignadas, usar `Custom` en las laptops Dell que requieren el quirk CustomSMBIOS
 
 :::
