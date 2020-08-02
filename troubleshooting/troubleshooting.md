@@ -34,7 +34,7 @@ Si bien todavía es un trabajo en progreso, los usuarios de laptops que desean c
 * [Bootear opencore reinicia a la BIOS](#booting-opencore-reboots-to-bios)
 * [OCABC: Incompatible OpenRuntime r4, require r10](#ocabc-incompatible-openruntime-r4-require-r10)
 
-## Stuck on `no vault provided!`
+## Trancado en `no vault provided!`
 
 Apaga el vaulting en tu config.plist debajo de `Misc -> Security -> Vault`, debes configurarlo a:
 
@@ -97,7 +97,7 @@ OCABC: MAT support is 1
 
 **Problemas con Kernel:**
 
-* **AMD:** Faltan los [parches del kernel](https://github.com/AMD-OSX/AMD_Vanilla/tree/opencore)(sólo aplica para CPUs de AMD, asegúrate que son parches de OpenCore y no de Clover. Clover usa `MatchOS` mientras que OpenCore tiene `MinKernel` y `Maxkernel`)
+* **AMD:** 
 * **Intel:** Faltan parches de CFG or XCPM
   * Habilita `AppleXcpmCfgLock` y `AppleCpuPmCfgLock`, lo cual deshabilita `PKG_CST_CNFIG_CONTROL` en el XNU y AppleIntelCPUPowerManagement respectivamente. No es recomendado como una solución a largo plazo porque puede causar inestabilidad.
   * Alternativamente puedes deshabilitar el CFG Lock correctamente: [Arreglando CFG Lock](https://dortania.github.io/OpenCore-Post-Install/misc/msr-lock.html)
@@ -146,20 +146,20 @@ Esto en realidad no es un error, es en realidad que OpenCore no te está mostran
 
 Si esto no ayuda, toma las [versiones debug](https://github.com/acidanthera/OpenCorePkg/releases) de `OpenCore.efi` y `BOOTx64.efi` y reemplázalas en su EFI. Esto mostrará mucha más información sobre dónde se está atascando tu hack.
 
-## Stuck on `OCB: OcScanForBootEntries failure - Not Found`
+## Trancado en `OCB: OcScanForBootEntries failure - Not Found`
 
 Esto es debido a que OpenCore no puede encontrar ningún disco con tu ScanPolicy actual, configurándolo a `0` permite que se muestren todas las opciones de arranque
 
 * `Misc -> Security -> ScanPolicy -> 0`
 
-## Stuck on `OCB: failed to match a default boot option`
+## Trancado en `OCB: failed to match a default boot option`
 
 
 El mismo arreglo que `OCB: OcScanForBootEntries failure - Not Found`, OpenCore no puede encontrar ningún disco con el ScanPolicy actual, la configuración a` 0` permitirá mostrar todas las opciones de arranque
 
 * `Misc -> Security -> ScanPolicy -> 0`
 
-## Stuck on `OCABC: Memory pool allocation failure - Not Found`
+## Trancado en `OCABC: Memory pool allocation failure - Not Found`
 
 Esto se debe a configuraciones incorrectas del BIOS y/o valores incorrectos del Booter. Asegúrate de que config.plist -> Booter -> Quirks sea correcto y verifica la configuración de tu BIOS:
 
@@ -167,27 +167,27 @@ Esto se debe a configuraciones incorrectas del BIOS y/o valores incorrectos del 
 * CSM está deshabilitado (Habilitar el modo WHQL de Windows8.1/10 puede hacer lo mismo en algunas placas madre)
 * Que tu BIOS está actualizado (Z390 y HEDT son conocidos por tener firmware mal escrito)
 
-## Stuck on `OCS: No schema for DSDT, KernelAndKextPatch, RtVariable, SMBIOS, SystemParameters...`
+## Trancado en `OCS: No schema for DSDT, KernelAndKextPatch, RtVariable, SMBIOS, SystemParameters...`
 
-This is due to either using a Clover config with OpenCore or using a configurator such as Mackie's Clover and OpenCore configurator. You'll need to start over and make a new config or figure out all the garbage you need to remove from your config. **This is why we don't support configurators, they are known for these issues**
+Esto es debido a que, o estás usando un config de Clover o estás usando un configurador como OpenCore y Clover configurator de Mackie. Necesitarás comenzar de nuevo y hacer un config nuevo o intentar darte cuenta toda la basura que tienes que eliminar de tu config. **Esto es por lo que no soportamos configuradores, son conocidos por estos errores**
 
-## Stuck on `OC: Driver XXX.efi at 0 cannot be found`
+## Trancado en `OC: Driver XXX.efi at 0 cannot be found`
 
-Verify that your EFI/OC/Drivers matches up with your config.plist -> UEFI -> Drivers
+Verifica que lo que tienes en EFI/OC/Drivers también está en tu config.plist -> UEFI -> Drivers
 
-Note that the entries are case-sensitive.
+Ten en cuenta que las entradas distinguen entre mayúsculas y minúsculas
 
-## Stuck on `Buffer Too Small`
+## Trancado en `Buffer Too Small`
 
-* Enable Above4GDecoding in the BIOS
+* Habilita Above 4G Decoding en tu BIOS
 
-## Stuck on `Plist only kext has CFBundleExecutable key`
+## Trancado en `Plist only kext has CFBundleExecutable key`
 
-Missing or incorrect `Executable path`
+`Executable path` falta o es incorrecto
 
-## Receiving "Failed to parse real field of type 1"
+## Recibiendo "Failed to parse real field of type 1"
 
-* A value is set as `real` when it's not supposed to be, generally being that Xcode converted `HaltLevel` by accident:
+* Un valor que fue configurado a `real` cuando no debería serlo, esto generalmente es cuando Xcode convierte  `HaltLevel` por accidente:
 
   ```
   <key>HaltLevel</key>
@@ -197,7 +197,7 @@ Missing or incorrect `Executable path`
   <real>2147483648</real>
   ```
 
-  To fix, swap `real` for `integer`:
+  Para arreglar esto, cambia `real` por `integer`:
 
   ```
   <key>HaltLevel</key>
@@ -207,26 +207,25 @@ Missing or incorrect `Executable path`
   <integer>2147483648</integer>
   ```
   
-## Stuck after selection macOS partition on OpenCore
+## Trancado luego de la selección de la partición de macOS en OpenCore
 
-* CFG-Lock not off(Intel Users only), couple solutions:
-  * [Patch your MSR E2](https://dortania.github.io/OpenCore-Post-Install/misc/msr-lock.html)(Recommended solution)
-  * Enable `AppleXcpmCfgLock` and `AppleCpuPmCfgLock`, this disables `PKG_CST_CNFIG_CONTROL` within the XNU and AppleIntelCPUPowerManagement respectively. Not recommended long term solution as this can cause instability.
-* AMD kernel patches aren't working(AMD Users only):
-  * Either outdated or missing kernel patches
-* Incompatible keyboard driver:
-  * Disable `PollAppleHotKeys` and enable `KeySupport`, then remove [OpenUsbKbDxe](https://github.com/acidanthera/OpenCorePkg/releases) from your config.plist -> UEFI -> Drivers
-  * If the above doesn't work, reverse: disable `KeySupport`, then add [OpenUsbKbDxe](https://github.com/acidanthera/OpenCorePkg/releases) to your config.plist -> UEFI -> Drivers
+* CFG-Lock no está deshabilitado (Sólo para usuarios de Intel). Estas son algunas soluciones:
+  * [Parchear tu MSR E2](https://dortania.github.io/OpenCore-Post-Install/misc/msr-lock.html)(Solución recomendada)
+  * Habilita `AppleXcpmCfgLock` y `AppleCpuPmCfgLock`, lo cual deshabilita `PKG_CST_CNFIG_CONTROL` en el XNU y AppleIntelCPUPowerManagement respectivamente. No es recomendado como una solución a largo plazo porque puede causar inestabilidad.
+* Parches del kernel AMD no están funcionando (sólo para usuarios AMD):
+  * Parches faltantes o desactualizados
+* Driver de teclado incompatible:
+  * Deshabilita `PollAppleHotKeys` y habilita `KeySupport`, luego elimina [OpenUsbKbDxe](https://github.com/acidanthera/OpenCorePkg/releases) de tu config.plist -> UEFI -> Drivers
+  * Si lo anterior no funciona, haz lo contrario: deshabilita `KeySupport`, luego agrega [OpenUsbKbDxe](https://github.com/acidanthera/OpenCorePkg/releases) a tu config.plist -> UEFI -> Drivers
 
-## Can't select anything in the picker
+## No puedo seleccionar nada en el menú de OpenCore
 
-* Incompatible keyboard driver:
-  * Disable `PollAppleHotKeys` and enable `KeySupport`, then remove [OpenUsbKbDxe](https://github.com/acidanthera/OpenCorePkg/releases) from your config.plist -> UEFI -> Drivers
-  * If the above doesn't work, reverse: disable `KeySupport`, then add [OpenUsbKbDxe](https://github.com/acidanthera/OpenCorePkg/releases) to your config.plist -> UEFI -> Drivers
+  * Deshabilita `PollAppleHotKeys` y habilita `KeySupport`, luego elimina [OpenUsbKbDxe](https://github.com/acidanthera/OpenCorePkg/releases) de tu config.plist -> UEFI -> Drivers
+  * Si lo anterior no funciona, haz lo contrario: deshabilita `KeySupport`, luego agrega [OpenUsbKbDxe](https://github.com/acidanthera/OpenCorePkg/releases) a tu config.plist -> UEFI -> Drivers
 
-## Stuck on `This version of Mac OS X is not supported: Reason Mac...`
+## Trancado en `This version of Mac OS X is not supported: Reason Mac...`
 
-This error happens when SMBIOS is one no longer supported by that version of macOS, make sure values are set in `PlatformInfo->Generic` with `Automatic` enabled. Reminder of supported SMBIOS in macOS 10.15 Catalina:
+Este error para cuando tu SMBIOS no está soportada por esa versión de macOS. Asegúrate que tus valores de SMBIOS están configuradas en `PlatformInfo->Generic` con `Automatic` habilitado. Recordatorio de SMBIOS soportadas en macOS 10.15 Catalina:
 
 * iMac13,x+
 * iMacPro1,1
@@ -235,7 +234,7 @@ This error happens when SMBIOS is one no longer supported by that version of mac
 * MacBookAir5,x+
 * MacBookPro9,x+
 
-And reminder, the following SMBIOS require newer versions of macOS:
+Otro recordatorio, las siguientes SMBIOS requieren versiones más nuevas de macOS:
 
 * iMac19,x       10.14.4 (18E226)
 * MacPro7,1      10.15.0 (19A583)
@@ -244,13 +243,13 @@ And reminder, the following SMBIOS require newer versions of macOS:
 * MacBookPro16,2 10.15.4 (19E2269)
 * MacBookPro16,3 10.15.4 (19E2269)
 
-## `Couldn't allocate runtime area` errors
+## Errores de `Couldn't allocate runtime area` 
 
-See [Fixing KASLR slide values](../extras/kaslr-fix.md)
+Mira [Arreglando valores slide de KASLR](../extras/kaslr-fix.md)
 
-## SSDTs not being added
+## SSDTs no siendo agregados
 
-So with OpenCore, there's some extra security checks added around ACPI files, specifically that table length header must equal to the file size. This is actually the fault of iASL when you compiled the file. Example of how to find it:
+Con OpenCore, hay algunas comprobaciones de seguridad adicionales agregadas alrededor de los archivos ACPI, específicamente que el encabezado de la longitud de la tabla debe ser igual al tamaño del archivo. Esto es culpa de iASL cuando compiló el archivo. Ejemplo de cómo encontrarlo:
 
 ```
 * Original Table Header:
@@ -265,114 +264,115 @@ So with OpenCore, there's some extra security checks added around ACPI files, sp
 *     Compiler Version 0x20190509 (538510601)
 ```
 
-The `Length` and `checksum` value is what we care about, so if our SSDT is actually 347 bytes then we want to change `Length` to `0x0000015B (347)`(the `015B` is in HEX)
 
-Best way to actually fix this is to grab a newer copy of iASL or Acidanthera's copy of [MaciASL](https://github.com/acidanthera/MaciASL/releases) and remaking the SSDT
+El valor de `Length` y `checksum` es lo que nos importa, por lo que si nuestro SSDT es de 347 bytes, entonces queremos cambiar `Length` a `0x0000015B (347) `(el` 015B` está en HEX)
 
-## Booting OpenCore reboots to BIOS
+La mejor manera de arreglar esto es tomar una copia más reciente de iASL o la copia de Acidanthera de [MaciASL](https://github.com/acidanthera/MaciASL/releases) y rehacer el SSDT
 
-* Incorrect EFI folder structure, make sure all of your OC files are within an EFI folder located on your ESP(EFI system partition)
 
-![Directory Structure from OpenCore's DOC](../images/troubleshooting/troubleshooting-md/oc-structure.png)
+
+## Arrancando OpenCore reinicia a la BIOS
+
+* Estructura de carpetas EFI incorrecta, asegúrate de que todos tus archivos OC estén dentro de una carpeta EFI ubicada en su ESP (partición del sistema EFI)
+
+ ![Estructura del directorio de los docs de OpenCore](../images/troubleshooting/troubleshooting-md/oc-structure.png)
 
 ## OCABC: Incompatible OpenRuntime r4, require r10
 
-Outdated OpenRuntime.efi, make sure BOOTx64.efi, OpenCore.efi and OpenRuntime are **all from the same exact build**. Anything mismatched will break booting
+OpenRuntime.efi desactualizado, asegúrate de que BOOTx64.efi, OpenCore.efi y OpenRuntime son **todos de la misma versión**. Cualquier cosa que no coincida interrumpirá el arranque
 
-* **Note**: FwRuntimeServices has been renamed to OpenRuntime with 0.5.7 and newer
+* **Nota**: FwRuntimeServices ha cambiado su nombre a OpenRuntime con 0.5.7 y más reciente
 
-# macOS booting
+# Booteo de macOS
 
-* [Stuck on `RTC...`, `PCI ConfigurationBegins`, `Previous Shutdown...`, `HPET`, `HID: Legacy...`](#stuck-on-rtc-pci-configuration-begins-previous-shutdown-hpet-hid-legacy)
-* ["Waiting for Root Device" or Prohibited Sign error](#waiting-for-root-device-or-prohibited-sign-error)
-* [macOS installer in Russian](#macos-installer-in-russian)
-* [macOS Installer being damaged](#macos-installer-being-damaged)
-* [Stuck on or near `IOConsoleUsers: gIOScreenLock...`](#stuck-on-or-near-ioconsoleusers-gioscreenlockgiolockstate-3)
-* [Scrambled Screen on laptops](#scrambled-screen-on-laptops)
-* [Black screen after `IOConsoleUsers: gIOScreenLock...` on Navi](#black-screen-after-ioconsoleusers-gioscreenlock-on-navi)
-* [300 series Intel stalling on `apfs_module_start...`](#300-series-intel-stalling-on-apfsmodulestart)
-
+* [Trancado en `RTC...`, `PCI ConfigurationBegins`, `Previous Shutdown...`, `HPET`, `HID: Legacy...`](#stuck-on-rtc-pci-configuration-begins-previous-shutdown-hpet-hid-legacy)
+* ["Waiting for Root Device" o signo de prohibido](#waiting-for-root-device-or-prohibited-sign-error)
+* [Instalador de macOS en ruso](#macos-installer-in-russian)
+* [Instalador de macOS dañado](#macos-installer-being-damaged)
+* [Trancado en o cerca de `IOConsoleUsers: gIOScreenLock...`](#stuck-on-or-near-ioconsoleusers-gioscreenlockgiolockstate-3)
+* [Pantalla revuelta y perturbada en laptops](#scrambled-screen-on-laptops)
+* [Pantalla negra luego de `IOConsoleUsers: gIOScreenLock...` en Navi](#black-screen-after-ioconsoleusers-gioscreenlock-on-navi)
+* [Intel de serie 300 trancados en `apfs_module_start...`](#300-series-intel-stalling-on-apfsmodulestart)
 * [Kernel Panic `Cannot perform kext summary`](#kernel-panic-cannot-perform-kext-summary)
 * [Kernel Panic `AppleIntelMCEReporter`](#kernel-panic-appleintelmcereporter)
 * [Kernel Panic `AppleIntelCPUPowerManagement`](#kernel-panic-appleintelcpupowermanagement)
-* [Frozen in the macOS installer after 30 seconds](#frozen-in-the-macos-installer-after-30-seconds)
-* [15h/16h CPU reboot after Data & Privacy screen](#15h16h-cpu-reboot-after-data--privacy-screen)
-* [Keyboard works but trackpad does not](#keyboard-works-but-trackpad-does-not)
-* [Sleep crashing on AMD](#sleep-crashing-on-amd)
-* [Kernel Panic on `Invalid frame pointer`](#kernel-panic-on-invalid-frame-pointer)
+* [Trancado en el instalador de macOS luego de 30 segundos](#frozen-in-the-macos-installer-after-30-seconds)
+* [15h/16h CPU reinicio luego de pantalla de datos y privacidad](#15h16h-cpu-reboot-after-data--privacy-screen)
+* [Teclado funciona pero el trackpad no](#keyboard-works-but-trackpad-does-not)
+* [Suspensión crasheando en AMD](#sleep-crashing-on-amd)
+* [Kernel Panic en `Invalid frame pointer`](#kernel-panic-on-invalid-frame-pointer)
 * [`kextd stall[0]: AppleACPICPU`](#kextd-stall0-appleacpicpu)
-* [MediaKit reports not enough space](#mediakit-reports-not-enough-space)
-* [DiskUtility failing to erase](#diskutility-failing-to-erase)
+* [MediaKit reporta que no hay espacio suficiente](#mediakit-reports-not-enough-space)
+* [DiskUtility error al eliminar](#diskutility-failing-to-erase)
 
 ## Stuck on `RTC...`, `PCI Configuration Begins`, `Previous Shutdown...`, `HPET`, `HID: Legacy...`
 
-Well this general area is where a lot of PCI devices are first setup and configured, and is where most booting issues will happen. Other names include:
+Esta área en general es cuando muchos dispositivos PCI son configurados y preparados por primera vez y aquí es cuando la mayoría de los errores sucederán. Otros nombres pueden incluir:
 
 * `apfs_module_start...`,
 * `Waiting for Root device`,
 * `Waiting on...IOResources...`,
 * `previous shutdown cause...`
 
-The main places to check:
+Lugares principales a revisar:
 
-* **Missing EC patch**:
-  * For desktops, make sure you have your EC SSDT both in EFI/OC/ACPI and ACPI -> Add, **double check it's enabled.**
-  * If you don't have one, grab it here: [Getting started with ACPI](https://dortania.github.io/Getting-Started-With-ACPI/)
-* **IRQ conflict**:
-  * Most common on older laptops and pre-builts, run SSDTTime's FixHPET option and add the resulting SSDT-HPET.aml and ACPI patches to your config( the SSDT will not work without the ACPI patches)
-* **PCI allocation issue**:
-  * **UPDATE YOUR BIOS**, make sure it's on the latest. Most OEMs have very broken PCI allocation on older firmwares, especially AMD
-  * Make sure either Above4G is enabled in the BIOS, if no option available then add `npci=0x2000` to boot args.
-    * AMD CPU Note: **Do not have both the Above4G setting enabled and npci in boot args, they will conflict**. This rule does not apply to X99
-  * Other BIOS settings that are important: CSM disabled, Windows 8.1/10 UEFI Mode enabled
 
-* **NVMe or SATA issue**:
-  * Sometimes if either a bad SATA controller or an unsupported NVMe drive are used, you can commonly get stuck here. Things you can check:
-    * Not using either a Samsung PM981 or Micron 2200S NVMe SSD
-    * Samsung 970EvoPlus running the latest firmware(older firmwares were known for instability and stalls, [see here for more info](https://www.samsung.com/semiconductor/minisite/ssd/download/tools/))
-    * SATA Hot-Plug is disabled in the BIOS(more commonly to cause issues on AMD CPU based systems)
-    * Ensure NVMe drives are set as NVMe mode in BIOS(some BIOS have a bug where you can set NVMe drives as SATA)
-* **NVRAM Failing**:
-  * Common issue HEDT and 300 series motherboards, you have a couple paths to go down:
-    * 300 Series Consumer Intel: See [Getting started with ACPI](https://dortania.github.io/Getting-Started-With-ACPI/) on making SSDT-PMC.aml
-    * HEDT: See [Emulating NVRAM](https://dortania.github.io/OpenCore-Post-Install/misc/nvram.html) on how to stop NVRAM write, note that for install you do not need to run the script. Just setup the config.plist
+* **Falta parche de EC**:
+  * Para computadoras de escritorio, asegúrate de tener tu SSDT de EC tanto en EFI/OC/ACPI como en ACPI -> Add, **verifica que esté habilitado.**
+  * Si no tienes uno, consíguelo aquí: [Introducción a ACPI](https://dortania.github.io/Getting-Started-With-ACPI/)
+* **Conflicto IRQ**:
+  * Común en las computadoras portátiles y computadoras prehechas antiguas, ejecuta la opción FixHPET de SSDTTime y agrega los parches SSDT-HPET.aml y ACPI resultantes a tu configuración (el SSDT no funcionará sin los parches ACPI)
+* **Problema de asignación de PCI**:
+  * **ACTUALIZA TU BIOS**, asegúrate de que esté actualizado. La mayoría de los OEM tienen una asignación de PCI rota en firmwares antiguos, especialmente en AMD
+  * Asegúrate de que Above 4G decoding esté habilitado en el BIOS, si no hay una opción disponible, agrega `npci = 0x2000` a los boot args.
+    * Nota de CPUs AMD: **No tengas habilitada la configuración Above 4G y npci en los argumentos de arranque, entrarán en conflicto**. Esta regla no se aplica a X99
+  * Otras configuraciones de BIOS que son importantes: CSM deshabilitado, Windows 8.1 / 10 Modo UEFI habilitado
 
-* **RTC Missing**:
-  * Commonly found on 300 series and X299/Cascade Lake-X refresh motherboards, caused by the RTC clock being disabled by default. See [Getting started with ACPI](https://dortania.github.io/Getting-Started-With-ACPI/) on creating an SSDT-AWAC.aml
-  * Some drunk firmware writer at HP also disabled the RTC on the HP 250 G6 with no way to actually re-enable it, for users cursed with such hardware you'll need to create a fake RTC clock for macOS to play with:
+* **Problemas NVMe o SATA**:
+  * A veces, si se utiliza un controlador SATA defectuoso o una unidad NVMe no compatible, normalmente puede quedarse atascado aquí. Cosas que puedes consultar:
+    * No estás usando una unidad de estado sólido Samsung PM981 o Micron 2200S NVMe
+    * Samsung 970 Evo Plus con el último firmware (los firmwares más antiguos eran conocidos por la inestabilidad y los bloqueos, [consulta aquí para obtener más información](https://www.samsung.com/semiconductor/minisite/ssd/download/tools/))
+    * SATA HotPlug está deshabilitado en la BIOS (causa problemas más comunmente en sistemas basados ​​en CPUs AMD)
+    * Asegúrate de que las unidades NVMe estén configuradas como modo NVMe en la BIOS (algunas BIOS tienen un error en el que puede configurar las unidades NVMe como SATA)
+* **Falla de NVRAM**:
+  * Problema común en placas madre HEDT y de la serie 300, tienes un par de caminos para seguir:
+    * Series 300 de Intel: Consulta [Introducción a ACPI](https://dortania.github.io/Getting-Started-With-ACPI/) sobre cómo hacer SSDT-PMC.aml
+    * HEDT: Consulta [Emulación de NVRAM](https://dortania.github.io/OpenCore-Post-Install/misc/nvram.html) sobre cómo detener la escritura de NVRAM, ten en cuenta que para la instalación no necesitas ejecutar el script. Simplemente configura tu config.plist
 
-Example of what a disabled RTC with no way to enable looks like(note that there is no value to re-enable it like `STAS`):
+* **Falta RTC**:
+   * Comúnmente encontrado en la serie 300 y las placas madre X299/Cascade Lake-X refresh, debido a que el reloj RTC está deshabilitado de forma predeterminada. Consulta [Introducción a ACPI](https://dortania.github.io/Getting-Started-With-ACPI/) sobre cómo crear un SSDT-AWAC.aml
+   * Algunos firmwares de HP también deshabilitaron el RTC en el HP 250 G6 sin ninguna forma de volver a habilitarlo realmente, los usuarios maldecidos con dicho hardware necesitarán crear un reloj RTC falso para que macOS juegue:
+
+Ejemplo de cómo se ve un RTC deshabilitado sin forma de habilitarlo (ten en cuenta que no hay ningún valor para volver a habilitarlo como `STAS`):
 
 ![](../images/troubleshooting/troubleshooting-md/rtc.png)
 
-## "Waiting for Root Device" or Prohibited Sign error
+## "Waiting for Root Device" o signo de prohibido
 
-Generally seen as a USB error, couple ways to fix:
+Generalmente visto como un error de USB, hay dos formas de arreglarlo:
 
-* If you're hitting the 15 port limit, you can temporarily get around this with `XhciPortLimit` but for long term use, we recommend making a [USBmap](https://github.com/corpnewt/USBMap). CorpNewt also has a guide for this: [USBmap Guide](https://dortania.github.io/OpenCore-Post-Install/usb/)
-* Another issue can be that certain firmware won't pass USB ownership to macOS, to fix this we can enable `UEFI -> Quirks -> ReleaseUsbOwnership` in your config.plist
-  * Enabling XHCI Handoff in the BIOS can fix this as well
-
-* For 15h and 16h AMD CPUs, you may need to add the following:
+* Si estás alcanzando el límite de 15 puertos, puedes evitar esto temporalmente con `XhciPortLimit` pero para uso a largo plazo, te recomendamos que hagas un [USB map](https://github.com/corpnewt/USBMap). CorpNewt también tiene una guía para esto: [Guía de USBmap](https://dortania.github.io/OpenCore-Post-Install/usb/)
+* Otro problema puede ser que ciertos firmwares no pasarán las propiedades de USBs a macOS, para solucionar esto podemos habilitar `UEFI -> Quirks -> ReleaseUsbOwnership` en tu config.plist
+  * Habilitar XHCI Handoff en el BIOS también puede solucionar esto
+* Para las CPU AMD de 15h y 16h, es posible que debas agregar lo siguiente:
   * [XLNCUSBFix.kext](https://cdn.discordapp.com/attachments/566705665616117760/566728101292408877/XLNCUSBFix.kext.zip)
-
-* If XLNCUSBFix still doesn't work, then try the following:
+* Si XLNCUSBFix aún no funciona, intenta lo siguiente:
   * [AMD StopSign-fixv5](https://cdn.discordapp.com/attachments/249992304503291905/355235241645965312/StopSign-fixv5.zip)
   
-Another possible issue is missing USB ports in your DSDT, macOS isn't great at finding hardware and needs things explicitly defined to it for many things. This means if a USB port is not defined, macOS won't be able to find it. To fix this we use [USBInjectAll](https://github.com/Sniki/OS-X-USB-Inject-All/releases) to fix booting, note that this **only works on Intel USB Chipsets** and should only be required on Broadwell and older systems(with some newer AsRock boards also needing it)
+Otro posible problema es la falta de puertos USB en tu DSDT, macOS no es excelente para encontrar hardware y necesita propiedades explícitamente definidas para muchas cosas. Esto significa que si un puerto USB no está definido, macOS no podrá encontrarlo. Para solucionar esto, utilizamos [USBInjectAll](https://github.com/Sniki/OS-X-USB-Inject-All/releases) para corregir el arranque, ten en cuenta que esto **solo funciona en los chipsets USB de Intel** y debería requerirse en Broadwell y sistemas más antiguos (con algunas placas AsRock más nuevas que también lo necesitan)
 
-For AMD users with missing ports in DSDT, you're gonna have to try all the ports in your system and pray, generally 3.1 AsMedia ports work without issue.
+Los usuarios de AMD con puertos faltantes en su DSDT, tendrán que probar todos los puertos en su sistema y rezar, generalmente los puertos 3.1  AsMedia funcionan sin problemas.
 
-On rare occasions(mainly laptops), the SATA controller isn't officially supported by macOS. To resolve this, we'll want to do a few things:
+En raras ocasiones (principalmente en laptops), el controlador SATA no es oficialmente compatible con macOS. Para resolver esto, queremos hacer algunas cosas:
 
-* Set SATA to AHCI mode in the BIOS
-  * macOS doesn't support hardware RAID or IDE mode properly.
-  * Note drives already using Intel Rapid Storage Technology(RST, soft RAID for Windows and Linux) will not be accessible in macOS.
-* [SATA-unsupported.kext](https://github.com/RehabMan/hack-tools/tree/master/kexts/SATA-unsupported.kext)
-  * Adds support to obscure SATA controllers, commonly being laptops.
-  * For very legacy SATA controllers, [AHCIPortInjector.kext](https://www.insanelymac.com/forum/files/file/436-ahciportinjectorkext/) may be more suitable.
+* Establecer SATA en modo AHCI en el BIOS
+  * macOS no admite el modo RAID o IDE de hardware correctamente.
+  * Ten en cuenta que las unidades que ya utilizan la tecnología Intel Rapid Storage (RST, soft RAID para Windows y Linux) no serán accesibles en macOS.
+* [SATA-unsupported.kext] (https://github.com/RehabMan/hack-tools/tree/master/kexts/SATA-unsupported.kext)
+  * Agrega soporte para controladores SATA no soportados, comúnmente en laptops.
+  * Para controladores SATA muy antiguos, [AHCIPortInjector.kext] (https://www.insanelymac.com/forum/files/file/436-ahciportinjectorkext/) puede ser más adecuado.
 
-Note that you will only experience this issue after installing macOS onto the drive, booting the macOS installer will not error out due to SATA issues.
+Ten en cuenta que solo experimentarás este problema después de instalar macOS en la unidad, al iniciar el instalador de macOS no se producirá un error debido a problemas de SATA.
 
 ## macOS installer in Russian
 
