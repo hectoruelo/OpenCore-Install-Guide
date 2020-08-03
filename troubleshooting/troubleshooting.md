@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # General Troubleshooting
 
 * Versión soportada: 0.5.9
@@ -374,60 +375,62 @@ En raras ocasiones (principalmente en laptops), el controlador SATA no es oficia
 
 Ten en cuenta que solo experimentarás este problema después de instalar macOS en la unidad, al iniciar el instalador de macOS no se producirá un error debido a problemas de SATA.
 
-## macOS installer in Russian
+## instalador de macOS en ruso
+
+La configuración del sample predeterminada está en ruso porque los Slavs gobiernan el mundo de los Hackintoshes, verifica tu valor `prev-lang: kbd` en` NVRAM -> Add -> 7C436110-AB2A-4BBB-A880-FE41995C9F82`. Se establece a `656e2d55533a30` para Inglés de EEUU: en-US: 0 y se puede encontrar una lista completa en [AppleKeyboardLayouts.txt](https://github.com/acidanthera/OpenCorePkg/blob/master/Utilities/AppleKeyboardLayouts/AppleKeyboardLayouts.txt ) Para aquellos que usan un editor de texto simple (es decir, UEFI Shell, Notepad++, etc.), `656e2d55533a30` se convertirá a `ZW4tVVM6MA==`
 
 Default sample config is in Russian because slavs rule the Hackintosh world, check your `prev-lang:kbd` value under `NVRAM -> Add -> 7C436110-AB2A-4BBB-A880-FE41995C9F82`. Set to `656e2d55533a30` for American: en-US:0 and a full list can be found in [AppleKeyboardLayouts.txt](https://github.com/acidanthera/OpenCorePkg/blob/master/Utilities/AppleKeyboardLayouts/AppleKeyboardLayouts.txt). For those using with a simple text editor(ie. UEFI Shell, Notepad++, etc), `656e2d55533a30` will become `ZW4tVVM6MA==`
 
-You may also need to reset NVRAM in the boot picker as well
+Es posible que también debas restablecer la NVRAM en el selector de arranque
 
-Still didn't work? Well time for the big guns. We'll force remove that exact property and let OpenCore rebuild it:
+¿Aún no funcionó? Bueno, tiempo para las armas pesadas. Forzaremos la eliminación de esa propiedad exacta y dejaremos que OpenCore la reconstruya:
 
-`NVRAM -> Block -> 7C436110-AB2A-4BBB-A880-FE41995C9F82 -> Item 0` then set it Type `String` and Value `prev-lang:kbd`
+`NVRAM -> Block -> 7C436110-AB2A-4BBB-A880-FE41995C9F82 -> Item 0` luego configura el tipo a `String` y el valor `prev-lang:kbd`
 
 ![](../images/troubleshooting/troubleshooting-md/lang.png)
 
-## macOS Installer being damaged
+## Instalador de macOS dañado
 
-If you've download macOS before October 2019, you likely have an expired macOS Installer certificate, there's 2 ways to fix this:
+Si ha descargado macOS antes de Octubre de 2019, es probable que tenga un certificado de instalador de macOS vencido, hay 2 formas de solucionar esto:
 
-* Download newest copy of macOS
-* Change date in terminal to when the certificate was valid
+* Descargar la copia más reciente de macOS
+* Cambiar la fecha en la terminal a cuando el certificado era válido
 
-For the latter:
+Para ese último:
 
-* Disconnect all networking devices(Ethernet, disable Wifi)
-* In the recovery terminal set to September 1st, 2019:
+* Desconecta todos los dispositivos de red (Ethernet, deshabilita el Wifi)
+* En el terminal del recovery establece la fecha al 1 de septiembre de 2019:
 
 ```
 date 0901000019
 ```
 
-## Stuck on or near `IOConsoleUsers: gIOScreenLock...`/`gIOLockState (3...`
+## Trancado en o cerca de `IOConsoleUsers: gIOScreenLock...`/`gIOLockState (3...`
 
-This is right before the GPU is properly initialized, verify the following:
+Esto es justo antes de que la GPU es inicializada, verifica lo siguiente:
 
-* GPU is UEFI capable(GTX 7XX/2013+)
-* CSM is off in the BIOS
-* Forcing PCIe 3.0 link speed
-* Double check that ig-platform-id and device-id are valid if running an iGPU.
-  * Desktop UHD 630's may need to use `00009B3E` instead
-* Trying various [WhateverGreen Fixes](https://github.com/acidanthera/WhateverGreen/blob/master/Manual/FAQ.IntelHD.en.md)
-  * `-igfxmlr` boot argument. This can also manifest as a "Divide by Zero" error.
-* Coffee Lake iGPU users may also need `igfxonln=1` in 10.15.4 and newer
+* Que tu GPU este capacitada para UEFI (GTX 7XX/2013+)
+* CSM está desactivado en la BIOS
+* Estás forzando el link speed de PCIe a 3.0
+* Verifica que el ig-platform-id y device-id son válidos si estás corriendo con tu iGPU.
+  * UHD 630s de escritorio pueden llegar a necesitar `00009B3E`
+* Prueba [arreglos de WhateverGreen](https://github.com/acidanthera/WhateverGreen/blob/master/Manual/FAQ.IntelHD.en.md)
+  * El boot arg `-igfxmlr`. Esto también se puede manifestar como el error de "división entre cero".
+* Usuarios de iGPU Coffee Lake pueden necesitar `igfxonln=1` en 10.15.4 y posterior
 
-## Scrambled Screen on laptops
+## Pantalla revuelta y perturbada en laptops
 
-Enable CSM in your UEFI settings. This may appear as "Boot legacy ROMs" or other legacy setting.
+Habilita CSM en tus ajustes UEFI. Esto también puede aparecer como"Boot legacy ROMs" u otro ajuste legacy.
 
 ## Black screen after `IOConsoleUsers: gIOScreenLock...` on Navi
 
-* Add `agdpmod=pikera` to boot args
-* Switch between different display outputs
-* Try running MacPro7,1 SMBIOS with the boot-arg `agdpmod=ignore`
+* Agrega `agdpmod=pikera` a tus boot args
+* Cambia de conector de monitor en tu GPU
+* Intenta arrancar con el SMBIOS MacPro7,1 y el boot arg `agdpmod=ignore`
 
-For MSI Navi users, you'll need to apply the patch mentioned here: [Installer not working with 5700XT #901](https://github.com/acidanthera/bugtracker/issues/901)
+Para usuarios Navi MSI, necesitarán aplicar el parche mencionado aquí: [Instalador no funcionando con 5700XT #901](https://github.com/acidanthera/bugtracker/issues/901)
 
-Specifically, add the following entry under `Kernel -> Patch`:
+Específicamente, agregando lo siguiente debajo de `Kernel -> Patch`:
 
 ```
 Base:
@@ -447,93 +450,94 @@ Skip: 0
 
 ## 300 series Intel stalling on `apfs_module_start...`
 
-Commonly due to systems running AWAC clocks, pleas see the [Getting started with ACPI](https://dortania.github.io/Getting-Started-With-ACPI/) section
+Comúnmente siendo por sistemas que corren relojes AWAC, dirígete a la sección [Comenzando con ACPI](https://dortania.github.io/Getting-Started-With-ACPI/) section
 
 ## Kernel Panic `Cannot perform kext summary`
 
-Generally seen as an issue surrounding the prelinked kernel, specifically that macOS is having a hard time interpreting the ones we injected. Verify that your kexts are in the correct order(master then plugins, Lilu always being first) and that kexts with executables have them and plist only kexts don't.
+Generalmente visto como un problema que rodea al prelinked kernel, específicamente que macOS está teniendo dificultades para interpretar los que inyectamos. Verifica que tus kexts estén en el orden correcto (el kext principal y luego los complementos, Lilu siempre es el primero) y que los kexts con ejecutables los tienen y que los kexts de sólo plist kexts no.
 
 ## Kernel Panic `AppleIntelMCEReporter`
 
-With macOS Catalina, dual socket support is broken, and a fun fact about AMD firmware is that some boards will actually report multiple socketed CPUs. To fix this, add [AppleMCEReporterDisabler](https://github.com/acidanthera/bugtracker/files/3703498/AppleMCEReporterDisabler.kext.zip) to both EFI/OC/Kexts and config.plist -> Kernel -> Add
+Con macOS Catalina, el soporte de doble socket está roto, y un dato curioso sobre el firmware de AMD es que algunas placas informarán en realidad múltiples CPU enchufadas. Para solucionar esto, agrega [AppleMCEReporterDisabler](https://github.com/acidanthera/bugtracker/files/3703498/AppleMCEReporterDisabler.kext.zip) a EFI/OC/Kexts y config.plist -> Kernel -> Add
 
 ## Kernel Panic `AppleIntelCPUPowerManagement`
 
-This is likely due to faulty or outright missing NullCPUPowerManagement, the one hosted on AMD OSX's Vanilla Guide is corrupted. Go yell at Shannee to fix it. To fix the issue, remove NullCPUPowerManagement from `Kernel -> Add` and `EFI/OC/Kexts` then enable `DummyPowerManagement` under `Kernel -> Quirks`
+Esto probablemente se deba a que NullCPUPowerManagement no está presente o no funciona, el que está alojado en la Guía Vanilla de AMD OSX está dañado. Ve a gritarle a Shannee para que lo arregle. Para solucionar el problema, elimina NullCPUPowerManagement de `Kernel -> Add` y` EFI/OC/Kexts` y luego habilita `DummyPowerManagement` en` Kernel -> Quirks`
 
 ## Frozen in the macOS installer after 30 seconds
 
-This is likely due to faulty or outright missing NullCPUPowerManagement, the one hosted on AMD OSX's Vanilla Guide is corrupted. Go yell at Shannee to fix it. To fix the issue, remove NullCPUPowerManagement from `Kernel -> Add` and `EFI/OC/Kexts` then enable `DummyPowerManagement` under `Kernel -> Quirks`
+Esto probablemente se deba a que NullCPUPowerManagement no está presente o no funciona, el que está alojado en la Guía Vanilla de AMD OSX está dañado. Ve a gritarle a Shannee para que lo arregle. Para solucionar el problema, elimina NullCPUPowerManagement de `Kernel -> Add` y` EFI/OC/Kexts` y luego habilita `DummyPowerManagement` en` Kernel -> Quirks`
 
 ## 15h/16h CPU reboot after Data & Privacy screen
 
-Follow directions here after UPDATE 2: [Fix Data and Privacy reboot](https://www.insanelymac.com/forum/topic/335877-amd-mojave-kernel-development-and-testing/?do=findComment&comment=2658085)
+Sigue las instrucciones aquí luego de UPDATE 2: [Arreglar reinicio en data y privacidad](https://www.insanelymac.com/forum/topic/335877-amd-mojave-kernel-development-and-testing/?do=findComment&comment=2658085)
 
-## macOS frozen right before login
+## macOS congelado just antes del loggueo
 
-This is a common example of screwed up TSC, for most system add [CpuTscSync](https://github.com/lvs1974/CpuTscSync)
+Este es un ejemplo común de TSC malo, para la mayoría de los sistemas agrega [CpuTscSync](https://github.com/lvs1974/CpuTscSync)
 
-For Skylake-X, many firmwares including Asus and EVGA won't write to all cores. So we'll need to reset the TSC on cold boot and wake with [TSCAdjustReset](https://github.com/interferenc/TSCAdjustReset). Compiled version can be found here: [TSCAdjustReset.kext](https://github.com/dortania/OpenCore-Install-Guide/blob/master/extra-files/TSCAdjustReset.kext.zip). Note that you **must** open up the kext(ShowPackageContents in finder, `Contents -> Info.plist`) and change the Info.plist -> `IOKitPersonalities -> IOPropertyMatch -> IOCPUNumber` to the number of CPU threads you have starting from `0`(i9 7980xe 18 core would be `35` as it has 36 threads total)
+En Skylake-X, muchos firmwares, incluidos Asus y EVGA, no escribirán el TSC en todos los núcleos, por lo que tendremos que restablecer el TSC en el arranque en frío y en la reactivación luego de suspender el PC. La versión compilada se puede encontrar aquí: [TSCAdjustReset.kext](https://github.com/dortania/OpenCore-Install-Guide/blob/master/extra-files/TSCAdjustReset.kext.zip). Ten en cuenta que  **debes** abrir el kext (Mostrar contenidos del paquete en Finder, `Contents -> Info.plist`) y cambiar el Info.plist -> `IOKitPersonalities -> IOPropertyMatch -> IOCPUNumber` a la cantidad de hilos de CPU que tener desde `0` (por ejemplo, el i9 7980xe, que tiene 18 núcleos sería `36`,  ya que tiene 36 hilos en total)
 
-The most common way to see the TSC issue:
+La manera más común de ver el problema del TSC:
 
-Case 1    |  Case 2
+Caso 1    |  Caso 2
 :-------------------------:|:-------------------------:
 ![](../images/troubleshooting/troubleshooting-md/asus-tsc.png)  |  ![](../images/troubleshooting/troubleshooting-md/asus-tsc-2.png)
 
-## Keyboard works but trackpad does not
+## El teclado funciona pero el trackpad no
 
-Make sure that VoodooInput is listed *before* VoodooPS2 and VoodooI2C kexts in your config.plist.
+Asegúrate de que VoodooInput está listado *antes* que VoodooPS2 y VoodooI2C en tu config.plist.
 
-### VoodooI2C Troubleshooting
+### Solución de problemas con VoodooI2C
 
-Check the order that your kexts load - make they match what is shown under [Gathering Files](../ktext.md):
+Fíjate en el orden de la carga de tus kexts, asegúrate que el orden coincide con lo mostrado en [Recolectando archivos Files](../ktext.md):
 
-1. VoodooGPIO, VoodooInput, and VoodooI2CServices in any order (Found under VoodooI2C.kext/Contents/PlugIns)
+1. VoodooGPIO, VoodooInput, and VoodooI2CServices en cualquier orden (Encontrado en VoodooI2C.kext/Contents/PlugIns)
 2. VoodooI2C
 3. Satellite/Plugin Kext
 
-Make sure you have SSDT-GPIO in EFI/OC/ACPI and in your config.plist under ACPI -> Add in your config.plist. If you are still having issues, reference the [Getting Started With ACPI GPIO page](https://dortania.github.io/Getting-Started-With-ACPI/Laptops/trackpad.html).
+Asegurate de que tienes SSDT-GPIO en EFI/OC/ACPI y en tu config.plist debajo de ACPI -> Add. Si sigues teniendo problemas, consulta la página de [Comenzando con ACPI GPIO](https://dortania.github.io/Getting-Started-With-ACPI/Laptops/trackpad.html).
 
-## Kernel Panic on `Invalid frame pointer`
+## Kernel Panic en `Invalid frame pointer`
 
-So this is due to some issue around the `Booter -> Quirks` you set, main things to check for:
+Esto se debe a algún problema relacionado con  `Booter -> Quirks` que configuraste, los principales aspectos a verificar:
 
 * `DevirtualiseMmio`
-  * Certain MMIO spaces are still required to function correctly, so you'll need to either exclude these regions in Booter -> MmioWhitelist or disable this quirk outright
+  * Todavía se requieren ciertos espacios MMIO para funcionar correctamente, por lo que deberás excluir estas regiones en Booter -> MmioWhitelist o deshabilitar este quirk por completo
 * `SetupVirtualMap`
-  * required for firmwares that need virtual memory address to be corrected, this is commonly found on laptops and Gigabyte systems
-  * Note that Icelake and Comet Lake's memory protections break this quirk so avoid it
-  * VMs like QEMU also require this quirk disabled
+  * requerido para los firmwares que necesitan que se corrija la dirección de memoria virtual, esto se encuentra comúnmente en laptops y sistemas Gigabyte
+  * Ten en cuenta que las protecciones de memoria de Icelake y Comet Lake rompen este quirk, así que evítalo
+  * Las máquinas virtuales como QEMU también requieren este quirk deshabilitada
   
-Another issue may be that macOS is conflicting with the write protection from CR0 register, to resolve this we have 2 options:
+Otro problema puede ser que macOS está en conflicto con la protección contra escritura del registro CR0, para resolver esto tenemos 2 opciones:
 
-* If your firmware supports MATs(2018+ firmwares):
+* Si tu firmware es compatible con MATs (firmware de 2018+):
   * EnableWriteUnprotector -> False
   * RebuildAppleMemoryMap -> True
   * SyncRuntimePermissions -> True
-* For older firmwares:
+* Para firmwares más antiguos:
   * EnableWriteUnprotector -> True
   * RebuildAppleMemoryMap -> False
   * SyncRuntimePermissions -> False
 
-Regarding MATs support, firmwares built against EDK 2018 will support this and many OEMs have even added support all the way back to Skylake laptops. Issue is it's not always obvious if an OEM has updated the firmware, you can check the OpenCore logs whether yours supports it:
+Con respecto al soporte de MAT, los firmwares construidos luego de EDK 2018 lo respaldarán y muchos OEM incluso han agregado soporte desde las laptops Skylake. El problema es que no siempre es fácil saber si un OEM ha actualizado el firmware, puedes verificar los registros de OpenCore para ver si el suyo lo admite:
 
 ```
 OCABC: MAT support is 1
 ```
 
-Note: `1` means it supports MATs, while `0` means it does not.
+Nota: `1` significa que admite MAT, mientras que `0` significa que no.
+
 
 ## `kextd stall[0]: AppleACPICPU`
 
-This is due to either a missing SMC emulator or broken one, make sure of the following:
+Esto se debe a que falta un emulador SMC o está roto, asegúrate de lo siguiente:
 
-* Lilu and VirtualSMC are both in EFI/OC/kexts and in your config.plist
-* Lilu is before VirtualSMC in the kext list
-* Last resort is to try FakeSMC instead, **do not have both VirtualSMC and FakeSMC enabled**
+* Lilu y VirtualSMC están en EFI/OC/kexts y en tu config.plist
+* Lilu está antes de VirtualSMC en la lista de kexts
+* El último recurso es probar FakeSMC en su lugar, **no uses FakeSMC y VirtualSMC al mismo tiempo**
 
-## MediaKit reports not enough space
+## MediaKit reporta que no hay espacio suficiente
 
 This error is due to a small EFI, by default Windows will create a 100MB EFI whereas macOS will expect 200MB. To get around this you have 2 way to go:
 
@@ -839,3 +843,4 @@ Full credit and command links provided by [ASentientBot](https://forums.macrumor
 
 * [MacRumors Thread](https://forums.macrumors.com/threads/macos-11-big-sur-on-unsupported-macs-thread.2242172/post-28603788)
 * [eGPU.io thread](https://egpu.io/forums/postid/82119/)
+
