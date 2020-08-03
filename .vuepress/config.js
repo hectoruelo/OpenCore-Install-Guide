@@ -60,30 +60,30 @@ module.exports = {
 		editLinkText: 'Help us improve this page!',
         logo: 'homepage.png',
         nav: [{
-            text: 'Dortania Guides',
+            text: 'Guías originales',
             ariaLabel: 'Language Menu',
             items: [{
-                text: 'Home Site',
+                text: 'Página principal',
                 link: 'https://dortania.github.io/'
             },
             {
-                text: 'Getting Started With ACPI',
+                text: 'Comenzando con ACPI',
                 link: 'https://dortania.github.io/Getting-Started-With-ACPI/'
             },
             {
-                text: 'OpenCore Post-Install',
+                text: 'Post instalación',
                 link: 'https://dortania.github.io/OpenCore-Post-Install/'
             },
             {
-                text: 'GPU Buyers Guide',
+                text: 'Guía de compradores de GPU',
                 link: 'https://dortania.github.io/GPU-Buyers-Guide/'
             },
             {
-                text: 'Wireless Buyers Guide',
+                text: 'Guía de compradores de Wifi',
                 link: 'https://dortania.github.io/Wireless-Buyers-Guide/'
             },
             {
-                text: 'Anti Buyers Guide',
+                text: 'Guía de compradores Anti-Hackintosh',
                 link: 'https://dortania.github.io/Anti-Hackintosh-Buyers-Guide/'
             },
             ]
