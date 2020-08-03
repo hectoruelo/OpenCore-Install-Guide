@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # General Troubleshooting
 
 * Versión soportada: 0.5.9
