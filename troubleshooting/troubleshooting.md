@@ -1,5 +1,4 @@
-
-# General Troubleshooting
+# Solución de problemas
 
 * Versión soportada: 0.5.9
 
