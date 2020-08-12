@@ -1,6 +1,6 @@
 # Recolectando archivos
 
-* Versión soportada: 0.5.9
+* Versión soportada: 0.6.0
 
 Esta sección es para obtener otros archivos necesarios para arrancar macOS, esperamos que conozcas bien tu hardware  antes de comenzar y que hayas hecho un hackintosh antes, ya que no entraremos en detalle aquí. 
 
@@ -14,6 +14,7 @@ En general, la página de especificaciones del producto tiene toda la informaci�
 
 * **Windows**:
   * [Speccy](https://www.ccleaner.com/speccy)
+  * [Aida64](https://www.aida64.com/downloads)
   * Administrador de dispositivos
 * **Linux**:
   * Correr `hwinfo` en la terminal
@@ -78,6 +79,8 @@ Los complementos a continuación no son necesarios para bootear, y simplemente a
 * SMCBatteryManager.kext
   * Utilizado para medir lecturas de batería en laptops, **las computadoras de escritorio pueden ignorar esto**
   * No usar hasta que la batería haya sido parcheada correctamente, de lo contrario puede causar problemas
+* SMCDellSensors.kext
+  * Permite una supervisión y un control más preciso de los ventiladores en las computadoras Dell. No lo uses si no tienes una computadora Dell compatible
 
 ### Gráficos
 
@@ -214,7 +217,8 @@ Un dato rápido importante de los SSDTs necesarios por si no lo sabías (este es
 | Kaby Lake | ^^ | ^^ | ^^ | ^^ | ^^ |
 | Coffee Lake | ^^ | ^^ | [SSDT-AWAC](https://dortania.github.io/Getting-Started-With-ACPI/Universal/awac.html) | [SSDT-PMC](https://dortania.github.io/Getting-Started-With-ACPI/Universal/nvram.html) | ^^ |
 | Comet Lake | ^^ | ^^ | ^^ | ^^ | [SSDT-RHUB](https://dortania.github.io/Getting-Started-With-ACPI/Universal/rhub.html) |
-| AMD (15/16/17h) | N/A | ^^ | N/A | N/A | N/A |
+| AMD (15/16h) | N/A | ^^ | N/A | ^^ | N/A |
+| AMD (17h) | [SSDT-CPUR para B550](https://github.com/dortania/Getting-Started-With-ACPI/blob/master/extra-files/compiled/SSDT-CPUR.aml) | ^^ | N/A | ^^ | N/A |
 
 ### PCs de escritorio de gama alta
 
@@ -227,17 +231,18 @@ Un dato rápido importante de los SSDTs necesarios por si no lo sabías (este es
 
 ### Laptops
 
-| Platforms | **CPU** | **EC** | **Backlight** | **I2C Trackpad** | **AWAC** | **USB** | **IRQ** |
-| :-------: | :-----: | :----: | :-----------: | :--------------: | :------: | :-----: | :-----: |
-| SandyBridge | [CPU-PM](https://dortania.github.io/OpenCore-Post-Install/universal/pm.html#sandy-and-ivy-bridge-power-management) (Run in Post-Install) | [SSDT-EC](https://dortania.github.io/Getting-Started-With-ACPI/Universal/ec-fix.html) | [SSDT-PNLF](https://dortania.github.io/Getting-Started-With-ACPI/Laptops/backlight.html) | [SSDT-GPI0](https://dortania.github.io/Getting-Started-With-ACPI/Laptops/trackpad.html) | N/A | N/A | [IRQ SSDT](https://dortania.github.io/Getting-Started-With-ACPI/Universal/irq.html) |
-| Ivy Bridge | ^^ | ^^ | ^^ | ^^ | ^^ | ^^ | ^^ |
-| Haswell | [SSDT-PLUG](https://dortania.github.io/Getting-Started-With-ACPI/Universal/plug.html) | ^^ | ^^ | ^^ | ^^ | ^^ | ^^ |
+
+| Platformas | **CPU** | **EC** | **Backlight** | **Trackpad I2C** | **AWAC** | **USB** | **IRQ** | **NVRAM** |
+| :-------: | :-----: | :----: | :-----------: | :--------------: | :------: | :-----: | :-----: | :-----: |
+| SandyBridge | [CPU-PM](https://dortania.github.io/OpenCore-Post-Install/universal/pm.html#sandy-and-ivy-bridge-power-management) (Correr en post instalación) | [SSDT-EC](https://dortania.github.io/Getting-Started-With-ACPI/Universal/ec-fix.html) | [SSDT-PNLF](https://dortania.github.io/Getting-Started-With-ACPI/Laptops/backlight.html) | [SSDT-GPI0](https://dortania.github.io/Getting-Started-With-ACPI/Laptops/trackpad.html) | N/A | N/A | [SSDT IRQ](https://dortania.github.io/Getting-Started-With-ACPI/Universal/irq.html) | N/A |
+| Ivy Bridge | ^^ | ^^ | ^^ | ^^ | ^^ | ^^ | ^^ | ^^ |
+| Haswell | [SSDT-PLUG](https://dortania.github.io/Getting-Started-With-ACPI/Universal/plug.html) | ^^ | ^^ | ^^ | ^^ | ^^ | ^^ | ^^ |
 | Broadwell | ^^ | ^^ | ^^ | ^^ | ^^ | ^^ | ^^ |
-| Skylake | ^^ | [SSDT-EC-USBX](https://dortania.github.io/Getting-Started-With-ACPI/Universal/ec-fix.html) | ^^ | ^^ | ^^ | ^^ | N/A |
-| Kaby Lake | ^^ | ^^ | ^^ | ^^ | ^^ | ^^ | ^^ |
-| Coffee Lake (8th Gen) | ^^ | ^^ | [SSDT-PNLF-CFL](https://dortania.github.io/Getting-Started-With-ACPI/Laptops/backlight.html) | ^^ | ^^ | ^^ | ^^ |
-| Coffee Lake (9th Gen) | ^^ | ^^ | ^^ | ^^ | [SSDT-AWAC](https://dortania.github.io/Getting-Started-With-ACPI/Universal/awac.html) | ^^ | ^^ |
-| Comet Lake | ^^ | ^^ | ^^ | ^^ | ^^ | ^^ | ^^ |
-| Ice Lake | ^^ | ^^ | ^^ | ^^ | ^^ | [SSDT-RHUB](https://dortania.github.io/Getting-Started-With-ACPI/Universal/rhub.html) | ^^ |
+| Skylake | ^^ | [SSDT-EC-USBX](https://dortania.github.io/Getting-Started-With-ACPI/Universal/ec-fix.html) | ^^ | ^^ | ^^ | ^^ | N/A | ^^ |
+| Kaby Lake | ^^ | ^^ | ^^ | ^^ | ^^ | ^^ | ^^ | ^^ |
+| Coffee Lake (8va generación) y Whiskey Lake | ^^ | ^^ | [SSDT-PNLF-CFL](https://dortania.github.io/Getting-Started-With-ACPI/Laptops/backlight.html) | ^^ | ^^ | ^^ | ^^ | ^^ |
+| Coffee Lake (9na gen) | ^^ | ^^ | ^^ | ^^ | [SSDT-AWAC](https://dortania.github.io/Getting-Started-With-ACPI/Universal/awac.html) | ^^ | ^^ | [SSDT-PMC](https://dortania.github.io/Getting-Started-With-ACPI/Universal/nvram.html) |
+| Comet Lake | ^^ | ^^ | ^^ | ^^ | ^^ | ^^ | ^^ | ^^ |
+| Ice Lake | ^^ | ^^ | ^^ | ^^ | ^^ | [SSDT-RHUB](https://dortania.github.io/Getting-Started-With-ACPI/Universal/rhub.html) | ^^ | ^^ |
 
 # Ahora, con todo esto hecho dirígete a [Comenzando con ACPI](https://dortania.github.io/Getting-Started-With-ACPI/)
