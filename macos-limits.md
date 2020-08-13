@@ -62,13 +62,13 @@ Una nota importante para las **Laptops con GPU dedicada**:
 
 **Si quieres una lista completa de las GPUs compatibles, visita la [Guía de compra de GPUs](https://dortania.github.io/GPU-Buyers-Guide/)**
 
-## Soporte de placas base
+## Soporte de placas madre
 
-En su mayor parte, todas las placas base son compatibles siempre que la CPU lo sea tambíen. La única excepción es:
+En su mayor parte, todas las placas madre son compatibles siempre que la CPU lo sea tambíen. Previamente, las placas B550 tenía problemas:
 
-* [La placas base AMD B550](https://www.amd.com/en/chipsets/b550)
+* ~~[La placas base AMD B550](https://www.amd.com/en/chipsets/b550)~~
 
-Actualmente no hay soluciones para las placas además de ejecutarse en una KVM (máquina virtual), similar a las CPUs ThreadRipper de tercera generación de AMD.
+Sin embargo, gracias a desarrollos recientes, las placas B550 son booteables con la adición de SSDT-CPUR. Daremos más información en ambas recolectando archivos y la página de config.plist de Zen.
 
 ## Compatibilidad de almacenamiento
 

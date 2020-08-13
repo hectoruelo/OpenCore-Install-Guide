@@ -86,7 +86,7 @@ Los complementos a continuación no son necesarios para bootear, y simplemente a
 
 * [WhateverGreen](https://github.com/acidanthera/WhateverGreen/releases)
   * Utilizado para DRM, el boardID, arreglos del framebuffer, etc., todas las GPUs se benefician de este kext.
-  * Tenga en cuenta que el archivo SSDT-PNLF.dsl incluido solo se requiere para laptops y computadoras All-In-One, consulte [Introducción a ACPI](https://dortania.github.io/Getting-Started-With-ACPI/) para obtener más información
+  * Ten en cuenta que el archivo SSDT-PNLF.dsl incluido sólo se requiere para laptops y computadoras All-In-One, consulta [Introducción a ACPI](https://dortania.github.io/Getting-Started-With-ACPI/) para obtener más información
 
 ### Audio
 
@@ -209,7 +209,7 @@ Un dato rápido importante de los SSDTs necesarios por si no lo sabías (este es
 
 | Platforms | **CPU** | **EC** | **AWAC** | **NVRAM** | **USB** |
 | :-------: | :-----: | :----: | :------: | :-------: | :-----: |
-| SandyBridge | [CPU-PM](https://dortania.github.io/OpenCore-Post-Install/universal/pm.html#sandy-and-ivy-bridge-power-management) (Run in Post-Install) | [SSDT-EC](https://dortania.github.io/Getting-Started-With-ACPI/Universal/ec-fix.html) | N/A | N/A | N/A |
+| SandyBridge | [CPU-PM](https://dortania.github.io/OpenCore-Post-Install/universal/pm.html#sandy-and-ivy-bridge-power-management) (Correr en post instalación) | [SSDT-EC](https://dortania.github.io/Getting-Started-With-ACPI/Universal/ec-fix.html) | N/A | N/A | N/A |
 | Ivy Bridge | ^^ | ^^ | N/A | N/A | N/A |
 | Haswell | [SSDT-PLUG](https://dortania.github.io/Getting-Started-With-ACPI/Universal/plug.html) | ^^ | ^^ | ^^ | ^^ |
 | Broadwell | ^^ | ^^ | ^^ | ^^ | ^^ |

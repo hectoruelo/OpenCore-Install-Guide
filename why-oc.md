@@ -1,7 +1,7 @@
 
 # ¿Por qué OpenCore encima de Clover y otros?
 
-* Versión soportada 0.5.9
+* Versión soportada 0.6.0
 
 Esta sección es un breve resumen de por qué la comunidad ha estado haciendo la transición a OpenCore. Aquellos que solo quieren una máquina con macOS pueden omitir esta página.
 
@@ -17,7 +17,7 @@ Esta sección es un breve resumen de por qué la comunidad ha estado haciendo la
   * [Vaulting](https://dortania.github.io/OpenCore-Post-Install/universal/security.html#Vault) Permite crear EFIs instantáneas que eviten modificaciones no deseadas
   * Soporte de arranque seguro o "secure boot" (actualmente en auditoría de seguridad, vendrá próximamente)
 * Cambios de SO con BootCamp y la selección del dispositivo de arranque son compatibles ya que OpenCore lee las variables NVRAM configuradas por el disco de arranque como una Mac real.
-* Omite la tecla de acceso rápido de arranque a través de boot.efi. Mantener presionada la tecla Option o ESC al inicio para elegir un dispositivo de arranque, Cmd + R para ingresar a Recuperación o Cmd + Opt + P + R para restablecer NVRAM.
+* Omite la tecla de acceso rápido de arranque a través de boot.efi. Mantiene presionada la tecla `Option` o `ESC` al inicio para elegir un dispositivo de arranque, `Cmd+R` para ingresar a Recuperación o `Cmd+Opt+P+R` para restablecer NVRAM.
 
 ## Soporte de Software
 
