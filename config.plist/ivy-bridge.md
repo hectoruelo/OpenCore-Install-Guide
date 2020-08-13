@@ -585,6 +585,8 @@ Ten en cuenta que esta herramienta no está hecha ni mantenida por Dortania, tod
 
 * Fast Boot
 * Secure Boot
+* Serial/COM Port
+* Parallel Port
 * VT-d (puede ser habilitado si `DisableIoMapper` está configurado a `YES`)
 * CSM
 * Thunderbolt(Para la instalación inicial, ya que Thunderbolt puede causar problemas si no se configura correctamente)
