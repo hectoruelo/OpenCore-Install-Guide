@@ -4,8 +4,6 @@
 
 * **Nota**: Esta guía solo soporta Comet Lake en 10.15.5 o posterior
 
-<extoc></extoc>
-
 ## Punto de partida
 
 Hacer un config.plist puede parecer difícil, pero en realidad no lo es. Sólo toma tiempo, pero esta guía te dirá cómo configurar todo, no dejará espacios sin cubrir. Esto también significa que si tienes problemas, asegúrate de que todos los espacios de tu config estén correctos, respaldándote con esta guía. Principales cosas a tener en cuenta con OpenCore:
@@ -73,7 +71,23 @@ Esta sección permite pasar dispositivos a macOS que generalmente se ignoran, en
 
 ### Quirks
 
-Configuraciones relacionadas a el parcheo de boot.efi y arreglos en el firmware. En nuestro caso debemos cambiar `DevirtualiseMmio`, `RebuildAppleMemoryMap`, `SyncRuntimePermissions` y deshabilitar `EnableWriteUnprotector`.
+::: tip Información
+
+Configuraciones relacionadas a el parcheo de boot.efi y arreglos en el firmware. En nuestro caso debemos cambiar lo siguiente
+
+
+| Quirk | Habilitado | Comentario |
+| :--- | :--- | :--- |
+| DevirtualiseMmio | YES | |
+| EnableWriteUnprotector | NO | |
+| ProtectUefiServices | YES | |
+| RebuildAppleMemoryMap | YES | |
+| SetupVirtualMap | NO | Placas madre Gigabyte pueden requerir de este quirk |
+| SyncRuntimePermissions | YES | |
+
+:::
+
+::: details Información más detallada
 
 * **AvoidRuntimeDefrag**: YES
   * Corrige runtime services de UEFI como fecha, hora, NVRAM, control de energía, etc.
@@ -90,6 +104,8 @@ Configuraciones relacionadas a el parcheo de boot.efi y arreglos en el firmware.
   * **Nota**: Placas madre Z490 ASUS, Gigabyte y AsRock Z490 no arrancarán con esto habilitado
 * **SyncRuntimePermissions**: YES
   * Soluciona la alineación con las tablas MAT y es necesario para iniciar Windows y Linux estas, también recomendado para macOS. Principalmente relevante para Skylake y posterior
+
+:::
 
 ## DeviceProperties
 
@@ -133,6 +149,7 @@ Esta entrada se relaciona con el controlador i225-V 2.5GBe de Intel que se encue
 | device-id | Data | F2150000 |
 
 **Nota**: Si tu placa no Si su placa no vino con el NIC i225 de Intel, no hay razón para agregar esta entrada.
+**Nota 2**: Si tienes un kernel panic del kext i210, el PciRoot de tu Ethernet seguramente sea `PciRoot(0x0)/Pci(0x1C,0x4)/Pci(0x0,0x0)`
 
 :::
 
@@ -572,6 +589,8 @@ Ten en cuenta que esta herramienta no está hecha ni mantenida por Dortania, tod
 
 * Fast Boot
 * Secure Boot
+* Serial/COM Port
+* Parallel Port
 * VT-d (puede ser habilitado si `DisableIoMapper` está configurado a `YES`)
 * CSM
 * Thunderbolt(Para la instalación inicial, ya que Thunderbolt puede causar problemas si no se configura correctamente)
