@@ -72,22 +72,22 @@ Configuraciones relacionadas a el parcheo de boot.efi y arreglos en el firmware.
 
 | Quirk | Habilitado |
 | :--- | :--- |
-| EnableWriteUnprotector | NO |
-| RebuildAppleMemoryMap | YES |
-| SyncRuntimePermissions | YES |
+| EnableWriteUnprotector | YES |
+| RebuildAppleMemoryMap | NO |
+| SyncRuntimePermissions | NO |
 :::
 
 ::: details Información más detallada
 
 * **AvoidRuntimeDefrag**: YES
   * Corrige runtime services de UEFI como fecha, hora, NVRAM, control de energía, etc.
-* **EnableWriteUnprotector**: NO
+* **EnableWriteUnprotector**: YES
   * Este quirk y RebuildAppleMemoryMap pueden entrar en conflicto, recomendamos habilitar este último en plataformas más nuevas y deshabilitar esta entrada.
-* **RebuildAppleMemoryMap**: YES
+* **RebuildAppleMemoryMap**: NO
   * Genera un mapa de memoria compatible con macOS, puede romperse en algunos firmwares de laptops de OEMs, así que si recives fallas en el arranque temprando deshabilita esto.
 * **SetupVirtualMap**: YES
   * Corrige las llamadas de `SetVirtualAddresses` a `virtual addresses`
-* **SyncRuntimePermissions**: YES
+* **SyncRuntimePermissions**: NO
   * Soluciona la alineación con las tablas MAT y es necesario para iniciar Windows y Linux estas, también recomendado para macOS. Principalmente relevante para Skylake y posterior
 :::
 
