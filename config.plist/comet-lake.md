@@ -1,6 +1,6 @@
 # Comet lake de escritorio
 
-* Versión soportada: 0.5.9
+* Versión soportada: 0.6.0
 
 * **Nota**: Esta guía solo soporta Comet Lake en 10.15.5 o posterior
 
@@ -587,7 +587,7 @@ Ten en cuenta que esta herramienta no está hecha ni mantenida por Dortania, tod
 * Execute Disable Bit
 * EHCI/XHCI Hand-off
 * OS type: Windows 8.1/10 UEFI Mode
-* DVMT Pre-Allocated(iGPU Memory): 64MB
+* DVMT Pre-Allocated (memoria del iGPU): 64MB
 * SATA Mode: AHCI
 
 # Ahora con todo esto hecho, dirígete a la [página de instalación](/installation/installation-process)
