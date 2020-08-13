@@ -90,12 +90,12 @@ module.exports = {
         },
         ],
         sidebar: [{
-            title: 'Introduction',
+            title: 'Introducción',
             collapsable: false,
             sidebarDepth: 1,
             children: [
                 '',
-				['prerequisites', 'Getting started with OpenCore'],
+				['prerequisites', 'Comenzando con OpenCore'],
 				'macos-limits',
                 'terminology',
                 'why-oc',
@@ -103,11 +103,11 @@ module.exports = {
 
         },
         {
-            title: 'USB Creation',
+            title: 'Creación del USB',
             collapsable: false,
             sidebarDepth: 2,
             children: [{
-                title: 'Creating the USB',
+                title: 'Creando el USB',
                 collapsable: true,
                 path: '/installer-guide/',
                 sidebarDepth: 2,
@@ -119,7 +119,7 @@ module.exports = {
             },
                 '/installer-guide/opencore-efi',
                 'ktext',
-            ['https://dortania.github.io/Getting-Started-With-ACPI/', 'Getting started with ACPI'],
+            ['https://dortania.github.io/Getting-Started-With-ACPI/', 'Comenzando con ACPI'],
                 '/config.plist/',
             ]
         },
@@ -127,7 +127,7 @@ module.exports = {
             title: 'Configs',
             collapsable: false,
             children: [{
-                title: 'Intel Desktop config.plist',
+                title: 'config.plist Intel de Escritorio',
                 collapsable: true,
 				sidebarDepth: 1,
                 children: [
@@ -193,7 +193,7 @@ module.exports = {
             ]
         },
         {
-            title: 'Installation',
+            title: 'Instalación',
             collapsable: false,
             children: [
                 '/installation/installation-process',
@@ -201,7 +201,7 @@ module.exports = {
             ]
         },
         {
-            title: 'Troubleshooting',
+            title: 'Solución de problemas',
             collapsable: true,
             children: [
                 '/troubleshooting/troubleshooting',
@@ -210,7 +210,7 @@ module.exports = {
             ]
         },
         {
-            title: 'Post Install',
+            title: 'Post Instalación',
             collapsable: false,
             children: [
                 ['https://dortania.github.io/OpenCore-Post-Install/', 'Post-Install'],
@@ -278,7 +278,7 @@ module.exports = {
             ]
         },
         {
-            title: 'Misc',
+            title: 'Otros',
             collapsable: false,
             children: [
                 'CONTRIBUTING',
