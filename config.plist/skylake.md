@@ -1,6 +1,6 @@
 # Skylake de escritorio
 
-* Versión soportada: 0.5.9
+* Versión soportada: 0.6.0
 
 <extoc></extoc>
 
@@ -107,14 +107,14 @@ Esta sección se configura a través de la [Guía de parcheo de Framebuffers](ht
 
 `AAPL,ig-platform-id` es lo que macOS usa para determinar cómo los drivers de tu iGPU interactúan con tu sistema, y los dos valores que se eligen son los siguientes:
 
-| AAPL,ig-platform-id | Comment |
+| AAPL,ig-platform-id | Comentario |
 | :--- | :--- |
 | 00001219 | Utilizado cuando el iGPU es utilizado para manejar un monitor |
 | 01001219 | Usado cuando el iGPU de escritorio es utilizado para tareas computacionales y no maneja un monitor |
 
 También agregaremos tres propiedades más, `framebuffer-patch-enable`, `framebuffer-stolenmem` y `framebuffer-fbmem`. El primero habilita la aplicación de parches a través de WhateverGreen.kext, el segundo establece la memoria mínima robada a 19MB y el tercero establece la memoria del framebuffer a 9MB. Esto generalmente no es necesario, ya que se puede configurar en BIOS (se recomiendan 64 MB) pero se requiere cuando no puedes hacer esto.
 
-* **Note**: Los framebuffers "headless" (donde dGPU es lo que da la imagen) no necesitan `framebuffer-patch-enable`,`framebuffer-stolenmem` y `framebuffer-fbmem`
+* **Nota**: Los framebuffers "headless" (donde dGPU es lo que da la imagen) no necesitan `framebuffer-patch-enable`,`framebuffer-stolenmem` y `framebuffer-fbmem`
 
 | Key | Type | Value |
 | :--- | :--- | :--- |
@@ -409,8 +409,6 @@ Vuelve a escribir a la fuerza las variables de NVRAM. Ten en cuenta que `Add` **
 
 Para configurar la información SMBIOS, usaremos la aplicación [GenSMBIOS](https://github.com/corpnewt/GenSMBIOS) hecha por [CorpNewt](https://github.com/corpnewt/).
 
-For this Skylake example, we'll choose the iMac17,1 SMBIOS.
-
 Para este ejemplo de SkyLake, eligiremos el SMBIOS iMac17,1. Esto está hecho lintencionalmente por un tema de compatibilidad. 
 
 Ejecuta GenSMBIOS, elije la opción 1 para descargar MacSerial y la Opción 3 para seleccionar la SMBIOS que deseas. Esto nos dará una salida similar a la siguiente:
@@ -562,6 +560,8 @@ Ten en cuenta que esta herramienta no está hecha ni mantenida por Dortania, tod
 
 * Fast Boot
 * Secure Boot
+* Serial/COM Port
+* Parallel Port
 * VT-d (puede ser habilitado si `DisableIoMapper` está configurado a `YES`)
 * CSM
 * Thunderbolt(Para la instalación inicial, ya que Thunderbolt puede causar problemas si no se configura correctamente)
@@ -577,7 +577,7 @@ Ten en cuenta que esta herramienta no está hecha ni mantenida por Dortania, tod
 * Execute Disable Bit
 * EHCI/XHCI Hand-off
 * OS type: Windows 8.1/10 UEFI Mode
-* DVMT Pre-Allocated(iGPU Memory): 64MB
+* DVMT Pre-Allocated(iGPU Memory): 32MB
 * SATA Mode: AHCI
 
 # Ahora con todo esto hecho, dirígete a la [página de instalación](/installation/installation-process)
