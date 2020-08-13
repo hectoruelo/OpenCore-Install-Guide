@@ -136,6 +136,18 @@ El `AAPL,ig-platform-id` que utilizamos es el siguiente:
 
 :::
 
+::: tip PciRoot(0x0)/Pci(0x16,0x0)
+
+Esto es necesario si estás emparejando una CPU Ivy Bridge con una placa madre de serie 6 (H61, B65, Q65, P67, H67, Q67, Z68), debido a que es necesario falsificar tu dispositivo IMEI para que parezca uno soportado.
+
+| Key | Type | Value |
+| :--- | :--- | :--- |
+| device-id | Data | 3A1C0000 |
+
+**Nota**: Esto no es necesario si tienes una placa madre de series 7 (B75, Q75, Z75, H77, Q77, Z77)
+
+:::
+
 ::: tip PciRoot(0x0)/Pci(0x1b,0x0)
 
 `layout-id`
