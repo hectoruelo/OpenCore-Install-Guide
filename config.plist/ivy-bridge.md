@@ -1,6 +1,7 @@
 # Ivy bridge de escritorio
 
-* Versión soportada: 0.5.9
+* Versión soportada: 0.6.0
+* Ten en cuenta que las iGPUs de Ivy Bridge solo son compatibles hasta macOS 10.15, Catalina. No se cubrirá el procedimiento para correr versiones posteriores.
 
 <extoc></extoc>
 
@@ -38,6 +39,8 @@ En nuestro caso necesitaremos un par de SSDTs para recuperar la funcionalidad qu
 | :--- | :--- |
 | **[SSDT-PM](https://github.com/Piker-Alpha/ssdtPRGen.sh)** | Necesario para la administración adecuada de la energía de la CPU, deberás ejecutar el script ssdtPRGen.sh de Pike para generar este archivo. Esto se ejecutará en [post-instalación](https://dortania.github.io/OpenCore-Post-Install/).
 | **[SSDT-EC](https://dortania.github.io/Getting-Started-With-ACPI/)** | * Arregla el embedded controller (EC), dirígete a [la guía de comenzando con ACPI](https://dortania.github.io/Getting-Started-With-ACPI/) para más detalles.) |
+| **[SSDT-IMEI](https://dortania.github.io/Getting-Started-With-ACPI/)** | Necesario para agregar dispositivo IMEI faltante en CPUs Ivy Bridge con placas madre de la serie 6 |
+
 
 Ten en cuenta que **no debes** agregar tu `DSDT.aml` generado aquí, ya está en tu firmware. Entonces, si está presente, elimina la entrada correspondiente en tu `config.plist` y en EFI/OC/ACPI.
 
@@ -49,7 +52,7 @@ Aquellos que deseen una explicación más profunda de cómo hacer un dump de su 
 
 ::: tip Info
 
-Esto bloquea la carga de ciertas tablas ACPI, la principal razón de esto es que el XCPM de Apple en nuestro caso esto es muy importante, la principal razón es que el XCPM de Apple no soporta Ivy Bridge muy bien y puede causar kernel panics con AppleIntelCPUPowerManagement al bootear. Para evitar esto necesitamos hacer nuestro propio SSDT de PM en[Post-Instalación](https://dortania.github.io/OpenCore-Post-Install/) y eliminar las tablas enteriores:
+Esto bloquea la carga de ciertas tablas ACPI, la principal razón de esto es que el XCPM de Apple en nuestro caso esto es muy importante, la principal razón es que el XCPM de Apple no soporta Ivy Bridge muy bien y puede causar kernel panics con AppleIntelCPUPowerManagement al bootear. Para evitar esto necesitamos hacer nuestro propio SSDT de PM en [Post-Instalación](https://dortania.github.io/OpenCore-Post-Install/) y eliminar las tablas enteriores:
 
 Eliminando CpuPm:
 
@@ -121,7 +124,7 @@ Establece las `Device Properties` desde un mapa.
 
 Esta sección se configura a través de la [Guía de parcheo de Framebuffers](https://github.com/acidanthera/WhateverGreen/blob/master/Manual/FAQ.IntelHD.en.md) y se utiliza para establecer propiedades importantes de tu iGPU.
 
-El `AAPL, ig-platform-id` que utilizamos es el siguiente:
+El `AAPL,ig-platform-id` que utilizamos es el siguiente:
 
 * `0A006601` - este es el hexadecimal estándar para el ig-platform-id
 
@@ -130,6 +133,18 @@ El `AAPL, ig-platform-id` que utilizamos es el siguiente:
 | AAPL,ig-platform-id | Data | 0A006601 |
 
 (Este es un ejemplo para una computadora de escritorio con un HD 4000)
+
+:::
+
+::: tip PciRoot(0x0)/Pci(0x16,0x0)
+
+Esto es necesario si estás emparejando una CPU Ivy Bridge con una placa madre de serie 6 (H61, B65, Q65, P67, H67, Q67, Z68), debido a que es necesario falsificar tu dispositivo IMEI para que parezca uno soportado.
+
+| Key | Type | Value |
+| :--- | :--- | :--- |
+| device-id | Data | 3A1C0000 |
+
+**Nota**: Esto no es necesario si tienes una placa madre de series 7 (B75, Q75, Z75, H77, Q77, Z77)
 
 :::
 
@@ -421,6 +436,7 @@ Para este ejemplo de Ivy Bridge, elegiremos el SMBIOS iMac13,2. Esto se hace int
 
 * `iMac13,1` - esto se usa para computadoras que utilizan su iGPU para la imagen.
 * `iMac13,2` - esto se usa para computadoras que usan una GPU dedicada para la imagen y una iGPU solo para tareas computacionales.
+  * Si planeas ejecutar macOS 11 Big Sur, iMac15,1 será el SMBIOS recomendado y la iGPU debe estar deshabilitada en tu BIOS debido a que ya no es compatible
 
 Ejecuta GenSMBIOS, elije la opción 1 para descargar MacSerial y la Opción 3 para seleccionar SMBIOS. Esto nos dará una salida similar a la siguiente:
 
@@ -581,6 +597,8 @@ Ten en cuenta que esta herramienta no está hecha ni mantenida por Dortania, tod
 
 * Fast Boot
 * Secure Boot
+* Serial/COM Port
+* Parallel Port
 * VT-d (puede ser habilitado si `DisableIoMapper` está configurado a `YES`)
 * CSM
 * Thunderbolt(Para la instalación inicial, ya que Thunderbolt puede causar problemas si no se configura correctamente)
@@ -596,7 +614,7 @@ Ten en cuenta que esta herramienta no está hecha ni mantenida por Dortania, tod
 * Execute Disable Bit
 * EHCI/XHCI Hand-off
 * OS type: Windows 8.1/10 UEFI Mode
-* DVMT Pre-Allocated(iGPU Memory): 32MB
+* DVMT Pre-Allocated(memoria del iGPU): 32MB
 * SATA Mode: AHCI
 
 # Ahora con todo esto hecho, dirígete a la [página de instalación](/installation/installation-process)

@@ -1,6 +1,6 @@
 # Broadwell y Haswell de escritorio
 
-* Versión soportada: 0.5.9
+* Versión soportada: 0.6.0
 
 <extoc></extoc>
 
@@ -422,8 +422,10 @@ Para este ejemplo de Haswell, elegimos el SMBIOS iMac15,1. Estas son las otras o
 
 * Haswell con sólo iGPU
   * iMac14,1
+    * Si planeas en correr macOS 11 Big Sur, el SMBIOS recomendado será iMac14,4
 * Haswell con GPU dedicada
   * iMac14,2
+    * Si planeas en correr macOS 11 Big Sur, el SMBIOS recomendado será iMac15,1
 * Haswell Refresh (Devil's Canyon)
   * iMac15,1
 * Broadwell
@@ -582,6 +584,8 @@ Ten en cuenta que esta herramienta no está hecha ni mantenida por Dortania, tod
 
 * Fast Boot
 * Secure Boot
+* Serial/COM Port
+* Parallel Port
 * VT-d (puede ser habilitado si `DisableIoMapper` está configurado a `YES`)
 * CSM
 * Thunderbolt(Para la instalación inicial, ya que Thunderbolt puede causar problemas si no se configura correctamente)
@@ -597,7 +601,7 @@ Ten en cuenta que esta herramienta no está hecha ni mantenida por Dortania, tod
 * Execute Disable Bit
 * EHCI/XHCI Hand-off
 * OS type: Windows 8.1/10 UEFI Mode
-* DVMT Pre-Allocated(iGPU Memory): 64MB
+* DVMT Pre-Allocated(memoria del iGPU): 32MB
 * SATA Mode: AHCI
 
 # Ahora con todo esto hecho, dirígete a la [página de instalación](/installation/installation-process)
