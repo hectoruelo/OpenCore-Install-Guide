@@ -1,6 +1,6 @@
 # Solución de problemas
 
-* Versión soportada: 0.5.9
+* Versión soportada: 0.6.0
 
 Esta sección es para aquellos que tienen problemas al iniciar OpenCore, macOS o que tienen problemas dentro de macOS. Si estás confundido acerca de dónde exactamente en el proceso de arranque de macOS estás atascado, leer la página [Proceso de arranque de macOS](../troubleshooting/boot.md) puede ayudar a aclarar tus dudas.
 
@@ -15,6 +15,7 @@ Si bien todavía es un trabajo en progreso, los usuarios de laptops que desean c
 * [Trancado en `no vault provided!`](#stuck-on-no-vault-provided)
 * [Trancado en EndRandomSeed](#stuck-on-endrandomseed)
 * [Trancado en `[EB|#LOG:EXITBS:START]`](#stuck-on-eblogexitbsstart)
+* [Trancado en [EB|LD:OFS] Err(0xE) cuando arrancas desde el volumen preboot](#stuck-on-eb-ld-ofs-err-0xe-when-booting-preboot-volume)
 * [No puedo ver particiones de macOS](#cant-see-macos-partitions)
 * [Pantalla negra luego del picker](#black-screen-after-picker)
 * [Trancado en `OC: OcAppleGenericInput... - Success`](#stuck-on-oc-ocapplegenericinput---success)
@@ -107,6 +108,39 @@ OCABC: MAT support is 1
 
 * `ProvideConsoleGop` probablemente no está presente ya que es necesario para trancisionar a la próxima pantalla. Originalmente esto era parte de AptioMemoryFix pero ahora está fusionado dentro de OpenCore con este quirk. Puede ser encontrado en UEFI -> Output
 * `IgnoreInvalidFlexRatio` falta, esto es necesario para Broadwell y anteriores. **No para AMD o para Skylake y posterior**
+
+## Trancado en [EB|LD:OFS] Err(0xE) cuando arrancas desde el volumen preboot
+
+Esto puede suceder cuando el volumen preboot no está actualizado correctamente, para arreglar esto necesitarás bootear a recovery y repararlo:
+
+1. Habilita JumpstartHotplug en UEFI -> APFS (Recovery podría no arrancar en macOS Big Sur sin esta opción)
+2. Bootea a recovery
+3. Abre la terminal y corre lo siguiente:
+
+```bash
+# Primero, encuentra tu volumen Preboot
+diskutil list
+
+# Desde la siguiente lista podemos ver que nuestro volument preboot es disk5s2
+/dev/disk5 (synthesized):
+   #:                       TYPE NAME                    SIZE       IDENTIFIER
+   0:      APFS Container Scheme -                      +255.7 GB   disk5
+                                 Physical Store disk4s2
+   1:                APFS Volume ⁨Big Sur HD - Data⁩       122.5 GB   disk5s1
+   2:                APFS Volume ⁨Preboot⁩                 309.4 MB   disk5s2
+   3:                APFS Volume ⁨Recovery⁩                887.8 MB   disk5s3
+   4:                APFS Volume ⁨VM⁩                      1.1 MB     disk5s4
+   5:                APFS Volume ⁨Big Sur HD⁩              16.2 GB    disk5s5
+   6:              APFS Snapshot ⁨com.apple.os.update-...⁩ 16.2 GB    disk5s5s
+
+# ahora monta el volumen preboot
+diskutil mount disk5s2
+
+# Luego corre updatePreboot en el volumen Preboot
+diskutil apfs updatePreboot /volume/disk5s2
+```
+
+Luego finalmente reinicia, aunque podrías tener que deshabilitar JumpstartHotplug para arrancar normalmente de nuevo.
 
 ## No puedo ver particiones de macOS
 
@@ -286,6 +320,7 @@ OpenRuntime.efi desactualizado, asegúrate de que BOOTx64.efi, OpenCore.efi y Op
 # Booteo de macOS
 
 * [Trancado en `RTC...`, `PCI ConfigurationBegins`, `Previous Shutdown...`, `HPET`, `HID: Legacy...`](#stuck-on-rtc-pci-configuration-begins-previous-shutdown-hpet-hid-legacy)
+* [Trancado en ACPI Table loading en B550](#stuck-at-acpi-table-loading-on-b550)
 * ["Waiting for Root Device" o signo de prohibido](#waiting-for-root-device-or-prohibited-sign-error)
 * [Instalador de macOS en ruso](#macos-installer-in-russian)
 * [Instalador de macOS dañado](#macos-installer-being-damaged)
@@ -304,6 +339,8 @@ OpenRuntime.efi desactualizado, asegúrate de que BOOTx64.efi, OpenCore.efi y Op
 * [`kextd stall[0]: AppleACPICPU`](#kextd-stall0-appleacpicpu)
 * [MediaKit reporta que no hay espacio suficiente](#mediakit-reports-not-enough-space)
 * [DiskUtility error al eliminar](#diskutility-failing-to-erase)
+* [Kernel Panic en AppleIntelI210Ethernet](appleinteli210ethernet)
+* [Discos SATA no aparecen en Disk Utility](#sata-drives-not-shown-in-diskutility)
 
 ## Stuck on `RTC...`, `PCI Configuration Begins`, `Previous Shutdown...`, `HPET`, `HID: Legacy...`
 
@@ -346,6 +383,16 @@ Lugares principales a revisar:
 Ejemplo de cómo se ve un RTC deshabilitado sin forma de habilitarlo (ten en cuenta que no hay ningún valor para volver a habilitarlo como `STAS`):
 
 ![](../images/troubleshooting/troubleshooting-md/rtc.png)
+
+## Trancado en ACPI Table loading en B550
+
+![](../images/troubleshooting/troubleshooting-md/OC_catalina.jpg)
+
+Si te estás quedando trancado en/cerca de ACPI table loading con un motherboard AMD B550, agrega el siguiente SSDT:
+
+* [SSDT-CPUR.aml](https://github.com/dortania/Getting-Started-With-ACPI/blob/master/extra-files/compiled/SSDT-CPUR.aml)
+
+Y por favor recuerda agregarlo a ambos EFI/OC/ACPI **y** tu config.plist debajo de ACPI -> Add (La función snapshot de ProperTree puede hacer esto por tí)
 
 ## "Waiting for Root Device" o signo de prohibido
 
@@ -421,7 +468,7 @@ Esto es justo antes de que la GPU es inicializada, verifica lo siguiente:
 
 Habilita CSM en tus ajustes UEFI. Esto también puede aparecer como"Boot legacy ROMs" u otro ajuste legacy.
 
-## Black screen after `IOConsoleUsers: gIOScreenLock...` on Navi
+## Pantalla negra luego de `IOConsoleUsers: gIOScreenLock...` en Navi
 
 * Agrega `agdpmod=pikera` a tus boot args
 * Cambia de conector de monitor en tu GPU
@@ -538,168 +585,181 @@ Esto se debe a que falta un emulador SMC o está roto, asegúrate de lo siguient
 
 ## MediaKit reporta que no hay espacio suficiente
 
-This error is due to a small EFI, by default Windows will create a 100MB EFI whereas macOS will expect 200MB. To get around this you have 2 way to go:
+Este error es debido a que la EFI es demasiado pequeña, por defecto Windows creará una EFI de 100MB, mientras que macOS espera 200MB. Para solucionar esto tienes dos opciones:
 
-* Expand the EFI of the drive to 200MB(See Google on how)
-* Format the entire drive instead of just the partition
-  * Note by default Disk Utility only shows partitions, press Cmd/Win+2 to show all devices(Alternatively you can press the view button)
+* Expande la EFI del disco a 200MB (busca en Google cómo)
+* Formatea el disco entero en vez de la partición
+  * Ten en cuenta que por defecto Disk Utility sólo muestra particiones, presiona Cmd/Win+2 para mostrar todos los dispositivos (Alternativamente puedes presionar el botón view)
 
-Default           |  Show All Devices(Cmd+2)
+Por defecto          |  Show All Devices (Cmd/Win+2)
 :-------------------------:|:-------------------------:
 ![](../images/troubleshooting/troubleshooting-md/Default.png)  |  ![](../images/troubleshooting/troubleshooting-md/Showalldevices.png)
 
-## DiskUtility failing to erase
+## Fallos al eliminar-formatear en Disk Utility 
 
-This is either 1(or more) of 5 issues:
+Este es 1 (o más) de 5 problemas:
 
-* Formatting partition and not the drive, see [MediaKit reports not enough space](#mediakit-reports-not-enough-space)
-* DiskUtility has an odd bug where it will fail on first erase, try erasing again
-* SATA Hot-plug support in the BIOS is causing issues(try disabling this option)
-* Old firmware, make sure the drive is on the latest firmware
-* And finally, you may just have a bad drive
+* Estás formateando la partición y no el disco entero, consulta [MediaKit reporta que no hay espacio suficiente](#mediakit-reports-not-enough-space)
+* DiskUtility tiene un error extraño en el que fallará en el primer borrado, intenta borrar de nuevo
+* El soporte de hotplug SATA en el BIOS está causando problemas (intenta deshabilitar esta opción)
+* Firmware antiguo, asegúrate de que la unidad tenga el firmware más reciente
+* Y finalmente, es posible que tengas un disco malo
 
-# macOS post-install
+## Kernel Panic en AppleIntelI210Ethernet
 
-* [Broken iMessage and Siri](#broken-imessage-and-siri)
-* [No on-board audio](#no-on-board-audio)
-* [BIOS reset or sent into Safemode after reboot/shutdown?](#bios-reset-or-sent-into-safemode-after-rebootshutdown)
-* [macOS GPU acceleration missing on AMD X570](#macos-gpu-acceleration-missing-on-amd-x570)
-* [DRM Broken](#drm-broken)
-* ["Memory Modules Misconfigured" on MacPro7,1](#memory-modules-misconfigured-on-macpro71)
-* [Apps crashing on AMD](#apps-crashing-on-amd)
-* [AssetCache Content Caching unavailable in virtual machine](#assetcache-content-caching-unavailable-in-virtual-machine)
-* [Coffee Lake systems failing to wake](#coffee-lake-systems-failing-to-wake)
+Si tienes una placa madre Comet lake con el NIC i225-V, es posible que experimentes un kernel panic en el arranque debido al kext i210. Para resolver esto, asegúrate de tener el PciRoot correcto para tu Ethernet. Este suele ser:
 
-## Broken iMessage and Siri
+* PciRoot(0x0)/Pci(0x1C,0x1)/Pci(0x0, 0x0)
+   * Por defecto, este es el que usan las placas madre Asus y Gigabyte
+* PciRoot(0x0)/Pci(0x1C,0x4)/Pci(0x0,0x0)
+   * Otros fabricantes pueden usar esto en su lugar
 
-* En0 device not setup as `Built-in`, couple ways to fix:
-  * Find PCI path for your NIC with [gfxutil](https://github.com/acidanthera/gfxutil/releases)(ie: `ethernet`, GBE1, ). Then via DeviceProperties in your config.plist, apply the property of `built-in` with the value of `01` and type `Data`. Hackintool can also grab the PciRoot path if you're having issues with gfxutil. **Recommended method**
-  * [NullEthernet.kext](https://bitbucket.org/RehabMan/os-x-null-ethernet/downloads/) + [SSDT-RMNE](https://github.com/RehabMan/OS-X-Null-Ethernet/blob/master/ssdt-rmne.aml). **Only recommended when first solution doesn't work**
+## Discos SATA no aparecen en DiskUtility
+
+* Asegúrate de que el SATA Mode es AHCI en tu BIOS
+
+# Post instalación de macOS
+
+* [iMessage y Siri roto](#imessage-y-siri-roto)
+* [No funciona el Audio](#no-funciona-el-audio)
+* [Reinicio de la BIOS o eres enviado al modo seguro después de reiniciar/apagar](#reinicio-de-la-bios-o-eres-enviado-al-modo-seguro-despues-de-reiniciar-o-apagar)
+* [Touchpad Synaptics basado en ps2 no funciona](#touchpad-synaptics-basado-en-ps2-no-funciona)
+* [Falta la aceleración de la GPU de macOS en AMD X570](#falta-la-aceleracion-de-la-gpu-de-macos-en-amd-x570)
+* [DRM roto](#drm-roto)
+* [Memory Modules Misconfigured en MacPro7,1](#memory-modules-misconfigured-en-macpro71)
+* [Aplicaciones crasheando en AMD](#aplicaciones-crasheando-en-amd)
+* [AssetCache Content Caching unavailable en máquinas virtuales](#assetcache-content-caching-unavailable-en-maquinas-virtuales)
+* [Sistemas Coffee Lake no iniciándose luego de la suspensión del sistema](#sistemas-coffee-lake-no-iniciandose-luego-de-la-suspension-del-sistema)
+
+## iMessage y Siri roto
+
+* El dispositivo En0 no está configurado como "Built-in", hay dos formas de solucionarlo:
+   * Busca la ruta PCI para tu NIC con [gfxutil](https://github.com/acidanthera/gfxutil/releases) (es decir: `ethernet`, GBE1,). Luego, a través de DeviceProperties en tu config.plist, agrega la propiedad `built-in` con valor `01` y haz que sea `Data`. Hackintool también puede tomar la ruta PciRoot si tienes problemas con gfxutil. **Método recomendado**
+   * [NullEthernet.kext](https://bitbucket.org/RehabMan/os-x-null-ethernet/downloads/) + [SSDT-RMNE](https://github.com/RehabMan/OS-X-Null-Ethernet/blob/master/ssdt-rmne.aml). **Sólo recomendado cuando la primera solución no funciona**
 
 ![](../images/troubleshooting/troubleshooting-md/en0-built-in.png)
 
-If these fixes do not work, see the [Fixing iServices page](https://dortania.github.io/OpenCore-Post-Install/universal/iservices.html) for more in-depth guide.
+Si estos arreglos no funcionan, dirígete a la página de [Arreglando iServices](https://dortania.github.io/OpenCore-Post-Install/universal/iservices.html) para una guía más detallada.
 
-## No on-board audio
+## No funciona el Audio
 
-Refer to [Fixing Audio with AppleALC](https://dortania.github.io/OpenCore-Post-Install/) section
+Dirígete a la seccion [Arreglando el Audio con AppleALC](https://dortania.github.io/OpenCore-Post-Install/) 
 
-## BIOS reset or sent into Safemode after reboot/shutdown
+## Reinicio de la BIOS o eres enviado al modo seguro despues de reiniciar o apagar
 
-Issue with AppleRTC, quite a simple fix:
+Problema con AppleRTC, bastante fácil de arreglar:
 
 * config.plist -> Kernel -> Quirks -> DisableRtcChecksum -> true
 
-**Note**: If you still have issues, you'll need to use [RTCMemoryFixup](https://github.com/acidanthera/RTCMemoryFixup/releases) and exclude ranges. See [here for more info](https://github.com/acidanthera/bugtracker/issues/788#issuecomment-604608329)
+**Nota**: Si sigues teniendo problemas, tendrás que usar [RTCMemoryFixup](https://github.com/acidanthera/RTCMemoryFixup/releases) y excluir rangos. Dirígete [aquí para más información](https://github.com/acidanthera/bugtracker/issues/788#issuecomment-604608329)
 
-The following boot-arg should handle 99% of cases(pair this with RTCMemoryFixup):
+El siguiente boot-arg tendría que manejar el 99% de los casos (empareja esto con RTCMemoryFixup):
 
 ```
 rtcfx_exclude=00-FF
 ```
 
-If this works, slowly shorten the excluded area until you find the part macOS is getting fussy on
+Si esto funciona, acorta el área excluida lentamente hasta que encuentres la parte en la que macOS se está poniendo quisquilloso
 
-## macOS GPU acceleration missing on AMD X570
+## Falta la aceleración de la GPU de macOS en AMD X570
 
-Verify the following:
+Verifica lo siguiente:
 
-* GPU is UEFI capable(GTX 7XX/2013+)
-* CSM is off in the BIOS
-* Forcing PCIe 3.0 link speed
+* La GPU está capacitada para UEFI (GTX 7XX/2013+)
+* CSM está desactivado en la BIOS
+* Estás forzando el link speed de PCIe 3.0
 
-## DRM Broken
+## DRM roto
 
-See [Fixing DRM](https://dortania.github.io/OpenCore-Post-Install/universal/drm.html) page
+Dirígete a la página de [Arreglando el DRM](https://dortania.github.io/OpenCore-Post-Install/universal/drm.html) 
 
-## "Memory Modules Misconfigured" on MacPro7,1
+## Memory Modules Misconfigured en MacPro7,1
 
-Add [MacProMemoryNotificationDisabler kext](https://github.com/IOIIIO/MacProMemoryNotificationDisabler/releases/) to EFI/OC/Kexts and `Kernel -> Add`. Note that this kext has an odd quirk here it requires WhateverGreen to function correctly.
+Agrega [MacProMemoryNotificationDisabler kext](https://github.com/IOIIIO/MacProMemoryNotificationDisabler/releases/) a EFI/OC/Kexts y `Kernel -> Add`. Ten en cuenta que este quirk tiene un quirk raro y requiere de WhateverGreen para funcionar correctamente.
 
-## Apps crashing on AMD
+## Aplicaciones crasheando en AMD
 
-~~Easy fix, buy Intel~~
+~~Fácil de arreglar, compra Intel~~
 
-So with AMD, whenever Apple calls CPU specific functions the app will either not work or outright crash. Here are some apps and their "fixes":
+Con AMD, cada vez que Apple llama a funciones específicas de la CPU, la aplicación no funcionará o se bloqueará por completo. Estas son algunas aplicaciones y la forma de "arreglarlas":
 
-* Adobe Products don't always work
-  * Some fixes can be found here: [Adobe Fixes](https://adobe.amd-osx.com/)
-  * Do note these fixes just disables functionality, they're not really fixes
-* Virtual Machine running off of AppleHV's framework will not work(ie: Parallels 15, VMware)
-  * VirtualBox works fine as it doesn't use AppleHV
-  * VMware 10 and older can work as well
-  * Parallels 13.1.0 and older are known to work as well
-* Docker broken
-  * Docker toolbox is the only solution as it's based off of VirtualBox, many features are unavailable with this version
-* Xcode Apple Watch simulator is broken in Catalina
-  * Mojave works fine
-* IDA Pro won't install
-  * There's an Intel specific check in the installer, app itself is likely fine
-* 15/16h CPU web pages crashing
-  * Follow directions here after UPDATE 5: [Fix web pages](https://www.insanelymac.com/forum/topic/335877-amd-mojave-kernel-development-and-testing/?do=findComment&comment=2661857)
+* Los productos de Adobe no siempre funcionan
+  * Algunas formas de arreglarlos se pueden encontrar aquí: [Adobe Fixes](https://adobe.amd-osx.com/)
+  * Ten en cuenta que estas correcciones solo deshabilitan la funcionalidad, no son realmente correcciones
+* Las máquinas virtuales que se ejecutan fuera del marco de AppleHV no funcionarán (es decir: Parallels 15, VMware)
+  * VirtualBox funciona bien ya que no usa AppleHV
+  * VMware 10 y versiones anteriores también pueden funcionar
+  * Se sabe que Parallels 13.1.0 y versiones anteriores también funcionan
+* Docker roto
+  * El docker toolbox es la única solución, ya que se basa en VirtualBox, muchas funciones no están disponibles con esta versión
+* El simulador Xcode Apple Watch está roto en Catalina
+  * Mojave funciona bien
+* IDA Pro no se instala
+  * Hay una verificación específica de Intel en el instalador, la aplicación en sí probablemente esté bien
+* Las páginas web en CPUs 15/16h se crashean
+  * Sigue las instrucciones aquí luego de UPDATE 5: [Corregir páginas web](https://www.insanelymac.com/forum/topic/335877-amd-mojave-kernel-development-and-testing/?do=findComment&comment=2661857)
 
-## Sleep crashing on AMD
+## Suspensión crasheando en AMD
 
-This is generally seen on AMD who use the chipset's USB controller, specifically for the Ryzen series and newer. The main way to tell if you're having issues with this is checking logs after either sleeping or waking:
+Esto se ve generalmente en las CPUs AMD que usan el controlador USB del chipset, específicamente para la serie Ryzen y más reciente. La forma principal de saber si tienes problemas con esto es verificar los logs después de suspenderla o luego de que se reactiva:
 
-* In terminal:
-  * `log show --last 1d | grep "Wake reason"` verify it
+* En terminal:
+  * `log show --last 1d | grep "Wake reason"` verifícalo
 
-Should result in something like this:
+Debería resultar en algo así:
 
 ```
 Sleep transition timed out after 180 seconds while calling power state change callbacks. Suspected bundle: com.apple.iokit.IOUSBHostFamily.
 ```
 
-You can double check which controller is XHC0 via IOReg and checking the Vendor ID(1022 for AMD chipset). The fix for this sleep issue is either:
+Puedes verificar qué controlador es XHC0 a través de IOReg y verificar la ID del proveedor (1022 para el chipset AMD). La solución para este problema de suspensión es:
 
-* Avoid the chipset USB all together(ideally set `_STA = 0x0` to disable the controller outright with an SSDT)
-* Correct the USBX power properties to what the controller expects
+* Evita el chipset USB (lo ideal es configurar `_STA = 0x0` para deshabilitar el controlador directamente con un SSDT)
+* Corrige las propiedades de alimentación de USBX a lo que espera el controlador
 
-## AssetCache Content Caching unavailable in virtual machine
+## AssetCache Content Caching unavailable en máquinas virtuales
 
-Errors such as:
+Errores como:
 
 ```bash
 $ sudo AssetCacheManagerUtil activate
 AssetCacheManagerUtil[] Failed to activate content caching: Error Domain=ACSMErrorDomain Code=5 "virtual machine"...
 ```
+surgen debido a que sysctl expone el indicador `VMM`.
 
-arise due to `VMM` flag being exposed by sysctl.
+Aplica el parche del kernel [VmAssetCacheEnable](https://github.com/ofawx/VmAssetCacheEnable) para para disfrazar ese flag y permitir el funcionamiento normal.
 
-Apply [VmAssetCacheEnable](https://github.com/ofawx/VmAssetCacheEnable) kernel patch to disguise the flag and allow normal operation.
+## Sistemas Coffee Lake no iniciándose luego de la suspensión del sistema
 
-## Coffee Lake systems failing to wake
+En macOS 10.15.4, hubo algunos cambios hechos al AGPM que puede causar problemas en la reactivación de sistemas Coffee Lake. Específicamente monitores conectados a un iGPU fallan en reactivarse. Para resolver esto:
 
-In macOS 10.15.4, there were some changes made to AGPM that can cause wake issues on Coffee Lake systems. Specifically displays hooked up to the iGPU would fail to wake. To resolve this:
+* Agrega `igfxonln=1` a tus bootargs
+* Asegúrate que estás usando [WhateverGreen v1.3.8](https://github.com/acidanthera/WhateverGreen/releases) y posterior
 
-* Add `igfxonln=1` to boot-args
-* Make sure you're using [WhateverGreen v1.3.8](https://github.com/acidanthera/WhateverGreen/releases) or newer
+# Otros problemas
 
-# Other issues
-
-* [Can't run `acpidump.efi`](#cant-run-acpidumpefi)
-* [Fixing SSDTTime: `Could not locate or download iasl!`](#fixing-ssdttime-could-not-locate-or-download-iasl)
-* [Fix Python: `Python is not installed or not found on PATH`](#fix-python-python-is-not-installed-or-not-found-on-path)
-* [Windows Startup Disk can't see APFS drives](#windows-startup-disk-cant-see-apfs-drives)
-* [Incorrect resolution with OpenCore](#incorrect-resolution-with-opencore)
-* [No temperature/fan sensor output](#no-temperaturefan-sensor-output)
-* [Can't find Windows/BootCamp drive in picker](#cant-find-windowsbootcamp-drive-in-picker)
-* ["You can't change the startup disk to the selected disk" error](#you-cant-change-the-startup-disk-to-the-selected-disk-error)
-* [Booting Windows results in BlueScreen or Linux crashes](#booting-windows-results-in-bluescreen-or-linux-crashes)
-* [Booting Windows error: `OCB: StartImage failed - Already started`](#booting-windows-error-ocb-startimage-failed---already-started)
+* [No puedes correr `acpidump.efi`](#no-puedes-correr-acpidumpefi)
+* [Arreglando SSDTTime: `Could not locate or download iasl!`](#arreglando-ssdttime-could-not-locate-or-download-iasl)
+* [Arreglar Python: `Python is not installed or not found on PATH`](#arreglar-python-python-is-not-installed-or-not-found-on-path)
+* [El disco de Windows no puede ver discos APFS](#windows-startup-disk-cant-see-apfs-drives)
+* [Resolución incorrecta con OpenCore](#incorrect-resolution-with-opencore)
+* [No hay salida de temperatura/ventiladores](#no-temperaturefan-sensor-output)
+* [No puedo encontrar el disco de Windows/BootCamp en el menú](#cant-find-windowsbootcamp-drive-in-picker)
+* [Error "You can't change the startup disk to the selected disk"](#you-cant-change-the-startup-disk-to-the-selected-disk-error)
+* [Bootear Windows resulta en una pantalla azul o Linux se crashea](#booting-windows-results-in-bluescreen-or-linux-crashes)
+* [Error al iniciar Windows: `OCB: StartImage failed - Already started`](#booting-windows-error-ocb-startimage-failed---already-started)
 * [iASL warning, # unresolved](#iasl-warning--unresolved)
-* [No Volume/Brightness control on external monitors](#no-volumebrightness-control-on-external-monitors)
-* [Disabling SIP](#disabling-sip)
+* [No se puede controlar el Volumen/Brillo en monitores externos](#no-volumebrightness-control-on-external-monitors)
+* [Deshabilitando SIP](#disabling-sip)
 
-## Can't run `acpidump.efi`
+## No puedes correr `acpidump.efi`
 
-Call upon OpenCore shell:
+Corre en el shell de OpenCore:
 
 ```
-shell> fs0: //replace with proper drive
+shell> fs0: //reemplaza con el disco
 
-fs0:\> dir //to verify this is the right directory
+fs0:\> dir //para verificar que es el directorio correcto
 
   Directory of fs0:\
 
@@ -710,136 +770,137 @@ fs0:\> cd EFI\OC\Tools //note that its with forward slashes
 fs0:\EFI\OC\Tools> acpidump.efi -b -n DSDT -z
 ```
 
-## Fixing SSDTTime: `Could not locate or download iasl!`
+## Arreglando SSDTTime: `Could not locate or download iasl!`
 
-This is usually due to an outdated version of Python, try either updating Python or add iasl to the scripts folder for SSDTTime:
+Esto usualmente es debido a una version desactualizada de Python, trata de actualizar Python o agrega iasl a la carpeta scripts de SSDTTime:
 
-* [iasl macOS version](https://bitbucket.org/RehabMan/acpica/downloads/iasl.zip)
-* [iasl Windows version](https://acpica.org/downloads/binary-tools)
-* [iasl Linux version](http://amdosx.kellynet.nl/iasl.zip)
+* [iasl para macOS](https://bitbucket.org/RehabMan/acpica/downloads/iasl.zip)
+* [iasl para Windows](https://acpica.org/downloads/binary-tools)
+* [iasl para Linux](http://amdosx.kellynet.nl/iasl.zip)
 
-## Fix Python: `Python is not installed or not found on PATH`
+## Arreglar Python: `Python is not installed or not found on PATH`
 
-Easy fix, download and install the latest python:
+Fácil de arreglar, descarga e instala el Python más reciente:
 
-* [macOS link](https://www.python.org/downloads/macos)
-* [Windows link](https://www.python.org/downloads/windows/)
-* [Linux link](https://www.python.org/downloads/source/)
+* [Link para macOS](https://www.python.org/downloads/macos)
+* [Link para Windows](https://www.python.org/downloads/windows/)
+* [Link para Linux](https://www.python.org/downloads/source/)
 
 Make sure `Add Python to PATH`
 
 ![](../images/troubleshooting/troubleshooting-md/python-path.png)
 
-## Windows Startup Disk can't see APFS drives
+## El disco de Windows no puede ver discos APFS
 
-* Outdated BootCamp drivers(generally ver 6.0 will come with brigadier, BootCamp Utility in macOS provides newer version like ver 6.1). CorpNewt has also forked brigadier fixing these issues as well: [CorpNewt's brigadier](https://github.com/corpnewt/brigadier)
+* Drivers de BootCamp desactualizados (generalmente la versión 6.0 vendrá con brigadier, la utilidad de BootCamp en macOS provee versiones más nuevas como 6.1). CorpNewt también hizo un fork de brigadier arreglando estos errores: [Brigadier de CorpNewt](https://github.com/corpnewt/brigadier)
 
-## Incorrect resolution with OpenCore
+## Resolución incorrecta con OpenCore
 
-* Follow [Fixing Resolution and Verbose](https://dortania.github.io/OpenCore-Post-Install/cosmetic/verbose.html) for correct setup, set `UIScale` to `02` for HiDPI
-* Users also have noticed that setting `ConsoleMode` to Max will sometimes fail, leaving it empty can help
+* Sigue la guía de [Arreglando resolución y Verbose](https://dortania.github.io/OpenCore-Post-Install/cosmetic/verbose.html) para una configuración correcta, configura `UIScale` a `02` para HiDPI
+* Algunos usuarios se dieron cuenta que configurando `ConsoleMode` a Max puede fallar a veces, dejándolo vacío puede ayudar.
 
-## No temperature/fan sensor output
+## No hay salida de temperatura/ventiladores
 
-So couple things:
+Algunas cosas a tener en cuenta:
 
-* iStat Menus doesn't yet support MacPro7,1 readouts
-* VirtualSMC's bundled sensors do not support AMD
+* Los menúes de iStat aún no son compatibles con las lecturas de MacPro7,1
+* Los sensores incluidos de VirtualSMC no son compatibles con AMD
 
-For iStat, you'll have to wait for an update. For AMD users, you can use either:
+Para iStat, tendrás que esperar a una actualización. Para usuarios de AMD, podrán usar:
 
 * [SMCAMDProcessor](https://github.com/trulyspinach/SMCAMDProcessor/releases)
-  * Still in early beta but great work has been done, note it's been mainly tested on Ryzen
+  * Aún en la versión de beta inicial, pero se ha realizado un gran trabajo, ten en cuenta que se ha probado principalmente en Ryzen
 * [FakeSMC3_with_plugins](https://github.com/CloverHackyColor/FakeSMC3_with_plugins/releases)
 
-**Note for AMD with FakeSMC**:
+**Nota para AMD con FakeSMC**:
 
-* FileVault support requires more work with FakeSMC
-* Make sure no other SMC kexts are present, specifically those from [VirtualSMC](https://github.com/acidanthera/VirtualSMC/releases)
+* La compatibilidad con FileVault requiere más trabajo con FakeSMC
+* Asegúrate de que no haya otros kexts SMC presentes, específicamente kexts como [VirtualSMC](https://github.com/acidanthera/VirtualSMC/releases)
 
-## Can't find Windows/BootCamp drive in picker
+## No puedo encontrar el disco de Windows/BootCamp en el menú
 
-So with OpenCore, we have to note that legacy Windows installs are not supported, only UEFI. Most installs now are UEFI based but those made by BootCamp Assistant are legacy based, so you'll have to find other means to make an installer(Google's your friend). This also means MasterBootRecord/Hybrid partitions are also broken so you'll need to format the drive you want to install onto with DiskUtility. See the [Multiboot Guide](https://hackintosh-multiboot.gitbook.io/hackintosh-multiboot/) on best practices
+En el caso de OpenCore, debemos tener en cuenta que las instalaciones legacy de Windows no son soportadas, únicamente UEFI. La mayoría de las instalaciones ahora son basasdas en UEFI pero aquellas hechas con el asistente de BootCamp son basadas en lagacy, así que tendrás que encontrar otras maneras de hacer un instalador (aquí Google es tu amigo). Esto también significa que las particiones MBR/Híbridas también están rotas así que tenrdrás que formatear el disco en el que quieres instalar Windows con Disk Utility. Dirígete a la guía [Multiboot](https://hackintosh-multiboot.gitbook.io/hackintosh-multiboot/) para obtener más información.
 
-Now to get onto troubleshooting:
+Ahora, veremos algunas soluciones:
 
-* Make sure `Misc -> Security -> ScanPolicy` is set to `0` to show all drives
-* Enable `Misc -> Boot -> Hideself` is enabled when Windows bootloader is located on the same drive
+* Asegúrate que `Misc -> Security -> ScanPolicy` está configurado a `0` para mostrar todos los discos
+* `Misc -> Boot -> Hideself` debe estar habilitado cuando el gestor de arranque de Windows está en el mismo disco
 
-## "You can't change the startup disk to the selected disk" error
+## Error "You can't change the startup disk to the selected disk"
 
-This is commonly caused by irregular partition setup of the Windows drive, specifically that the EFI is not the first partition. To fix this, we need to enable this quirk:
+Esto es comúnmente causado por una configuración irregular de particiones en el disco de Windows, específicamente que EFI no es la primera partición. Para arreglar esto, debes habilitar este quirk:
 
 * `PlatformInfo -> Generic -> AdviseWindows -> True`
 
 ![](../images/troubleshooting/troubleshooting-md/error.png)
 
-## Booting Windows results in BlueScreen or Linux crashes
+## Bootear Windows resulta en una pantalla azul o Linux se crashea
 
-This is due to alignment issues, make sure `SyncRuntimePermissions` is enabled on firmwares supporting MATs. Check your logs whether your firmware supports Memory Attribute Tables(generally seen on 2018 firmwares and newer)
+Esto se debe a problemas de alineación, asegúrate de que `SyncRuntimePermissions` esté habilitado en firmwares compatibles con MAT. Verifica tus registros si tu firmware es compatible con las tablas de atributos de memoria (MATs, los cuales generalmente se ven en los firmwares de 2018 en adelante)
 
-Common Windows error code:
+Error común de Windows:
 
 * `0xc000000d`
 
-## Booting Windows error: `OCB: StartImage failed - Already started`
+Error al iniciar Windows: `OCB: StartImage failed - Already started`
 
-This is due to OpenCore getting confused when trying to boot Windows and accidentally thinking it's booting OpenCore. This can be avoided by either move Windows to it's own drive *or* adding a custom drive path under BlessOverride. See [Configuration.pdf](https://github.com/acidanthera/OpenCorePkg/blob/master/Docs/Configuration.pdf) for more details.
+Esto es debido a que OpenCore se queda confundido cuando intenta arrancar Windows y accidentalmente piensa que está arrancando OpenCore. Esto puede ser arreglado moviendo Windows a su propia unidad *o* agregando una ruta de unidad personalizada en BlessOverride. Dirígete a [Configuration.pdf](https://github.com/acidanthera/OpenCorePkg/blob/master/Docs/Configuration.pdf) para más información. 
 
 ## iASL warning, # unresolved
 
-If you try to decompile your DSDT and get an error similar to this:
+Si cuando tratas de decompilar tu DSDT recibes un error similar a este:
 
 ```
 iASL Warning: There were 19 external control methods found during disassembly, but only 0 were resolved (19 unresolved)
 ```
 
-This happens when one ACPI table requires the rest for proper referencing, it does not accept the creation of DSDTs as we're only using it for creating a select few SSDTs. For those who are worried, you can run the following:
+Podemos decir que esto sucede cuando una tabla ACPI requiere del resto para hacer referencia correctamente. No acepta la creación de DSDTs ya que sólo lo estamos usando para crear algunos SSDTs. Para aquellos que estén preocupados, pueden correr lo siguiente:
 
 ```
 iasl * [insert all ACPI files here]
 ```
 
-## No Volume/Brightness control on external monitors
+## No se puede controlar el Volumen/Brillo en monitores externos
 
-Oddly enough, macOS has locked down digital audio from having control. To bring back some functionality, the app [MonitorControl](https://github.com/the0neyouseek/MonitorControl/releases) has done great work on improving support in macOS
+Curiosamente, macOS ha bloqueado el control del audio digital. Para recuperar algunas funciones, la aplicación [MonitorControl](https://github.com/the0neyouseek/MonitorControl/releases) ha hecho un gran trabajo para mejorar el soporte en macOS.
 
 ## Disabling SIP
 
-SIP or proper known as System Integrity Protection, is a security technology that attempts to prevent any malicious software and the end user from damaging the OS. First introduced with OS X El Capitan, SIP has grown over time to control more and more things in macOS, including limiting edits to restricted file locations and 3rd party kext loading with `kextload`(OpenCore is unaffected as kexts are injected at boot). To resolve this, Apple has provided numerous configuration options in the NVRAM variable `csr-active-config` which can either be set in the macOS recovery environment or with OpenCore's NVRAM section(The latter will be discussed below).
+SIP o propiamente conocida como Protección de Integridad del Sistema, es una tecnología de seguridad que intenta evitar que cualquier software malicioso y el usuario dañen el sistema operativo. Introducido por primera vez con OS X El Capitan, el SIP ha crecido con el tiempo para controlar más y más cosas en macOS, incluida la limitación de ediciones a archivos restringidos y la carga de kexts de terceros con `kextload` (OpenCore no se ve afectado porque los kexts se inyectan en el arranque). Para resolver esto, Apple ha proporcionado numerosas opciones de configuración en la variable NVRAM `csr-active-config` que se puede configurar en el entorno de recuperación macOS o con la sección NVRAM de OpenCore (esta última se discutirá a continuación).
 
-You can choose different values to enable or disable certain flags of SIP. Some useful tools to help you with these are [CsrDecode](https://github.com/corpnewt/CsrDecode) and [csrstat](https://github.com/JayBrown/csrstat-NG). Common values are as follows (bytes are pre-hex swapped for you):
+Puedes elegir entre varios valores para habilitar/deshabilitar ciertas "flags" del SIP. Algunas herramientas útiles para ayudarte con esto son [CsrDecode](https://github.com/corpnewt/CsrDecode) y [csrstat](https://github.com/JayBrown/csrstat-NG). Los valores comúnes son los siguientes:
 
-* `00000000` - SIP completely enabled (0x0).
-* `03000000` - Disable kext signing (0x1) and filesystem protections (0x2).
-* `FF030000` - Disable all [flags in macOS High Sierra](https://opensource.apple.com/source/xnu/xnu-4570.71.2/bsd/sys/csr.h.auto.html) (0x3ff).
-* `FF070000` - Disable all [flags in macOS Mojave](https://opensource.apple.com/source/xnu/xnu-4903.270.47/bsd/sys/csr.h.auto.html) and in [macOS Catalina](https://opensource.apple.com/source/xnu/xnu-6153.81.5/bsd/sys/csr.h.auto.html) (0x7ff) as Apple introduced a value for executable policy.
+* `00000000` - SIP completamente habilitado (0x0).
+* `03000000` - Deshabilita la firma de los kexts (0x1) y las protecciones del sistema de archivos (0x2).
+* `FF030000` - Deshabilita todas las [flags en macOS High Sierra](https://opensource.apple.com/source/xnu/xnu-4570.71.2/bsd/sys/csr.h.auto.html) (0x3ff).
+* `FF070000` - Deshabilita todas las [flags en macOS Mojave](https://opensource.apple.com/source/xnu/xnu-4903.270.47/bsd/sys/csr.h.auto.html) y en [macOS Catalina](https://opensource.apple.com/source/xnu/xnu-6153.81.5/bsd/sys/csr.h.auto.html) (0x7ff) ya que Apple introdujo un valor para executable policy.
 * `FF0F0000` - Disable all flags in macOS Big Sur (0xfff) which has another new [flag for authenticated root](https://eclecticlight.co/2020/06/25/big-surs-signed-system-volume-added-security-protection/).
 
-**Note**: Disabling SIP with OpenCore is quite a bit different compared to Clover, specifically that NVRAM variables will not be overwritten unless explicitly told so under the `Delete` section. So if you've already set SIP once either via OpenCore or in macOS, you must override the variable:
+**Nota**: Deshabilitar el SIP con OpenCore es bastante distinto comparado con Clover, específicamente que las variables del NVRAM no van a ser anuladas a menos que se indique específicamente en la sección `Delete`. Así que, si ya has configurado el SIP via OpenCore o desde macOS, debes anular la siguiente variable:
 
 * `NVRAM -> Block -> 7C436110-AB2A-4BBB-A880-FE41995C9F82 -> csr-active-config`
   
 ![](../images/troubleshooting/troubleshooting-md/sip.png)
 
-## Writing to the macOS system partition
+## Escribiendo a la partición de sistema de macOS
 
-With macOS Catalina and newer, Apple split the OS and user data into 2 volumes where the system volume is read-only by default. To make these drives writable we'll need to do a few things:
+Con macOS Catalina y versiones posteriores, Apple divide el sistema operativo y los datos del usuario en 2 volúmenes donde el volumen del sistema es de solo lectura de forma predeterminada. Para que puedas escribir a estas unidades, tendremos que hacer algunas cosas:
 
 **macOS Catalina**
 
-1. [Disable SIP](#disabling-sip)
-2. Mount drive as writable (Run `sudo mount -uw /` in terminal)
+1. [Deshabilitar el SIP](#disabling-sip)
+2. Montar el disco para que se pueda escribir a él (Run `sudo mount -uw /` in terminal)
+  * También puedes correr `mount -uw /` desde single user mode (agrega el boot arg -s) 
 
 **macOS Big Sur**
 
-1. [Disable SIP](#disabling-sip)
-2. Mount drive as writable (See below link for command)
-3. Create a new snapshot after the changes (See below link for command)
-4. Tag this snapshot for next boot (See below link for command)
+1. [Deshabilitar el SIP](#disabling-sip)
+2. Monta el disco para que se pueda escribir a él (Vé al link abajo para obtener el comando)
+3. Crea una nueva snapshot después de los cambios (consulta el enlace a continuación para el comando)
+4. Etiqueta esta snapshot para el próximo arranque (consulta el enlace a continuación para el comando)
 
-Full credit and command links provided by [ASentientBot](https://forums.macrumors.com/threads/macos-11-big-sur-on-unsupported-macs-thread.2242172/post-28603788) and [@mac_editor](https://egpu.io/forums/profile/mac_editor/):
+Créditos totales y links proporcionados por [ASentientBot](https://forums.macrumors.com/threads/macos-11-big-sur-on-unsupported-macs-thread.2242172/post-28603788) y [@mac_editor](https://egpu.io/forums/profile/mac_editor/):
 
-* [MacRumors Thread](https://forums.macrumors.com/threads/macos-11-big-sur-on-unsupported-macs-thread.2242172/post-28603788)
-* [eGPU.io thread](https://egpu.io/forums/postid/82119/)
+* [Hilo de MacRumors](https://forums.macrumors.com/threads/macos-11-big-sur-on-unsupported-macs-thread.2242172/post-28603788)
+* [Hilo de eGPU.io](https://egpu.io/forums/postid/82119/)
 
