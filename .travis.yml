@@ -4,19 +4,20 @@ cache:
   npm: true
 jobs:
   include:
-    - name: "Build and Push"
-      script: 
-      - npm run build
-      deploy:
-        local_dir: .vuepress/dist/
-        provider: pages
-        skip_cleanup: true
-        name: Travis Build Bot
-        keep_history: true
-        on:
-          branch: master
-        target_branch: gh-pages
-        # committer_from_gh: true
-        # allow_empty_commit: true
-        token:
-          secure: atNwY1s8qOGac6zQm84k8m2ZHh0vgkV35PtjeeII4+feL9gINJ8opuC9ckJcgyUs+JrYV2msSVRIAiiEh6CQtlMLaOGAB/b3w/zxDXTHGVVe+FjKGM66DCxmvb7Y6SvDJkqSgYLksQfXZNSgSSwQEAYislBhxcXf8tEx8oKTLpbKzgNMoWpIoFXqYWU/DGxCYFmNTM6InBdu0V8J5cfgHZ7dy05AF0jHwFTMNLl/7lTX/xjwpfnnyBvljmt7MTR0n9pcLsvGRwmnKGfIMnxE0pyM6096sItU1WLsCq4WW0+a8zG/YMhj9GMVZ/q/8m6GfppQ2+Z2jdyq79tij+SdDnQXvWBdaGw3nfzk+MYiYIEHgit5sZlsS0+KfMk3CkOGsZFMMbrM6ezYiaKIbTbH+ztPfabwPrK/PbWbBP3ie5pYqF1piGbsU6LxjY4rtlvYCSmhP1y0VvhF5KEt6dwpCrCN5qt+x1VZn4ONHq5XGE0GsV85VzzMCjtMPKn0Xmj9Tzk0mplBKGlgrSCFgDfdRf36spt1phC9AZJAl2Vibay3c36wXIMlIeRWJd0GubrB2RgaWwB38CiXPzijucG6g6KGDstXj3gHlZMiJEXp86bjuE5/zO9ZX0FDOL3UsE7z+fGfaliORBxkd5QB9SxLVgTDb3rYrKRUpsbIS+Rb164=
+  - name: Build and Push
+    script:
+    - npm run build
+    deploy:
+      local_dir: ".vuepress/dist/"
+      provider: pages
+      skip_cleanup: true
+      name: Travis Build Bot
+      keep_history: true
+      on:
+        branch: master
+      target_branch: gh-pages
+      token:
+        secure: atNwY1s8qOGac6zQm84k8m2ZHh0vgkV35PtjeeII4+feL9gINJ8opuC9ckJcgyUs+JrYV2msSVRIAiiEh6CQtlMLaOGAB/b3w/zxDXTHGVVe+FjKGM66DCxmvb7Y6SvDJkqSgYLksQfXZNSgSSwQEAYislBhxcXf8tEx8oKTLpbKzgNMoWpIoFXqYWU/DGxCYFmNTM6InBdu0V8J5cfgHZ7dy05AF0jHwFTMNLl/7lTX/xjwpfnnyBvljmt7MTR0n9pcLsvGRwmnKGfIMnxE0pyM6096sItU1WLsCq4WW0+a8zG/YMhj9GMVZ/q/8m6GfppQ2+Z2jdyq79tij+SdDnQXvWBdaGw3nfzk+MYiYIEHgit5sZlsS0+KfMk3CkOGsZFMMbrM6ezYiaKIbTbH+ztPfabwPrK/PbWbBP3ie5pYqF1piGbsU6LxjY4rtlvYCSmhP1y0VvhF5KEt6dwpCrCN5qt+x1VZn4ONHq5XGE0GsV85VzzMCjtMPKn0Xmj9Tzk0mplBKGlgrSCFgDfdRf36spt1phC9AZJAl2Vibay3c36wXIMlIeRWJd0GubrB2RgaWwB38CiXPzijucG6g6KGDstXj3gHlZMiJEXp86bjuE5/zO9ZX0FDOL3UsE7z+fGfaliORBxkd5QB9SxLVgTDb3rYrKRUpsbIS+Rb164=
+deploy:
+  github_token:
+    secure: yd0QJr+uT1IcwF6SpHyLn8tTPQUxbNVSPjQF78qkfpPQtgsxPFiCYzB9tohhzBDCxJyS6I9BMKODKHwFEfMq3g5gwjRUmmav3xUoh3rF8eYuouPoIZUmXbvfVL8hm6i58LWjrDkvh6N5TAqeJ5XwY+qOqnTyNnH6lronv7Cw6tk6fzs5I6XwFfKZKW1Frqi1lWlnzianM06Sy/W91ifYDJeJ2kiN9jid4gpfjkfIaYgfEV05ZW5EBfAnc2pktm2I4mN9xeMUr796tI4MAL54LxyfSIN6czpSDmvgdDGobGm4MfsefGtgvhP8qpdfmCLkVFx/Kw2rXlPp9RNClPKv0QQNEyEQdqgnSD+8EFqSb5N237ioIOx0oQtsV81xvmzlppaVr6yKvGY0IdATSUupGKqvEBuEAFuGlQ/116ABwdHe9mN4LwClQ8ELOfMVQTFMz9jW3CmwctLv4icQc5mvuGTUvO1q5h+ma9XvDxjj8qaQ0KplhprofXExWsKbIK5+yYheYVqXtPadUbFM5q1fPqhkTy0Jzw0xOFoOtmCgaypi5ZQrn0bB24KgduQ3PnlkmYOiCren6674AsmYlyGM2Fm3605Ktok2gMGMhP9WrAeOvwuDgHPq0f6Illwr24/nLTMe/KOnpISlZzkcO7gW1yCJ/Q/IE5zYcl0TyrqLkBg=
