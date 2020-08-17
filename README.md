@@ -12,9 +12,7 @@ meta:
 
 # ¿Qué es Opencore? Y, ¿para quién es esta guía?
 
-* **Español**: Esta es una traducción no oficial la cual no está afiliada a Dortania, y puede quedar obsoleta fácilmente. La misma está acompañada por la [traducción de la sección post-instalación de rvstry](https://github.com/rvstry/OpenCore-Post-Install).
-
-* **English**: This is an unofficial translation that is not affiliated with Dortania, and is likely to become outdated soon. This tranlastion is accompanied by [rvstry's translation of the OpenCore Post-Install Guide](https://github.com/rvstry/OpenCore-Post-Install).
+* **Nota antes de comenzar** Esta es una traducción no oficial que no está afiliada a [Dortania](https://github.com/dortania), y puede quedar obsoleta fácilmente. 
 
 OpenCore es a lo que nos referimos como un "gestor de arranque", ésta es una complicada pieza de software que utilizamos para preparar a nuestros sistemas para macOS. Específicamente inyectando ciertos datos a macOS como SMBIOS, tablas de ACPI y kexts (extensiones del kernel). Lo distinto de esta herramienta es que ha sido diseñada teniendo en cuenta tanto seguridad como calidad, permitiéndonos utilizar muchas herramientas de seguridad usadas en Macs reales, como la Protección de la Integridad del Sistema (SIP en inglés) y FileVault. Una explicación más profunda puede ser encontrada aquí: [¿Por qué OpenCore encima de Clover y otros?](why-oc.md)
 
