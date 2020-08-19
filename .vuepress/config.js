@@ -213,54 +213,54 @@ module.exports = {
             title: 'Post Instalación',
             collapsable: false,
             children: [
-                ['https://dortania.github.io/OpenCore-Post-Install/', 'Post-Install'],
+                ['https://inyextciones.github.io/OpenCore-Post-Install/', 'Post-Install'],
                 {
                     title: 'Universal',
                     collapsable: true,
                     sidebarDepth: 1,
                     children: [
-                        ['https://dortania.github.io/OpenCore-Post-Install/universal/security', 'Security and FileVault'],
-                        ['https://dortania.github.io/OpenCore-Post-Install/universal/audio', 'Fixing Audio'],
-                        ['https://dortania.github.io/OpenCore-Post-Install/universal/oc2hdd', 'Booting without USB'],
-                        ['https://dortania.github.io/OpenCore-Post-Install/universal/update', 'Updating OpenCore, kexts and macOS'],
-                        ['https://dortania.github.io/OpenCore-Post-Install/universal/drm', 'Fixing DRM'],
-                        ['https://dortania.github.io/OpenCore-Post-Install/universal/iservices', 'Fixing iServices'],
-                        ['https://dortania.github.io/OpenCore-Post-Install/universal/pm', 'Fixing Power Management'],
-                        ['https://dortania.github.io/OpenCore-Post-Install/universal/sleep', 'Fixing Sleep'],
-                        ['https://dortania.github.io/OpenCore-Post-Install/usb/', 'Fixing USB'],
+                        ['https://inyextciones.github.io/OpenCore-Post-Install/universal/security', 'Seguridad y FileVault'],
+                        ['https://inyextciones.github.io/OpenCore-Post-Install/universal/audio', 'Arreglar Audio'],
+                        ['https://inyextciones.github.io/OpenCore-Post-Install/universal/oc2hdd', 'Arrancar sin USB'],
+                        ['https://inyextciones.github.io/OpenCore-Post-Install/universal/update', 'Actualizar OpenCore, kexts y macOS'],
+                        ['https://inyextciones.github.io/OpenCore-Post-Install/universal/drm', 'Arreglar DRM'],
+                        ['https://inyextciones.github.io/OpenCore-Post-Install/universal/iservices', 'Arreglar iServices'],
+                        ['https://inyextciones.github.io/OpenCore-Post-Install/universal/pm', 'Fixing Power Management'],
+                        ['https://inyextciones.github.io/OpenCore-Post-Install/universal/sleep', 'Arreglar Suspensión'],
+                        ['https://inyextciones.github.io/OpenCore-Post-Install/usb/', 'Arreglar USB'],
                     ]
                 },
                 {
                     title: 'Laptop Specifics',
                     collapsable: true,
                     children: [
-                        ['https://dortania.github.io/OpenCore-Post-Install/laptop-specific/battery', 'Fixing Battery Read-outs'],
+                        ['https://inyextciones.github.io/OpenCore-Post-Install/laptop-specific/battery', 'Fixing Battery Read-outs'],
 
                     ]
                 },
                 {
-                    title: 'Cosmetics',
+                    title: 'Cosméticos',
                     collapsable: true,
                     children: [
-                        ['https://dortania.github.io/OpenCore-Post-Install/cosmetic/verbose', 'Fixing Resolution and Verbose'],
-                        ['https://dortania.github.io/OpenCore-Post-Install/cosmetic/gui', 'Add GUI and Boot-chime'],
+                        ['https://inyextciones.github.io/OpenCore-Post-Install/cosmetic/verbose', 'Fixing Resolution and Verbose'],
+                        ['https://inyextciones.github.io/OpenCore-Post-Install/cosmetic/gui', 'Add GUI and Boot-chime'],
                     ]
                 },
                 {
                     title: 'Multiboot',
                     collapsable: true,
                     children: [
-                        ['https://dortania.github.io/OpenCore-Post-Install/multiboot/bootstrap', 'Setting up Bootstrap.efi'],
-                        ['https://dortania.github.io/OpenCore-Post-Install/multiboot/bootcamp', 'Installing BootCamp'],
+                        ['https://inyextciones.github.io/OpenCore-Post-Install/multiboot/bootstrap', 'Configurar Bootstrap.efi'],
+                        ['https://inyextciones.github.io/OpenCore-Post-Install/multiboot/bootcamp', 'Instalar BootCamp'],
                     ]
                 },
                 {
-                    title: 'Miscellaneous',
+                    title: 'Misceláneo',
                     collapsable: true,
                     children: [
-                        ['https://dortania.github.io/OpenCore-Post-Install/misc/rtc', 'Fixing RTC'],
-                        ['https://dortania.github.io/OpenCore-Post-Install/misc/msr-lock', 'Fixing CFG Lock'],
-                        ['https://dortania.github.io/OpenCore-Post-Install/misc/nvram', 'Emulated NVRAM'],
+                        ['https://inyextciones.github.io/OpenCore-Post-Install/misc/rtc', 'Arreglar RTC'],
+                        ['https://inyextciones.github.io/OpenCore-Post-Install/misc/msr-lock', 'Arreglar CFG Lock'],
+                        ['https://inyextciones.github.io/OpenCore-Post-Install/misc/nvram', 'NVRAM Emulada'],
                     ]
                 },
             ]
@@ -274,7 +274,7 @@ module.exports = {
                 '/extras/kaslr-fix',
                 '/extras/spoof',
                 '/extras/big-sur/',
-                ['https://github.com/dortania/OpenCore-Install-Guide/tree/master/clover-conversion', 'Clover Conversion'],
+                ['https://github.com/inyextciones/OpenCore-Install-Guide/tree/master/clover-conversion', 'Clover Conversion'],
             ]
         },
         {
