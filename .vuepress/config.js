@@ -231,10 +231,10 @@ module.exports = {
                     ]
                 },
                 {
-                    title: 'Laptop Specifics',
+                    title: 'Específicos de Laptops',
                     collapsable: true,
                     children: [
-                        ['https://inyextciones.github.io/OpenCore-Post-Install/laptop-specific/battery', 'Fixing Battery Read-outs'],
+                        ['https://inyextciones.github.io/OpenCore-Post-Install/laptop-specific/battery', 'Arreglar las lecturas de la batería'],
 
                     ]
                 },
@@ -242,8 +242,8 @@ module.exports = {
                     title: 'Cosméticos',
                     collapsable: true,
                     children: [
-                        ['https://inyextciones.github.io/OpenCore-Post-Install/cosmetic/verbose', 'Fixing Resolution and Verbose'],
-                        ['https://inyextciones.github.io/OpenCore-Post-Install/cosmetic/gui', 'Add GUI and Boot-chime'],
+                        ['https://inyextciones.github.io/OpenCore-Post-Install/cosmetic/verbose', 'Arreglar la resolución y verbose'],
+                        ['https://inyextciones.github.io/OpenCore-Post-Install/cosmetic/gui', 'Agregar el GUI y el chime de arranque'],
                     ]
                 },
                 {
