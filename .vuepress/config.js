@@ -3,7 +3,7 @@ const {
 } = require('../package')
 
 module.exports = {
-    title: 'OpenCore Install Guide',
+    title: 'Guía de instalación de OpenCore',
     head: [
         ['meta', {
             name: 'theme-color',
