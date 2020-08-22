@@ -22,6 +22,10 @@ No good guide is made by one man, here's credit to those who've helped out:
   * Random guide related stuff
 * [Khronokernel](https://github.com/khronokernel)
   * For both writing and maintaining the guide
+* [UselessBanana](https://github.com/uselessbanana)
+  * For translating the OpenCore Install Guide to Spanish
+* [rvstry](https://github.com/rvstry)
+  * For translating the OpenCore Post Install to Spanish
 * [and the rest of the dortania team](https://github.com/dortania) for helping out
   
 And to the rest who've helped out as well, thank you!
