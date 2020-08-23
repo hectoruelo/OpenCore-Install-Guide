@@ -85,9 +85,6 @@ Esto es en realidad el mismo error que `EndRandomSeed` así que aplican los mism
 
 **Problemas del Booter:**
 
-* `DevirtualiseMmio` puede estar tomando áreas importantes en la memoria que son necesarias para otras cosas, puede que necesites deshabilitar este quirk o incluir en la lista blanca las regiones defectuosas: [Usando DevirtualiseMmio](../extras/kaslr-fix.md#using-devirtualisemmio)
-* `SetupVirtualMap` puede ser necesario dependiendo del firmware, generalmente este quirk debe evitarse, pero la mayoría de los usuarios de Gigabyte y hardware antiguo (Broadwell y anterior) necesitarán esta peculiaridad para arrancar.
-   * Se sabe que las placas madre Z490 fallan con `SetupVirtualMap` habilitado, especialmente en las placas Asus y AsRock.
 * `RebuildAppleMemoryMap` puede no ser un fanático de tu firmware, y el uso de este quirk depende de tener `EnableWriteUnprotector` deshabilitado y `SyncRuntimePermissions` habilitado con la adición de tener una `Tabla de atributos de memoria (MAT)` en tu firmware. Si su firmware no tiene MATs, desactiva tanto `RebuildAppleMemoryMap` como `SyncRuntimePermissions` y luego habilita `EnableWriteUnprotector`.
 
 Para verificar si tu placa madre tiene MATs, busca algo así en los logs:
@@ -95,6 +92,39 @@ Para verificar si tu placa madre tiene MATs, busca algo así en los logs:
 ```
 OCABC: MAT support is 1
 ```
+* `DevirtualiseMmio`
+  * Algunos espacios MMIO siguen siendo requeridos para funcionar correctamente, por lo que tendrás que excluir estas regiones en Booter -> MmioWhitelist o deshabilitar este quirk por completo.or disable this quirk outright.
+  * Más información aquí: [Usando DevirtualiseMmio](../extras/kaslr-fix.md#using-devirtualisemmio)
+
+* `SetupVirtualMap`
+  * Este quirk es requerido por la mayoría de los firmwares y sin este es muy común ver un pánico del kernel aquí, así que habilítalo si no lo has hecho aún.
+    * Sin embargo, ciertos firmwares no funcionan con este quirk y este quirk podría ser el causante del kernel panic:
+      * La serie Ice Lake de Intel
+      * La serie Comet Lake de Intel
+      * Las placas madre B550 y A520 de AMD
+      * Placas madre TRx40 de AMD
+      * Máquinas virtuales como QEMU
+
+* `EnableWriteUnprotector`
+
+  * Otro problema puede ser que macOS está teniendo conflictos con la protección de escritura del registro CR0. Para resolver esto tenemos dos opciones:
+    * Si tu firmware soporta MATs (firmwares de 2018+):
+      * EnableWriteUnprotector -> False
+      * RebuildAppleMemoryMap -> True
+      * SyncRuntimePermissions -> True
+    * Para firmwares más antiguos:
+      * EnableWriteUnprotector -> True
+      * RebuildAppleMemoryMap -> False
+      * SyncRuntimePermissions -> False
+      
+Con respecto al soporte de MATs, los firmwares construidos luego de EDK 2018 lo soportarán y muchos fabricantes incluso han agregado soporte desde las laptops Skylake. El problema es que no siempre es fácil saber si un fabricante ha actualizado el firmware, puedes verificar los registros de OpenCore para saber si el tuyo lo admite:
+
+```
+OCABC: MAT support is 1
+```
+
+Nota: `1` significa que soporta MATs, mientras que `0` significa que no.
+
 
 **Problemas con Kernel:**
 
@@ -270,12 +300,15 @@ Este error para cuando tu SMBIOS no está soportada por esa versión de macOS. A
 
 Otro recordatorio, las siguientes SMBIOS requieren versiones más nuevas de macOS:
 
-* iMac19,x       10.14.4 (18E226)
-* MacPro7,1      10.15.0 (19A583)
-* MacBookAir9,1  10.15.4 (19E287)
-* MacBookPro16,1 10.15.1 (19B2093)
-* MacBookPro16,2 10.15.4 (19E2269)
-* MacBookPro16,3 10.15.4 (19E2269)
+| SMBIOS | Soporte Inicial | Soporte del Kernel |
+| :--- | :--- | :--- |
+| iMac19,x       | 10.14.4  | 18E226 |
+| iMac20,x       | 10.15.6  | 19G2005 |
+| MacPro7,1      | 10.15.0  | 19A583 |
+| MacBookAir9,1  | 10.15.4  | 19E287 |
+| MacBookPro16,1 | 10.15.1  | 19B2093 |
+| MacBookPro16,2 | 10.15.4  | 19E2269 |
+| MacBookPro16,3 | 10.15.4  | 19E2269 |
 
 ## Errores de `Couldn't allocate runtime area` 
 
@@ -334,13 +367,14 @@ OpenRuntime.efi desactualizado, asegúrate de que BOOTx64.efi, OpenCore.efi y Op
 * [Trancado en el instalador de macOS luego de 30 segundos](#frozen-in-the-macos-installer-after-30-seconds)
 * [15h/16h CPU reinicio luego de pantalla de datos y privacidad](#15h16h-cpu-reboot-after-data--privacy-screen)
 * [Teclado funciona pero el trackpad no](#keyboard-works-but-trackpad-does-not)
-* [Suspensión crasheando en AMD](#sleep-crashing-on-amd)
-* [Kernel Panic en `Invalid frame pointer`](#kernel-panic-on-invalid-frame-pointer)
+* [Suspensión crasheando en AMD](#suspensión-crasheando-en-amd)
+* [Kernel Panic en `Invalid frame pointer`](#kernel-panic-en-invalid-frame-pointer)
 * [`kextd stall[0]: AppleACPICPU`](#kextd-stall0-appleacpicpu)
-* [MediaKit reporta que no hay espacio suficiente](#mediakit-reports-not-enough-space)
-* [DiskUtility error al eliminar](#diskutility-failing-to-erase)
+* [MediaKit reporta que no hay espacio suficiente](#mediakit-reporta-que-no-hay-espacio-suficiente)
+* [DiskUtility error al eliminar](#diskutility-error-al-eliminar)
 * [Kernel Panic en AppleIntelI210Ethernet](appleinteli210ethernet)
-* [Discos SATA no aparecen en Disk Utility](#sata-drives-not-shown-in-diskutility)
+* [Discos SATA no aparecen en Disk Utility](#discos-sata-no-aparecen-en-disk-utility)
+* [Trancado cuando faltan 2 minutos](#trancado-cuando-faltan-2-minutos)
 
 ## Stuck on `RTC...`, `PCI Configuration Begins`, `Previous Shutdown...`, `HPET`, `HID: Legacy...`
 
@@ -388,7 +422,7 @@ Ejemplo de cómo se ve un RTC deshabilitado sin forma de habilitarlo (ten en cue
 
 ![](../images/troubleshooting/troubleshooting-md/OC_catalina.jpg)
 
-Si te estás quedando trancado en/cerca de ACPI table loading con un motherboard AMD B550, agrega el siguiente SSDT:
+Si te estás quedando trancado en/cerca de ACPI table loading con un motherboard AMD B550 o A520, agrega el siguiente SSDT:
 
 * [SSDT-CPUR.aml](https://github.com/dortania/Getting-Started-With-ACPI/blob/master/extra-files/compiled/SSDT-CPUR.aml)
 
@@ -550,10 +584,17 @@ Esto se debe a algún problema relacionado con  `Booter -> Quirks` que configura
 
 * `DevirtualiseMmio`
   * Todavía se requieren ciertos espacios MMIO para funcionar correctamente, por lo que deberás excluir estas regiones en Booter -> MmioWhitelist o deshabilitar este quirk por completo
+ * Más información aquí: [Usando DevirtualiseMmio](../extras/kaslr-fix.md#using-devirtualisemmio)
+
 * `SetupVirtualMap`
-  * requerido para los firmwares que necesitan que se corrija la dirección de memoria virtual, esto se encuentra comúnmente en laptops y sistemas Gigabyte
-  * Ten en cuenta que las protecciones de memoria de Icelake y Comet Lake rompen este quirk, así que evítalo
-  * Las máquinas virtuales como QEMU también requieren este quirk deshabilitada
+  * Este quirk es requerido por la mayoría de los firmwares y sin este es muy común ver un pánico del kernel aquí, así que habilítalo si no lo has hecho aún.
+    * Sin embargo, ciertos firmwares no funcionan con este quirk y este quirk podría ser el causante del kernel panic:
+      * La serie Ice Lake de Intel
+      * La serie Comet Lake de Intel
+      * Las placas madre B550 y A520 de AMD
+      * Placas madre TRx40 de AMD
+      * Máquinas virtuales como QEMU
+
   
 Otro problema puede ser que macOS está en conflicto con la protección contra escritura del registro CR0, para resolver esto tenemos 2 opciones:
 
@@ -617,6 +658,23 @@ Si tienes una placa madre Comet lake con el NIC i225-V, es posible que experimen
 ## Discos SATA no aparecen en DiskUtility
 
 * Asegúrate de que el SATA Mode es AHCI en tu BIOS
+* Ciertos controladores SATA pueden no ser soportados oficialmente por macOS, en estos casos querrás agregar [CtlnaAHCIPort.kext](https://github.com/dortania/OpenCore-Install-Guide/blob/master/extra-files/CtlnaAHCIPort.kext.zip)
+* Para controladores SATA muy antiguos, [AHCIPortInjector.kext](https://www.insanelymac.com/forum/files/file/436-ahciportinjectorkext/) podría ser más adecuado.
+
+## Trancado cuando faltan 2 minutos
+
+![](../images/troubleshooting/troubleshooting-md/2-min-remaining.jpeg)
+
+Este error está relacionado directamente con la parte en la que macOS escribirá ciertas variables NVRAM para que puede arrancar tu sistema luego, así que cuando hay problemas alrededor del NVRAM se quedará trancado aquí.
+
+Para resolver esto, tenemos algunas opciones:
+
+* Arreglo para las series 300 de Intel (es decir, Z390):
+  * [SSDT-PMC](https://dortania.github.io/Getting-Started-With-ACPI/)
+* Otros pueden configurar lo siguiente en su config.plist:
+  * LegacyEnable -> YES
+  * LegacyOverwrite -> YES
+  * WriteFlash -> YES
 
 # Post instalación de macOS
 
