@@ -275,6 +275,7 @@ module.exports = {
                 '/extras/spoof',
                 '/extras/big-sur/',
                 ['https://github.com/inyextciones/OpenCore-Install-Guide/tree/master/clover-conversion', 'Clover Conversion'],
+		'/extras/smbios-support.md',
             ]
         },
         {
