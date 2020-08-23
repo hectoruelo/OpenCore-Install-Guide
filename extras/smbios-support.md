@@ -55,6 +55,7 @@ También tenemos algunas notas especiales con las SMBIOS:
 
 * iMacPro1,1 y MacPro7,1 son las únicas 2 SMBIOS que permitirán que la GPU dedicada maneje toda la carga de trabajo, incluido el renderizado en segundo plano y otras tareas que manejaría la iGPU
    * Solo recomendamos este SMBIOS si lo necesitas; sin embargo, es probable que debas corregir la administración de energía, ya que la suspensión puede interrumpirse si su hardware no es de este tipo (HEDT/Server/AMD): [Arreglar la administración de energía](https://inyextciones.github.io/OpenCore-Post-Install/universal/pm.html)
+   * Ten en cuenta que esto requiere de una GPU Polaris, Vega o Navi para funcionar correctamente.
 * iMac20,2 es un SMBIOS personalizado diseñado solo para la CPU i9-10910 personalizada de Apple, por lo que, a menos que tengas un i9-10900K, recomendamos usar iMac20,1
 * Debe evitarse el SMBIOS MacMini a menos que esté ejecutando hardware móvil sin una pantalla incorporada
    * Los NUCs de Intel son el hardware ideal para este SMBIOS
