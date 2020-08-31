@@ -18,7 +18,7 @@ OpenCore es a lo que nos referimos como un "gestor de arranque", ésta es una co
 
 Esta guía se centrará en dos temas:
 
-* Instalar macOS en computadoras basadas en X86
+* Instalar macOS en computadoras basadas en x86
 * Enseñarte qué es lo que hace funcionar a tu hack
 
 Debido a esto, esperamos que leas, aprendas y hasta busques en google. Recuerda que esto no es una simple instalación de un click.
