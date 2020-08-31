@@ -700,6 +700,7 @@ X540
 X570
 X79
 X86
+x86
 X86PlatformPlugin
 X86PlatformShim
 X99
