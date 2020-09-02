@@ -131,6 +131,7 @@ module.exports = {
                 collapsable: true,
 				sidebarDepth: 1,
                 children: [
+                    ['/config.plist/sandy-bridge', 'Sandy Bridge'],
                     ['/config.plist/ivy-bridge', 'Ivy Bridge'],
                     ['/config.plist/haswell', 'Haswell'],
                     ['/config.plist/skylake', 'Skylake'],
@@ -139,65 +140,13 @@ module.exports = {
                     ['/config.plist/comet-lake', 'Comet Lake'],
                 ]
             },
-            {
-                title: 'Intel Laptop config.plist',
-                collapsable: true,
-				sidebarDepth: 1,
-                children: [
-                    ['/config-laptop.plist/ivy-bridge', 'Ivy Bridge'],
-                    ['/config-laptop.plist/haswell', 'Haswell'],
-					['/config-laptop.plist/broadwell', 'Broadwell'],
-                    ['/config-laptop.plist/skylake', 'Skylake'],
-                    ['/config-laptop.plist/kaby-lake', 'Kaby Lake'],
-                    ['/config-laptop.plist/coffee-lake', 'Coffee Lake'],
-					['/config-laptop.plist/coffee-lake-plus', 'Coffee Lake Plus'],
-                    ['/config-laptop.plist/icelake', 'Ice Lake'],
-                ]
-            },
-            {
-                title: 'Intel HEDT config.plist',
-                collapsable: true,
-				sidebarDepth: 1,
-                children: [
-                    '/config-HEDT/haswell-e',
-                    '/config-HEDT/broadwell-e',
-                    '/config-HEDT/skylake-x',
-                ]
-            },
-            {
-                title: 'AMD Desktop config.plist',
-                collapsable: true,
-				sidebarDepth: 1,
-                children: [
-                    '/AMD/fx',
-                    '/AMD/zen',
-                ]
-            },
-            {
-                title: 'Intel Legacy config.plist',
-                collapsable: true,
-                children: [
-                    '/config.plist/legacy',
-		            {
-		                title: 'Legacy Generation',
-		                collapsable: false,
-		                children: [
-		                    ['/config.plist/legacy/penryn', 'Penryn'],
-							['/config.plist/legacy/nehalem', 'Nehalem'],
-							['/config.plist/legacy/sandy-bridge', 'Sandy Bridge'],
-							['/config.plist/legacy/sandy-bridge-e', 'Sandy/Ivy Bridge-E'],
-		                ]
-		            },
-                ]
-            },
-            ]
-        },
-        {
+        ]
+    },
+    {
             title: 'Instalación',
             collapsable: false,
             children: [
                 '/installation/installation-process',
-
             ]
         },
         {
