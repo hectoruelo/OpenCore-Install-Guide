@@ -1,4 +1,4 @@
-# Desktop Sandy Bridge
+# Desktop Sandy Bridge (not translated yet)
 
 | Support | Version |
 | :--- | :--- |
