@@ -1,7 +1,7 @@
 
 # ¿Por qué OpenCore encima de Clover y otros?
 
-* Versión soportada 0.6.0
+* Versión soportada 0.6.1
 
 Esta sección es un breve resumen de por qué la comunidad ha estado haciendo la transición a OpenCore. Aquellos que solo quieren una máquina con macOS pueden omitir esta página.
 
@@ -59,5 +59,5 @@ Hechémosle un vistazo al método de OpenCore:
 Cosas a tener en cuenta con el método de OpenCore:
 
 * El formato del "prelinked kernel" sigue siendo el mismo desde 10.6, por lo que es más dificil perder soporte. 
-  * Esto significa que el soporte comienza en 10.7, pero 10.6 puede ser utilizado debido a que esta versión no tiene un "prelinked kernel"
+  * OpenCore también soporta cacheless, Mkext y KernelCollections por lo que también tiene soporte para todas las versiones de Intel de OS X/macOS. Sin embargo, el soporte adecuado ha sido agregado en 10.6 y posterior. 
 * Es mucho más estable, ya que se hacen mucho menos parches.
