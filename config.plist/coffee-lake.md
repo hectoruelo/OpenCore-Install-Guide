@@ -308,7 +308,7 @@ Security se explica por sí sola, **no te lo saltes**. Vamos a cambiar lo siguie
   * Permite restablecer NVRAM tanto en el selector de arranque como al presionar `Cmd+Opt+P+R`
 * **AllowSetDefault**: YES
   * Permite que `CTRL+Enter` y `CTRL+Index` configuren el dispositivo de arranque predeterminado en el selector
-  * **ApECID**: 0
+* **ApECID**: 0
   * Usado para compensar identificadores de arranque seguro, actualmente este quirk es faltoso debido a un bug en el instalador de macOS así que te recomendamos que lo dejes como está por defecto.
 * **AuthRestart**: NO
   * Habilita el reinicio autenticado para FileVault 2, por lo que no se requiere contraseña al reiniciar. Puede considerarse un riesgo de seguridad así que es opcional
