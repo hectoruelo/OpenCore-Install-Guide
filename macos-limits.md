@@ -41,24 +41,24 @@ Para el soporte de CPUs, tenemos el siguiente desglose:
 
 | Generación de CPU | Soporte Inicial | Última versión soportada | Notas | CPUID |
 | :--- | :--- | :--- | :--- | :--- |
-| [Pentium 4](https://en.wikipedia.org/wiki/Pentium_4) | 10.4.0 | 10.5.8 | Sólo utilizados en dev kits | 0x0F41 |
-| [Yonah](https://en.wikipedia.org/wiki/Yonah_(microprocessor)) | 10.4.5 | 10.6.8 | 32Bit | 0x0006E6 |
-| [Conroe](https://en.wikipedia.org/wiki/Conroe_(microprocessor)), [Merom](https://en.wikipedia.org/wiki/Merom_(microprocessor)) | 10.4.10 | 10.11.6 | No SSE4 | 0x0006F2 |
-| [Penryn](https://en.wikipedia.org/wiki/Penryn_(microarchitecture)) | 10.4.11 | 10.13.6 | No SSE4.2 | 0x010676 |
-| [Nehalem](https://en.wikipedia.org/wiki/Nehalem_(microarchitecture)) | 10.5.6 | Current | N/A | 0x0106A2 |
-| [Lynnfield](https://en.wikipedia.org/wiki/Lynnfield_(microprocessor)), [Clarksfield](https://en.wikipedia.org/wiki/Clarksfield_(microprocessor)) | 10.6.3 | Current | No hay soporte de iGPUs en 10.14+ | 0x0106E0 |
-| [Westmere, Clarkdale, Arrandale](https://en.wikipedia.org/wiki/Westmere_(microarchitecture)) | 10.6.4 | Current | No hay soporte de iGPUs en 10.14+ | 0x0206C0 |
-| [Sandy Bridge](https://en.wikipedia.org/wiki/Sandy_Bridge) | 10.6.7 | Current | No hay soporte de iGPUs en 10.14+ | 0x0206A0(M/H) |
-| [Ivy Bridge](https://en.wikipedia.org/wiki/Ivy_Bridge_(microarchitecture)) | 10.7.3 | Current | No hay soporte de iGPUs en 11+ | 0x0306A0(M/H/G) |
-| [Ivy Bridge-E5](https://en.wikipedia.org/wiki/Ivy_Bridge_(microarchitecture)) | 10.9.2 | Current | N/A | 0x0306E0 |
-| [Haswell](https://en.wikipedia.org/wiki/Haswell_(microarchitecture)) | 10.8.5 | Current | N/A | 0x0306C0(S) |
-| [Broadwell](https://en.wikipedia.org/wiki/Broadwell_(microarchitecture)) | 10.10.0 | Current | N/A | 0x0306D4(U/Y) |
-| [Skylake](https://en.wikipedia.org/wiki/Skylake_(microarchitecture)) | 10.11.1 | Current | N/A | 0x0506e3(H/S) 0x0406E3(U/Y) |
-| [Kaby Lake](https://en.wikipedia.org/wiki/Kaby_Lake) | 10.12.6 | Current | N/A | 0x0906E9(H/S/G) 0x0806E9(U/Y) |
-| [Coffee Lake](https://en.wikipedia.org/wiki/Coffee_Lake) | 10.13.2 | Current | El soporte de iGPUsfue agregado en 10.13.6 | 0x0906EA(S/H/E) 0x0806EA(U)|
-| [Amber](https://en.wikipedia.org/wiki/Kaby_Lake#List_of_8th_generation_Amber_Lake_Y_processors), [Whiskey](https://en.wikipedia.org/wiki/Whiskey_Lake_(microarchitecture)), [Comet Lake](https://en.wikipedia.org/wiki/Comet_Lake_(microprocessor)) | 10.14.1 | Current | N/A | 0x0806E0(U/Y) |
-| [Comet Lake](https://en.wikipedia.org/wiki/Comet_Lake_(microprocessor)) | 10.15.4 | Current | N/A | 0x0906E0(S/H)|
-| [Ice Lake](https://en.wikipedia.org/wiki/Ice_Lake_(microprocessor)) | 10.15.4 | Current | N/A | 0x0706E5(U) |
+| [Pentium 4](https://en.wikipedia.org/wiki/Pentium_4) | 10.4.1 | 10.5.8 | Sólo utilizado en kits de desarrolladores | 0x0F41 |
+| [Yonah](https://en.wikipedia.org/wiki/Yonah_(microprocessor)) | 10.4.4 | 10.6.8 | 32Bit | 0x0006E6 |
+| [Conroe](https://en.wikipedia.org/wiki/Conroe_(microprocessor)), [Merom](https://en.wikipedia.org/wiki/Merom_(microprocessor)) | 10.4.7 | 10.11.6 | No SSE4 | 0x0006F2 |
+| [Penryn](https://en.wikipedia.org/wiki/Penryn_(microarchitecture)) | 10.4.8 | 10.13.6 | No SSE4.2 | 0x010676 |
+| [Nehalem](https://en.wikipedia.org/wiki/Nehalem_(microarchitecture)) | 10.5.6 | Actual | N/A | 0x0106A2 |
+| [Lynnfield](https://en.wikipedia.org/wiki/Lynnfield_(microprocessor)), [Clarksfield](https://en.wikipedia.org/wiki/Clarksfield_(microprocessor)) | 10.6.3 | Actual | Sin soporte de iGPU en 10.14+ | 0x0106E0 |
+| [Westmere, Clarkdale, Arrandale](https://en.wikipedia.org/wiki/Westmere_(microarchitecture)) | 10.6.4 | Actual | Sin soporte de iGPU en 10.14+ | 0x0206C0 |
+| [Sandy Bridge](https://en.wikipedia.org/wiki/Sandy_Bridge) | 10.6.7 | Actual | Sin soporte de iGPU en 10.14+ | 0x0206A0(M/H) |
+| [Ivy Bridge](https://en.wikipedia.org/wiki/Ivy_Bridge_(microarchitecture)) | 10.7.3 | Actual | Sin soporte de iGPU en 11+ | 0x0306A0(M/H/G) |
+| [Ivy Bridge-E5](https://en.wikipedia.org/wiki/Ivy_Bridge_(microarchitecture)) | 10.9.2 | Actual | N/A | 0x0306E0 |
+| [Haswell](https://en.wikipedia.org/wiki/Haswell_(microarchitecture)) | 10.8.5 | Actual | N/A | 0x0306C0(S) |
+| [Broadwell](https://en.wikipedia.org/wiki/Broadwell_(microarchitecture)) | 10.10.0 | Actual | N/A | 0x0306D4(U/Y) |
+| [Skylake](https://en.wikipedia.org/wiki/Skylake_(microarchitecture)) | 10.11.1 | Actual | N/A | 0x0506e3(H/S) 0x0406E3(U/Y) |
+| [Kaby Lake](https://en.wikipedia.org/wiki/Kaby_Lake) | 10.12.4 | Actual | N/A | 0x0906E9(H/S/G) 0x0806E9(U/Y) |
+| [Coffee Lake](https://en.wikipedia.org/wiki/Coffee_Lake) | 10.12.6 | Actual | iGPU supported added in 10.13.6 | 0x0906EA(S/H/E) 0x0806EA(U)|
+| [Amber](https://en.wikipedia.org/wiki/Kaby_Lake#List_of_8th_generation_Amber_Lake_Y_processors), [Whiskey](https://en.wikipedia.org/wiki/Whiskey_Lake_(microarchitecture)), [Comet Lake](https://en.wikipedia.org/wiki/Comet_Lake_(microprocessor)) | 10.14.1 | Actual | N/A | 0x0806E0(U/Y) |
+| [Comet Lake](https://en.wikipedia.org/wiki/Comet_Lake_(microprocessor)) | 10.15.4 | Actual | N/A | 0x0906E0(S/H)|
+| [Ice Lake](https://en.wikipedia.org/wiki/Ice_Lake_(microprocessor)) | 10.15.4 | Actual | N/A | 0x0706E5(U) |
 
 :::
 
@@ -98,12 +98,12 @@ Una nota importante para las **Laptops con GPU dedicada**:
 | [X1000](https://en.wikipedia.org/wiki/Radeon_X1000_series) | 10.4.x | 10.7.5 | Requiere de un kernel 32bit |
 | [Terascale](https://en.wikipedia.org/wiki/TeraScale_(microarchitecture)) | 10.5.x | 10.13.6 | N/A |
 | [Terascale 2/3](https://en.wikipedia.org/wiki/TeraScale_(microarchitecture)) | 10.6.x | 10.13.6 | N/A |
-| [GCN 1](https://en.wikipedia.org/wiki/Graphics_Core_Next) | 10.8.3 | Current | N/A |
-| [GCN 2/3](https://en.wikipedia.org/wiki/Graphics_Core_Next) | 10.10.x | Current | N/A |
-| [Polaris 10](https://en.wikipedia.org/wiki/Radeon_RX_400_series), [20](https://en.wikipedia.org/wiki/Radeon_RX_500_series) | 10.12.1 | Current | N/A |
-| [Vega 10](https://en.wikipedia.org/wiki/Radeon_RX_Vega_series) | 10.12.6 | Current | N/A |
-| [Vega 20](https://en.wikipedia.org/wiki/Radeon_RX_Vega_series) | 10.14.5 | Current | N/A |
-| [Navi 10](https://en.wikipedia.org/wiki/Radeon_RX_5000_series) | 10.15.1 | Current | Requiere `agdpmod=pikera` en los boot-args |
+| [GCN 1](https://en.wikipedia.org/wiki/Graphics_Core_Next) | 10.8.3 | Actual | N/A |
+| [GCN 2/3](https://en.wikipedia.org/wiki/Graphics_Core_Next) | 10.10.x | Actual | N/A |
+| [Polaris 10](https://en.wikipedia.org/wiki/Radeon_RX_400_series), [20](https://en.wikipedia.org/wiki/Radeon_RX_500_series) | 10.12.1 | Actual | N/A |
+| [Vega 10](https://en.wikipedia.org/wiki/Radeon_RX_Vega_series) | 10.12.6 | Actual | N/A |
+| [Vega 20](https://en.wikipedia.org/wiki/Radeon_RX_Vega_series) | 10.14.5 | Actual | N/A |
+| [Navi 10](https://en.wikipedia.org/wiki/Radeon_RX_5000_series) | 10.15.1 | Actual | Requiere `agdpmod=pikera` en los boot-args |
 
 :::
 
@@ -118,10 +118,11 @@ Una nota importante para las **Laptops con GPU dedicada**:
 | [Tesla](https://en.wikipedia.org/wiki/Tesla_(microarchitecture)) | 10.4.x | 10.13.6 | N/A |
 | [Tesla V2](https://en.wikipedia.org/wiki/Tesla_(microarchitecture)#Tesla_2.0) | 10.5.x | 10.13.6 | N/A |
 | [Fermi](https://en.wikipedia.org/wiki/Fermi_(microarchitecture)) | 10.7.x | 10.13.6 | N/A |
-| [Kepler Gen 1/2](https://en.wikipedia.org/wiki/Kepler_(microarchitecture)) | 10.8.x | Current | N/A |
+| [Kepler Gen 1/2](https://en.wikipedia.org/wiki/Kepler_(microarchitecture)) | 10.8.x | Actual | N/A |
 | [Maxwell](https://en.wikipedia.org/wiki/Maxwell_(microarchitecture)) | 10.10.x | 10.13.6 | Requiere de los [Web Drivers](https://www.nvidia.com/download/driverResults.aspx/159341/)|
 | [Pascal](https://en.wikipedia.org/wiki/Pascal_(microarchitecture)) | 10.12.4 | 10.13.6 | Requiere de los [Web Drivers](https://www.nvidia.com/download/driverResults.aspx/159341/) |
-| [Turing](https://en.wikipedia.org/wiki/Turing_(microarchitecture)) | N/A | N/A | N/A |
+| [Turing](https://en.wikipedia.org/wiki/Turing_(microarchitecture)) | N/A | N/A | No hay drivers disponibles |
+| [Ampere](https://en.wikipedia.org/wiki/Ampere_(microarchitecture)) | N/A | N/A | No hay drivers disponibles |
 
 ## Soporte de placas madre
 
