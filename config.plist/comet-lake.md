@@ -1,8 +1,9 @@
 # Comet lake de escritorio
 
-* Versión soportada: 0.6.0
-
-* **Nota**: Esta guía solo soporta Comet Lake en 10.15.5 o posterior
+| Soporte | Versión |
+| :--- | :--- |
+| Versión de OpenCore Soportada | 0.6.1 |
+| Soporte inicial de macOS | macOS 10.15, Catalina |
 
 ## Punto de partida
 
@@ -117,7 +118,7 @@ Configura las device properties desde un mapa.
 
 ::: tip PciRoot(0x0)/Pci(0x2,0x0)
 
-Esta sección se configura a través de la [Guía de parcheo de Framebuffers](https://github.com/acidanthera/WhateverGreen/blob/master/Manual/FAQ.IntelHD.en.md) y se utiliza para establecer propiedades importantes de tu iGPU.
+Esta sección se configura a través de la [Guía de parcheo de Framebuffers](https://github.com/acidanthera/WhateverGreen/blob/master/Manual/FAQ.IntelHD.en.md) y se utiliza para establecer propiedades importantes de tu iGPU. **Si tienes una CPU de la serie `-F` puedes ignorar esto, ya que no tienes un iGPU**
 
 `AAPL,ig-platform-id` es lo que macOS usa para determinar cómo los drivers de tu iGPU interactúan con tu sistema, y los dos valores que se eligen son los siguientes:
 
@@ -190,6 +191,12 @@ Aquí es donde especificas qué kexts cargar. El orden importa aquí, así que a
 
 **Emulate**: Necesario para falsificar CPUs no soportadas, por suerte en 10.15.5 se agregó soporte para Comet Lake S, por lo que no tenemos que falsificar la CPU aquí. Para aquellos que corran High Sierra o Mojave, tendrán que usar esto para falsificar la CPU por un modelo soportado (debido a temas de estabilidad esta guía no cubrirá estas falsificaciones).
 
+### Force
+
+Utilizado para cargar kexts desde el volumen del sistema, esto es únicamente relevante para sistemas operativos más antiguos donde ciertos kexts no están presentes en el cache (como IONetworkingFamily en 10.6).
+
+En nuestro caso podemos ignorar esto. 
+
 ### Block
 
 Bloquea la carga de ciertos kexts. No es relevante para nosotros.
@@ -242,6 +249,10 @@ Esto es porque UsbInjectAll reimplementa la funcionalidad incorporada de macOS s
 
 :::
 
+### Scheme
+
+Configuraciones relacionadas a arranques legacy (es decir 10.4-10.6). En nuestro caso podemos dejar esto con los valores predeterminados a menos que planees en arrancar sistemas operativos legacy (lo cual no será cubierto en esta guía).
+
 ## Misc
 
 ![Misc](../images/config/config-universal/misc.png)
@@ -292,8 +303,9 @@ Security se explica por sí sola, **no te lo saltes**. Vamos a cambiar lo siguie
 | :--- | :--- | :--- |
 | AllowNvramReset | YES | |
 | AllowSetDefault | YES | |
-| Vault | Optional | Esta es una palabra, no es opcional omitir esta configuración. Lo lamentarás si no lo configuras en `Optional`, ten en cuenta que distingue entre mayúsculas y minúsculas |
 | ScanPolicy | 0 | |
+| SecureBootModel | Default |  Esta es una palabra la cual distingue entre mayúsculas y minúsculas, configúrala a `Disabled` si no quieres arranque seguro (por ejemplo en el caso de que requieras los Web Drivers de Nvidia) |
+| Vault | Optional | Vault | Optional | Esta es una palabra, no es opcional omitir esta configuración. Lo lamentarás si no lo configuras en `Optional`, ten en cuenta que distingue entre mayúsculas y minúsculas  |
 
 :::
 
@@ -303,12 +315,14 @@ Security se explica por sí sola, **no te lo saltes**. Vamos a cambiar lo siguie
   * Permite restablecer NVRAM tanto en el selector de arranque como al presionar `Cmd+Opt+P+R`
 * **AllowSetDefault**: YES
   * Permite que `CTRL+Enter` y `CTRL+Index` configuren el dispositivo de arranque predeterminado en el selector
+* **ApECID**: 0
+  * Usado para compensar identificadores de arranque seguro, actualmente este quirk es faltoso debido a un bug en el instalador de macOS así que te recomendamos que lo dejes como está por defecto.
 * **AuthRestart**: NO
   * Habilita el reinicio autenticado para FileVault 2, por lo que no se requiere contraseña al reiniciar. Puede considerarse un riesgo de seguridad así que es opcional
-* **BlacklistAppleUpdate**: True
-  * Ignora el actualizador de firmware de Apple, que se recomienda habilitar para evitar problemas con las instalaciones y actualizaciones
-* **BootProtect**: None
-  * Ignora el actualizador de firmware de Apple, recomendado para evitar problemas con las instalaciones y actualizaciones. Permite el uso de Bootstrap.efi dentro de `EFI/OC/Bootstrap` en lugar de BOOTx64.efi.Útil para aquellos que desean arrancar con rEFInd o evitar sobrescribir BOOTx64.efi con Windows. El uso adecuado de estos quirks no está cubierto en esta guía.
+* **BootProtect**: Bootstrap
+  * Permite el uso de Bootstrap.efi dentro de `EFI/OC/Bootstrap` en lugar de BOOTx64.efi. Útil para aquellos que desean arrancar con rEFInd o evitar sobrescribir BOOTx64.efi con Windows. El uso adecuado de estos quirks está cubierto aquí. [Usar Bootstrap.efi](https://inyextciones.github.io/OpenCore-Post-Install/multiboot/bootstrap.html#preparation)
+* **DmgLoading**: Signed
+  * Asegura la carga únicamente de DMGs firmados
 * **ExposeSensitiveData**: `6`
   * Muestra más información de depuración, requiere la versión de depuración de OpenCore
 * **Vault**: `Optional`
@@ -316,6 +330,8 @@ Security se explica por sí sola, **no te lo saltes**. Vamos a cambiar lo siguie
   * Esta es una palabra, no es opcional omitir esta configuración. Lo lamentarás si no lo configuras en `Optional`, ten en cuenta que distingue entre mayúsculas y minúsculas
 * **ScanPolicy**: `0`
   * `0` te permite ver todas las unidades disponibles, consulta la sección [Seguridad](https://dortania.github.io/OpenCore-Post-Install/universal/security.html) para obtener más detalles. **No arrancará dispositivos USB con este ajuste predeterminado**
+* **SecureBootModel**: Default
+  * Habilita la funcionalidad del arranque seguro de Apple en macOS, por favor refiérete a [Seguridad](https://inyextciones.github.io/OpenCore-Post-Install/universal/security.html) para más información.
 
 :::
 
@@ -433,24 +449,28 @@ Vuelve a escribir a la fuerza las variables de NVRAM. Ten en cuenta que `Add` **
 
 Para configurar la información del SMBIOS, usaremos la aplicación [GenSMBIOS](https://github.com/corpnewt/GenSMBIOS) hecha por [CorpNewt](https://github.com/corpnewt/).
 
-Para este ejemplo de Comet Lake, eligiremos el SMBIOS iMac19,1. Esto está hecho intencionalmente por un tema de compatibilidad. Hay dos SMBIOS principales utilizadas para Coffee Lake
+Para este ejemplo de Comet Lake, eligiremos el SMBIOS iMac20,1. Esto está hecho intencionalmente por un tema de compatibilidad. Hay dos SMBIOS principales utilizadas para Coffee Lake
 
-* `iMac19,1` - Para Mojave y posterior
-* `iMac18,3` - Para High Sierra y anterior
-  * Usarás 18,3 cuando tengas una GPU Pascal o Maxwell y estés limitado a versiones de macOS con Web Drivers
+* `iMac20,1` - i7-10700K y más bajo
+* `iMac20,2` - i9-10850K y más alto
 
-Ejecuta GenSMBIOS, elije la opción 1 para descargar MacSerial y la Opción 3 para seleccionar la SMBIOS que deseas. Esto nos dará una salida similar a la siguiente:
+Ejecuta GenSMBIOS, elije la opción 1 para descargar MacSerial y la Opción 3 para seleccionar la SMBIOS que deseas. Esto nos dará una salida **similar** a la siguiente:
 
 ```
   #######################################################
- #               iMac19,1 SMBIOS Info                  #
+ #               iMac20,1 SMBIOS Info                  #
 #######################################################
 
-Type:         iMac19,1
+Type:         iMac20,1
 Serial:       C02XG0FDH7JY
 Board Serial: C02839303QXH69FJA
 SmUUID:       DBB364D6-44B2-4A02-B922-AB4396F16DA8
 ```
+* **Nota**: GenSMBIOS no ha sido actualizada aún para reflejar el nuevo repositorio de MacSerial, para solucionar problemas en la generación de iMac20,x necesitarás hacer lo siguiente:
+  * Descarga la última versión de [OpenCorePkg](https://github.com/acidanthera/OpenCorePkg/releases/)
+  * Dirígete a la carpeta `Utiltiies/macserial/` y agarra el archivo macserial o macserial.exe (.exe es para Windows)
+  * Corre `chmod +x /ruta/a/macserial` si estás en un ambiente Unix, ya que si no GenSMBIOS te dará un error de permisos. 
+  * Coloca este ejecutable macserial en la carpeta `scripts` de GenSMBIOS
 
 La parte `Type` se copia en Generic -> SystemProductName.
 
