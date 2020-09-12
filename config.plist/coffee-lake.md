@@ -292,13 +292,13 @@ Estos valores se basan en los calculados en [Depuración de OpenCore](/troublesh
 
 Security se explica por sí sola, **no te lo saltes**. Vamos a cambiar lo siguiente:
 
-| Quirk | Enabled | Comment |
+| Quirk | Habilitado | Comentario |
 | :--- | :--- | :--- |
 | AllowNvramReset | YES | |
 | AllowSetDefault | YES | |
 | ScanPolicy | 0 | |
 | SecureBootModel | Default |  Esta es una palabra la cual distingue entre mayúsculas y minúsculas, configúrala a `Disabled` si no quieres arranque seguro (por ejemplo en el caso de que requieras los Web Drivers de Nvidia) |
-| Vault | Optional | Vault | Optional | Esta es una palabra, no es opcional omitir esta configuración. Lo lamentarás si no lo configuras en `Optional`, ten en cuenta que distingue entre mayúsculas y minúsculas  |
+| Vault | Optional | Esta es una palabra, no es opcional omitir esta configuración. Lo lamentarás si no lo configuras en `Optional`, ten en cuenta que distingue entre mayúsculas y minúsculas |
 
 :::
 
