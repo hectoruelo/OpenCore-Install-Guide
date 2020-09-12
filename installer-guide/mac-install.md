@@ -1,7 +1,7 @@
 
 # Creando el instalador en macOS
 
-* Versión soportada 0.5.9
+* Versión soportada 0.6.1
 
 Si bien no necesitas una nueva instalación de macOS para usar OpenCore, algunos usuarios prefieren tener una nueva instalación con sus actualizaciones del gestor de arranque.
 
@@ -9,7 +9,7 @@ Para comenzar, queremos obtener una copia de macOS, puedes omitir esto y dirigir
 
 **Nota para usuarios legacy**
 
-1. Primero sigan la sección [Instalación Legacy](/extras/legacy.html)
+1. Si tu hardware no soporta UEFI, sigue la guía de [Instalación Legacy](/extras/legacy.html)
 2. Una vez terminado, continúen la guía en la sección de **[Descargando macOS](#downloading-macos)**.
 
 Aquellos que necesiten versiones de macOS que no son alojadas en el catálogo de Apple, pueden seguir la siguiente guía (en inglés): [Legacy macOS install](https://github.com/dortania/OpenCore-Install-Guide/blob/master/installer-guide/legacy-mac-install.md) 

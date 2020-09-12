@@ -1,6 +1,6 @@
 # Agregando los archivos base de OpenCore
 
-* Versión soportada: 0.5.9
+* Versión soportada: 0.6.1
 
 Para configurar la estructura de carpetas de OpenCore, debes tomar la carpeta EFI que se encuentra en los [lanzamientos de OpenCore](https://github.com/acidanthera/OpenCorePkg/releases/) y colocarla en la raíz de tu partición EFI
 
@@ -40,10 +40,13 @@ Una EFI limpia:
 
 ![EFI limpia](../images/installer-guide/opencore-efi-md/clean-efi.png)
 
-Ahora puedes colocar **tus** drivers de firmware necesarios (.efi) en la carpeta _Drivers_ y Kexts / ACPI en sus respectivas carpetas. Ten en cuenta que los drivers UEFI de Clover no son compatibles con OpenCore (EmuVariableUEFI, AptioMemoryFix, OsxAptioFixDrv, etc.). Consulta la [Página de conversión de drivers del firmware de Clover](https://github.com/dortania/OpenCore-Install-Guide/blob/master/clover-conversion/clover-efi.md) para obtener más información sobre los drivers compatibles y aquellos fusionados en OpenCore.
+Ahora puedes colocar **tus** drivers de firmware necesarios (.efi) en la carpeta _Drivers_ y Kexts / ACPI en sus respectivas carpetas. Dirígete a [Recolectando Archivos](../ktext.md) para ver qué archivos debes incluir. 
+
+* Ten en cuenta que los drivers UEFI de Clover no son compatibles con OpenCore (EmuVariableUEFI, AptioMemoryFix, OsxAptioFixDrv, etc). Consulta la [Página de conversión de drivers del firmware de Clover](https://github.com/dortania/OpenCore-Install-Guide/blob/master/clover-conversion/clover-efi.md) para obtener más información sobre los drivers compatibles y aquellos fusionados en OpenCore.
+
 Así es como ***puede*** verse un EFI poblado (el tuyo probablemente será diferente):
 
-![Populated EFI folder](../images/installer-guide/opencore-efi-md/populated-efi.png)
+![Carpeta EFI populada](../images/installer-guide/opencore-efi-md/populated-efi.png)
 
 **Recordatorio**:
 
