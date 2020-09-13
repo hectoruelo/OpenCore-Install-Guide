@@ -57,6 +57,7 @@ Ahora viene la parte importante, seleccionar la ruta a seguir para configurar tu
 
 | Nombre clave | Series | época |
 | :--- | :--- | :--- |
+| [Sandy Bridge](../config.plist/sandy-bridge.md) | 2XXX | 2011 era |
 | [Ivy Bridge](/config.plist/ivy-bridge.md) | 3XXX | 2012  |
 | [Haswell](/config.plist/haswell.md) | 4XXX | 2013-2014 |
 | [Skylake](/config.plist/skylake.md) | 6XXX | 2015-2016 |
@@ -64,44 +65,10 @@ Ahora viene la parte importante, seleccionar la ruta a seguir para configurar tu
 | [Coffee Lake](/config.plist/coffee-lake.md) | 8XXX-9XXX | 2017-2019 |
 | [Comet Lake](/config.plist/comet-lake.md) | 10XXX | 2020 |
 
-### Laptops Intel
+### Laptops Intel (sección disponible próximamente)
 
-| Nombre clave | Series | época |
-| :--- | :--- | :--- |
-| [Ivy Bridge](/config-laptop.plist/ivy-bridge.md) | 3XXX | 2012 |
-| [Haswell](/config-laptop.plist/haswell.md) | 4XXX | 2013-2014 |
-| [Skylake](/config-laptop.plist/skylake.md) | 6XXX | 2015-2016 |
-| [Kaby Lake y Amber Lake](/config-laptop.plist/kaby-lake.md) | 7XXX | 2017 |
-| [Coffee Lake](/config-laptop.plist/coffee-lake.md) | 8XXX | 2017-2018 |
-| [Coffee Lake Plus y Comet Lake](/config-laptop.plist/coffee-lake.md) | 9XXX-10XXX | 2019-2020 |
-| [Ice Lake](/config-laptop.plist/ice-lake.md) | 10XXX | 2019-2020 |
+### PCs de gama alta de Intel (sección disponible próximamente)
 
-### PCs de gama alta de Intel
+### AMD (sección disponible próximamente)
 
-Esta sección incluye tanto hardware de entusiastas como servidores.
-
-| Nombre clave | Series | época |
-| :--- | :--- | :--- |
-| [Haswell-E](/config-HEDT/haswell-e.md) | 5XXX | 2014 |
-| [Broadwell-E](/config-HEDT/broadwell-e.md) | 6XXX | 2016 |
-| [Skylake/Cascade Lake-X/W](/config-HEDT/skylake-x.md) | 7XXX, 9XXX, 10XXX | 2017-2019 |
-
-### AMD
-
-| Nombre clave | Series | época |
-| :--- | :--- | :--- |
-| [Bulldozer/Jaguar](/AMD/fx.md) | [Es raro](https://en.wikipedia.org/wiki/Advanced_Micro_Devices) | [AMD era muy malo con los nombres en esos tiempos](https://en.wikipedia.org/wiki/Advanced_Micro_Devices) |
-| [Zen](/AMD/zen.md) | 1XXX, 2XXX, 3XXX | 2017-2020 |
-
-* Nota: Threadripper de 3ra gen (39XX) no son compatibles, sin embargo, los de primera y segunda generación lo son.
-
-### Legacy
-
-Ten en cuenta que estas son solo pautas y no serán guías completas como en las otras generaciones. Esto se debe principalmente a la falta de pruebas en estos sistemas, información verificable y soporte general de la comunidad, ya que este hardware se usa cada vez menos.
-
-| Nombre clave | Series | época |
-| :--- | :--- | :--- |
-| [Penryn](/config.plist/legacy/penryn.md) | [demasiadas](https://en.wikipedia.org/wiki/Penryn_(microarchitecture)) | 2008-2010 |
-| [Nehalem y Westmere](/config.plist/legacy/nehalem.md) | 7XX, 8XX, 9XX | 2008-2010 |
-| [Sandy Bridge](/config.plist/legacy/sandy-bridge.md) | 2XXX | 2011 |
-| [Sandy y Ivy bridge-E](/config.plist/legacy/sandy-bridge-e.md) | 2XXX, 3XXX | 2011-2013 |
+### Legacy (sección disponible próximamente)

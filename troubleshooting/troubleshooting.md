@@ -1,10 +1,8 @@
 # Solución de problemas
 
-* Versión soportada: 0.6.0
+* Versión soportada: 0.6.1
 
 Esta sección es para aquellos que tienen problemas al iniciar OpenCore, macOS o que tienen problemas dentro de macOS. Si estás confundido acerca de dónde exactamente en el proceso de arranque de macOS estás atascado, leer la página [Proceso de arranque de macOS](../troubleshooting/boot.md) puede ayudar a aclarar tus dudas.
-
-<extoc></extoc>
 
 Si bien todavía es un trabajo en progreso, los usuarios de laptops que desean convertir una instalación de Clover existente pueden ver la [Conversión de Clover a OpenCore](https://github.com/dortania/OpenCore-Install-Guide/blob/master/clover-conversion) para más información
 
@@ -34,6 +32,7 @@ Si bien todavía es un trabajo en progreso, los usuarios de laptops que desean c
 * [SSDTs no siendo agregados](#ssdts-not-being-added)
 * [Bootear opencore reinicia a la BIOS](#booting-opencore-reboots-to-bios)
 * [OCABC: Incompatible OpenRuntime r4, require r10](#ocabc-incompatible-openruntime-r4-require-r10)
+* [Trancado en `OCB: LoadImage failed - Security Violation`](#trancado-en-ocb-loadimage-failed-security)
 
 ## Trancado en `no vault provided!`
 
@@ -59,6 +58,10 @@ Algunos problemas:
 * `SetupVirtualMap` puede ser necesario dependiendo del firmware, generalmente este quirk debe evitarse, pero la mayoría de los usuarios de Gigabyte y hardware antiguo (Broadwell y anterior) necesitarán esta peculiaridad para arrancar.
    * Se sabe que las placas madre Z490 fallan con `SetupVirtualMap` habilitado, especialmente en las placas Asus y AsRock.
 * `RebuildAppleMemoryMap` puede no ser un fanático de tu firmware, y el uso de este quirk depende de tener `EnableWriteUnprotector` deshabilitado y `SyncRuntimePermissions` habilitado con la adición de tener una `Tabla de atributos de memoria (MAT)` en tu firmware. Si su firmware no tiene MATs, desactiva tanto `RebuildAppleMemoryMap` como `SyncRuntimePermissions` y luego habilita `EnableWriteUnprotector`.
+  * Si tu firmware no tiene MATs:
+    * Deshabilita ambos `RebuildAppleMemoryMap` y `SyncRuntimePermissions` y luego habilita `EnableWriteUnprotector`.
+  * Si tu firmware soporta MATs:
+    * Habilita tanto `RebuildAppleMemoryMap` como `SyncRuntimePermissions` y luego deshabilita `EnableWriteUnprotector`.
 
 Para verificar si tu placa madre tiene MATs, busca algo así en los logs:
 
@@ -101,9 +104,10 @@ OCABC: MAT support is 1
     * Sin embargo, ciertos firmwares no funcionan con este quirk y este quirk podría ser el causante del kernel panic:
       * La serie Ice Lake de Intel
       * La serie Comet Lake de Intel
-      * Las placas madre B550 y A520 de AMD
+      * Las placas madre B550 y A520 de AMD 
       * Placas madre TRx40 de AMD
       * Máquinas virtuales como QEMU
+      * Actualizaciónes de la BIOS 3006+ en las placas X299 de ASUS (esto también aplica a otras BIOS X299 en la BIOS más reciente).
 
 * `EnableWriteUnprotector`
 
@@ -171,6 +175,22 @@ diskutil apfs updatePreboot /volume/disk5s2
 ```
 
 Luego finalmente reinicia, aunque podrías tener que deshabilitar JumpstartHotplug para arrancar normalmente de nuevo.
+
+## Trancado en `OCB: LoadImage failed - Security Violation`
+
+```
+OCSB: No suitable signature - Security Violation
+OCB: Apple Secure Boot prohibits this boot entry, enforcing!
+OCB: LoadImage failed - Security Violation
+```
+
+Esto es debido a manifiestos de modo seguro de Apple antiguados faltantes en tu volumen preboot, lo que hace que falle en cargar si tienes SecureBootModel configurado. La razón de la falta de estos archivos es en realidad un bug en macOS.
+
+Para resolver esto puedes hacer alguna de las siguientes cosas:
+
+* Deshabilitar SecureBootModel (es decir, configurar `Misc -> Secuirty -> SecureBootModel -> Disabled`)
+* Reinstalar macOS con la última versión
+* O copiar los manifestos del Modo Seguro de `/usr/standalone/i386` a `/Volumes/Preboot/<UUID>/System/Library/CoreServices`
 
 ## No puedo ver particiones de macOS
 
@@ -375,6 +395,7 @@ OpenRuntime.efi desactualizado, asegúrate de que BOOTx64.efi, OpenCore.efi y Op
 * [Kernel Panic en AppleIntelI210Ethernet](appleinteli210ethernet)
 * [Discos SATA no aparecen en Disk Utility](#discos-sata-no-aparecen-en-disk-utility)
 * [Trancado cuando faltan 2 minutos](#trancado-cuando-faltan-2-minutos)
+[Kernel panic en "Wrong CD Clock Frequency" con laptops Icelake](#kernel-panic-en-wrong-cd-clock-frequency-con-laptops-icelake)
 
 ## Stuck on `RTC...`, `PCI Configuration Begins`, `Previous Shutdown...`, `HPET`, `HID: Legacy...`
 
@@ -534,7 +555,11 @@ Comúnmente siendo por sistemas que corren relojes AWAC, dirígete a la sección
 
 ## Kernel Panic `Cannot perform kext summary`
 
-Generalmente visto como un problema que rodea al prelinked kernel, específicamente que macOS está teniendo dificultades para interpretar los que inyectamos. Verifica que tus kexts estén en el orden correcto (el kext principal y luego los complementos, Lilu siempre es el primero) y que los kexts con ejecutables los tienen y que los kexts de sólo plist kexts no.
+Generalmente visto como un problema que rodea al prelinked kernel, específicamente que macOS está teniendo dificultades para interpretar los que inyectamos. Verifica que:
+
+* Que tus kexts estén en el orden correcto (el kext principal y luego los complementos, Lilu siempre es el primero)
+* Que los kexts con ejecutables los tienen y que los kexts de sólo plist kexts no (kexts como USBmap.kext, XHCI-unspported.kext, etc no continenen un ejecutable).
+* No incluyas múltiples kexts iguales en tu config.plist (por ejemplo si incluyes varias copias de VoodooInput de múltiples kexts, recomendamos elegir el primer kext en la formación de tu config y deshabilitar el resto.
 
 ## Kernel Panic `AppleIntelMCEReporter`
 
@@ -675,6 +700,12 @@ Para resolver esto, tenemos algunas opciones:
   * LegacyEnable -> YES
   * LegacyOverwrite -> YES
   * WriteFlash -> YES
+
+# Kernel panic en "Wrong CD Clock Frequency" con laptops Icelake
+
+![](../images/troubleshooting/troubleshooting-md/cd-clock.jpg)
+
+Para resolver este kernel panic asegúrate de tener -igfxcdc en tus boot-args.
 
 # Post instalación de macOS
 

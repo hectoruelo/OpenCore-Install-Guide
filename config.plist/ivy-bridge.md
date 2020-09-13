@@ -1,9 +1,10 @@
 # Ivy bridge de escritorio
 
-* Versión soportada: 0.6.0
-* Ten en cuenta que las iGPUs de Ivy Bridge solo son compatibles hasta macOS 10.15, Catalina. No se cubrirá el procedimiento para correr versiones posteriores.
-
-<extoc></extoc>
+| Soporte | Versión |
+| :--- | :--- |
+| Versión de OpenCore Soportada | 0.6.1 |
+| Soporte inicial de macOS | OS X 10.7, Lion |
+| Notas | Las iGPUs de Ivy Bridge sólo son compatibles oficialmente hasta macOS 10.15 |
 
 ## Punto de partida
 
@@ -37,8 +38,8 @@ En nuestro caso necesitaremos un par de SSDTs para recuperar la funcionalidad qu
 
 | SSDTs requeridos | Descripción |
 | :--- | :--- |
-| **[SSDT-PM](https://github.com/Piker-Alpha/ssdtPRGen.sh)** | Necesario para la administración adecuada de la energía de la CPU, deberás ejecutar el script ssdtPRGen.sh de Pike para generar este archivo. Esto se ejecutará en [post-instalación](https://dortania.github.io/OpenCore-Post-Install/).
-| **[SSDT-EC](https://dortania.github.io/Getting-Started-With-ACPI/)** | * Arregla el embedded controller (EC), dirígete a [la guía de comenzando con ACPI](https://dortania.github.io/Getting-Started-With-ACPI/) para más detalles.) |
+| **[SSDT-PM](https://github.com/Piker-Alpha/ssdtPRGen.sh)** | Necesario para la administración adecuada de la energía de la CPU, deberás ejecutar el script ssdtPRGen.sh de Pike para generar este archivo. Esto se ejecutará en [post-instalación](https://inyextciones.github.io/OpenCore-Post-Install/).
+| **[SSDT-EC](https://dortania.github.io/Getting-Started-With-ACPI/)** | Arregla el embedded controller (EC), dirígete a [la guía de comenzando con ACPI](https://dortania.github.io/Getting-Started-With-ACPI/) para más detalles.) |
 | **[SSDT-IMEI](https://dortania.github.io/Getting-Started-With-ACPI/)** | Necesario para agregar dispositivo IMEI faltante en CPUs Ivy Bridge con placas madre de la serie 6 |
 
 
@@ -138,7 +139,7 @@ El `AAPL,ig-platform-id` que utilizamos es el siguiente:
 
 ::: tip PciRoot(0x0)/Pci(0x16,0x0)
 
-Esto es necesario si estás emparejando una CPU Ivy Bridge con una placa madre de serie 6 (H61, B65, Q65, P67, H67, Q67, Z68), debido a que es necesario falsificar tu dispositivo IMEI para que parezca uno soportado.
+Esto es necesario si estás emparejando una CPU Ivy Bridge con una placa madre de serie 6 (H61, B65, Q65, P67, H67, Q67, Z68), debido a que es necesario falsificar tu dispositivo IMEI para que parezca uno soportado. Esta propiedad sigue siendo requerida con o sin SSDT-IMEI.
 
 | Key | Type | Value |
 | :--- | :--- | :--- |
@@ -189,6 +190,12 @@ Necesario para falsificar CPUs no compatibles como Pentiums y Celerons
 
 * **CpuidMask**: Deja esto en blanco
 * **CpuidData**: Deja esto en blanco
+
+### Force
+
+Utilizado para cargar kexts desde el volumen del sistema, esto es únicamente relevante para sistemas operativos más antiguos donde ciertos kexts no están presentes en el cache (como IONetworkingFamily en 10.6).
+
+En nuestro caso podemos ignorar esto. 
 
 ### Block
 
@@ -242,6 +249,10 @@ Esto es porque UsbInjectAll reimplementa la funcionalidad incorporada de macOS s
 
 :::
 
+### Scheme
+
+Configuraciones relacionadas a arranques legacy (es decir 10.4-10.6). En nuestro caso podemos dejar esto con los valores predeterminados a menos que planees en arrancar sistemas operativos legacy (lo cual no será cubierto en esta guía).
+
 ## Misc
 
 ![Misc](../images/config/config-universal/misc.png)
@@ -268,15 +279,20 @@ Configuración para la pantalla de inicio (Deja todo como predeterminado).
 ::: details Información más detallada
 
 * **AppleDebug**: YES
-  * Enables boot.efi logging, useful for debugging. Note this is only supported on 10.15.4 and newer
+  * Habilita el logging de boot.efi. Esto es útil para hacer depuración. Ten en cuenta que esto es soportado en 10.15.4 y posterior.
 * **ApplePanic**: YES
   * Intenta registrar kernel panics en el disco
 * **DisableWatchDog**: YES
   * Deshabilita el watchdog UEFI, puede ayudar con problemas de arranque temprano
+* **DisplayLevel**: `2147483650`
+  * Muestra aún más información de depuración, requiere la versión DEBUG de OpenCore
+* **SerialInit**: NO
+  * Necesario para configurar salida de seriales con OpenCore
+* **SysReport**: NO
+  * Útil para depurar y otros aspectos como volcar tablas ACPI
+  * Ten en cuenta que esto es limitado a las versiones DEBUG de OpenCore.
 * **Target**: `67`
   * Muestra más información de depuración, requiere la versión de depuración de OpenCore
-* **DisplayLevel**: `2147483650`
-  * Muestra aún más información de depuración, requiere la versión de depuración de OpenCore
 
 Estos valores se basan en los calculados en [Depuración de OpenCore](/troubleshooting/debug.md)
 
@@ -288,12 +304,13 @@ Estos valores se basan en los calculados en [Depuración de OpenCore](/troublesh
 
 Security se explica por sí sola, **no te lo saltes**. Vamos a cambiar lo siguiente:
 
-| Quirk | Enabled | Comment |
+| Quirk | Habilitado | Comentario |
 | :--- | :--- | :--- |
 | AllowNvramReset | YES | |
 | AllowSetDefault | YES | |
-| Vault | Optional | Esta es una palabra, no es opcional omitir esta configuración. Lo lamentarás si no lo configuras en `Optional`, ten en cuenta que distingue entre mayúsculas y minúsculas |
 | ScanPolicy | 0 | |
+| SecureBootModel | Default |  Esta es una palabra la cual distingue entre mayúsculas y minúsculas, configúrala a `Disabled` si no quieres arranque seguro (por ejemplo en el caso de que requieras los Web Drivers de Nvidia) |
+| Vault | Optional | Esta es una palabra, no es opcional omitir esta configuración. Lo lamentarás si no lo configuras en `Optional`, ten en cuenta que distingue entre mayúsculas y minúsculas |
 
 :::
 
@@ -303,12 +320,14 @@ Security se explica por sí sola, **no te lo saltes**. Vamos a cambiar lo siguie
   * Permite restablecer NVRAM tanto en el selector de arranque como al presionar `Cmd+Opt+P+R`
 * **AllowSetDefault**: YES
   * Permite que `CTRL+Enter` y `CTRL+Index` configuren el dispositivo de arranque predeterminado en el selector
+* **ApECID**: 0
+  * Usado para compensar identificadores de arranque seguro, actualmente este quirk es faltoso debido a un bug en el instalador de macOS así que te recomendamos que lo dejes como está por defecto.
 * **AuthRestart**: NO
   * Habilita el reinicio autenticado para FileVault 2, por lo que no se requiere contraseña al reiniciar. Puede considerarse un riesgo de seguridad así que es opcional
-* **BlacklistAppleUpdate**: True
-  * Ignora el actualizador de firmware de Apple, que se recomienda habilitar para evitar problemas con las instalaciones y actualizaciones
-* **BootProtect**: None
-  * Ignora el actualizador de firmware de Apple, recomendado para evitar problemas con las instalaciones y actualizaciones. Permite el uso de Bootstrap.efi dentro de `EFI/OC/Bootstrap` en lugar de BOOTx64.efi.Útil para aquellos que desean arrancar con rEFInd o evitar sobrescribir BOOTx64.efi con Windows. El uso adecuado de estos quirks no está cubierto en esta guía.
+* **BootProtect**: Bootstrap
+  * Permite el uso de Bootstrap.efi dentro de `EFI/OC/Bootstrap` en lugar de BOOTx64.efi. Útil para aquellos que desean arrancar con rEFInd o evitar sobrescribir BOOTx64.efi con Windows. El uso adecuado de estos quirks está cubierto aquí. [Usar Bootstrap.efi](https://inyextciones.github.io/OpenCore-Post-Install/multiboot/bootstrap.html#preparation)
+* **DmgLoading**: Signed
+  * Asegura la carga únicamente de DMGs firmados
 * **ExposeSensitiveData**: `6`
   * Muestra más información de depuración, requiere la versión de depuración de OpenCore
 * **Vault**: `Optional`
@@ -316,6 +335,8 @@ Security se explica por sí sola, **no te lo saltes**. Vamos a cambiar lo siguie
   * Esta es una palabra, no es opcional omitir esta configuración. Lo lamentarás si no lo configuras en `Optional`, ten en cuenta que distingue entre mayúsculas y minúsculas
 * **ScanPolicy**: `0`
   * `0` te permite ver todas las unidades disponibles, consulta la sección [Seguridad](https://dortania.github.io/OpenCore-Post-Install/universal/security.html) para obtener más detalles. **No arrancará dispositivos USB con este ajuste predeterminado**
+* **SecureBootModel**: Default
+  * Habilita la funcionalidad del arranque seguro de Apple en macOS, por favor refiérete a [Seguridad](https://inyextciones.github.io/OpenCore-Post-Install/universal/security.html) para más información.
 
 :::
 
@@ -341,7 +362,7 @@ Utilizado para el escalado de la interfaz de usuario de OpenCore, el valor prede
 
 :::
 
-::: details More in-depth Info
+::: details Información más detallada
 
 Ruta del Booter, utilizada principalmente para escalar la interfaz de usuario
 
@@ -436,11 +457,11 @@ Para este ejemplo de Ivy Bridge, elegiremos el SMBIOS iMac13,2. Esto se hace int
 
 * `iMac13,1` - esto se usa para computadoras que utilizan su iGPU para la imagen.
 * `iMac13,2` - esto se usa para computadoras que usan una GPU dedicada para la imagen y una iGPU solo para tareas computacionales.
-  * Si planeas ejecutar macOS 11 Big Sur, iMac15,1 será el SMBIOS recomendado y la iGPU debe estar deshabilitada en tu BIOS debido a que ya no es compatible
+  * Si planeas ejecutar macOS 11 Big Sur, MacPro6,1 será el SMBIOS recomendado y la iGPU debe estar deshabilitada en tu BIOS debido a que ya no es compatible
 
 Ejecuta GenSMBIOS, elije la opción 1 para descargar MacSerial y la Opción 3 para seleccionar SMBIOS. Esto nos dará una salida similar a la siguiente:
 
-```
+```sh
   #######################################################
  #               iMac13,2 SMBIOS Info                  #
 #######################################################

@@ -1,6 +1,6 @@
 # Recolectando archivos
 
-* Versión soportada: 0.6.0
+* Versión soportada: 0.6.1
 
 Esta sección es para obtener otros archivos necesarios para arrancar macOS, esperamos que conozcas bien tu hardware  antes de comenzar y que hayas hecho un hackintosh antes, ya que no entraremos en detalle aquí. 
 
@@ -43,7 +43,18 @@ Además de lo anterior, si tu hardware no es compatible con UEFI (2011 y anterio
 * [HfsPlusLegacy.efi](https://github.com/acidanthera/OcBinaryData/blob/master/Drivers/HfsPlusLegacy.efi)
   * Variante legacy de HfsPlus, utilizada para sistemas que carecen de soporte de instrucción RDRAND. Esto se ve generalmente en Sandy Bridge y anteriores.
 
-Para obtener una lista completa de los drivers compatibles, consulta la [Página de conversión a Clover](https://github.com/dortania/OpenCore-Install-Guide/tree/master/clover-conversion). Estos archivos irán a tu carpeta de drivers, encontrada en tu EFI.
+Estos archivos irán en tu carpeta Drivers en tu EFI:
+
+::: details Legacy macOS installs
+
+Si planeas en bootear versiónes antiguas de macOS/OS X, estos drivers serán útiles para ti:
+
+* [PartitionDxe](https://github.com/acidanthera/OcBinaryData/blob/master/Drivers/PartitionDxe.efi)
+  * Requerido para arrancar recovery desde 10.7 hasta 10.9, ya que sin este tendrás el error `LoadImage - error`
+  * Para Sandy Bridge y anterior tendrás que usar [PartitionDxeLegacy](https://github.com/acidanthera/OcBinaryData/blob/master/Drivers/PartitionDxeLegacy.efi) debido a instrucciones RDRAND faltantes.
+  * Ten en cuenta que 10.10 Yosemite y posterior no requieren de PartitionDxe en absoluto. 
+
+:::
 
 ## Kexts
 
@@ -64,6 +75,7 @@ Sin los siguientes 2, ningún sistema es booteable:
   * La alternativa es FakeSMC, que puede tener mejor o peor soporte, más comúnmente utilizado en hardware Legacy.
 * [Lilu](https://github.com/acidanthera/Lilu/releases)
   * Un kext para parchear muchos procesos, requerido para AppleALC, WhateverGreen, VirtualSMC y muchos otros kexts. Sin Lilu, no funcionarán.
+  * Ten en cuenta que Lilu y sus plugins requieren de OS X 10.8 y posterior para funcionar
 
 ### Plugins de VirtualSMC
 
@@ -180,7 +192,7 @@ Para saber qué tipo de teclado y trackpad tienes, consulta el Administrador de 
 
 * [VoodooPS2](https://github.com/acidanthera/VoodooPS2/releases)
   * Necesario para sistemas con teclados y trackpads PS/2
-  * Usuarios de Trackpad también deben emparejar esto con [VoodooInput](https://github.com/acidanthera/VoodooInput/releases) (Esto debe aparecer antes que VoodooPS2 en tu config.plist)
+  * Usuarios de Trackpad también deben emparejar esto con [VoodooInput](https://github.com/acidanthera/VoodooInput/releases)
 * [VoodooI2C](https://github.com/alexandred/VoodooI2C/releases)
   * Se utiliza para reparar dispositivos I2C, los cuales se encuentran en algunas laptops con touchpads y pantallas táctiles más elegantes. 
   * Debe ser emparejado a un plugin:
@@ -224,7 +236,8 @@ Un dato rápido importante de los SSDTs necesarios por si no lo sabías (este es
 
 | Platforms | **CPU** | **EC** | **AWAC** |
 | :-------: | :-----: | :----: | :------: |
-| Ivy Bridge-E | [SSDT-PLUG](https://dortania.github.io/Getting-Started-With-ACPI/Universal/plug.html) | [SSDT-EC](https://dortania.github.io/Getting-Started-With-ACPI/Universal/ec-fix.html) | N/A |
+| Nehalem and Westmere | N/A | [SSDT-EC](https://dortania.github.io/Getting-Started-With-ACPI/Universal/ec-fix.html) | N/A |
+| Ivy Bridge-E | [SSDT-PLUG](https://dortania.github.io/Getting-Started-With-ACPI/Universal/plug.html) | ^^ | ^^ |  
 | Haswell-E | ^^ | [SSDT-EC-USBX](https://dortania.github.io/Getting-Started-With-ACPI/Universal/ec-fix.html) | ^^ |
 | Broadwell-E | ^^ | ^^ | ^^ |
 | Skylake-X | ^^ | ^^ | [SSDT-AWAC](https://dortania.github.io/Getting-Started-With-ACPI/Universal/awac.html) |
@@ -232,17 +245,32 @@ Un dato rápido importante de los SSDTs necesarios por si no lo sabías (este es
 ### Laptops
 
 
-| Platformas | **CPU** | **EC** | **Backlight** | **Trackpad I2C** | **AWAC** | **USB** | **IRQ** | **NVRAM** |
-| :-------: | :-----: | :----: | :-----------: | :--------------: | :------: | :-----: | :-----: | :-----: |
-| SandyBridge | [CPU-PM](https://dortania.github.io/OpenCore-Post-Install/universal/pm.html#sandy-and-ivy-bridge-power-management) (Correr en post instalación) | [SSDT-EC](https://dortania.github.io/Getting-Started-With-ACPI/Universal/ec-fix.html) | [SSDT-PNLF](https://dortania.github.io/Getting-Started-With-ACPI/Laptops/backlight.html) | [SSDT-GPI0](https://dortania.github.io/Getting-Started-With-ACPI/Laptops/trackpad.html) | N/A | N/A | [SSDT IRQ](https://dortania.github.io/Getting-Started-With-ACPI/Universal/irq.html) | N/A |
-| Ivy Bridge | ^^ | ^^ | ^^ | ^^ | ^^ | ^^ | ^^ | ^^ |
-| Haswell | [SSDT-PLUG](https://dortania.github.io/Getting-Started-With-ACPI/Universal/plug.html) | ^^ | ^^ | ^^ | ^^ | ^^ | ^^ | ^^ |
+| Platformas | **CPU** | **EC** | **Backlight** | **I2C Trackpad** | **AWAC** | **USB** | **IRQ** |
+| :-------: | :-----: | :----: | :-----------: | :--------------: | :------: | :-----: | :-----: |
+| SandyBridge | [CPU-PM](https://dortania.github.io/OpenCore-Post-Install/universal/pm.html#sandy-and-ivy-bridge-power-management) (Correr en post instalación) | [SSDT-EC](https://dortania.github.io/Getting-Started-With-ACPI/Universal/ec-fix.html) | [SSDT-PNLF](https://dortania.github.io/Getting-Started-With-ACPI/Laptops/backlight.html) | N/A | N/A | N/A | [IRQ SSDT](https://dortania.github.io/Getting-Started-With-ACPI/Universal/irq.html) |
+| Ivy Bridge | ^^ | ^^ | ^^ | ^^ | ^^ | ^^ | ^^ |
+| Haswell | [SSDT-PLUG](https://dortania.github.io/Getting-Started-With-ACPI/Universal/plug.html) | ^^ | ^^ | [SSDT-GPI0](https://dortania.github.io/Getting-Started-With-ACPI/Laptops/trackpad.html) | ^^ | ^^ | ^^ |
 | Broadwell | ^^ | ^^ | ^^ | ^^ | ^^ | ^^ | ^^ |
-| Skylake | ^^ | [SSDT-EC-USBX](https://dortania.github.io/Getting-Started-With-ACPI/Universal/ec-fix.html) | ^^ | ^^ | ^^ | ^^ | N/A | ^^ |
-| Kaby Lake | ^^ | ^^ | ^^ | ^^ | ^^ | ^^ | ^^ | ^^ |
-| Coffee Lake (8va generación) y Whiskey Lake | ^^ | ^^ | [SSDT-PNLF-CFL](https://dortania.github.io/Getting-Started-With-ACPI/Laptops/backlight.html) | ^^ | ^^ | ^^ | ^^ | ^^ |
-| Coffee Lake (9na gen) | ^^ | ^^ | ^^ | ^^ | [SSDT-AWAC](https://dortania.github.io/Getting-Started-With-ACPI/Universal/awac.html) | ^^ | ^^ | [SSDT-PMC](https://dortania.github.io/Getting-Started-With-ACPI/Universal/nvram.html) |
-| Comet Lake | ^^ | ^^ | ^^ | ^^ | ^^ | ^^ | ^^ | ^^ |
-| Ice Lake | ^^ | ^^ | ^^ | ^^ | ^^ | [SSDT-RHUB](https://dortania.github.io/Getting-Started-With-ACPI/Universal/rhub.html) | ^^ | ^^ |
+| Skylake | ^^ | [SSDT-EC-USBX](https://dortania.github.io/Getting-Started-With-ACPI/Universal/ec-fix.html) | ^^ | ^^ | ^^ | ^^ | N/A |
+| Kaby Lake | ^^ | ^^ | ^^ | ^^ | ^^ | ^^ | ^^ |
+| Coffee Lake (8va Gen) y Whiskey Lake | ^^ | ^^ | [SSDT-PNLF-CFL](https://dortania.github.io/Getting-Started-With-ACPI/Laptops/backlight.html) | ^^ | ^^ | ^^ | ^^ |
+| Coffee Lake (9na Gen) | ^^ | ^^ | ^^ | ^^ | [SSDT-AWAC](https://dortania.github.io/Getting-Started-With-ACPI/Universal/awac.html) | ^^ | ^^ |
+| Comet Lake | ^^ | ^^ | ^^ | ^^ | ^^ | ^^ | ^^ |
+| Ice Lake | ^^ | ^^ | ^^ | ^^ | ^^ | [SSDT-RHUB](https://dortania.github.io/Getting-Started-With-ACPI/Universal/rhub.html) | ^^ |
+
+Continuando:
+
+| Platformas | **NVRAM** | **IMEI** |
+| :-------: | :-------: | :------: |
+| Sandy Bridge | N/A | [SSDT-IMEI](https://dortania.github.io/Getting-Started-With-ACPI/Universal/imei.html) |
+| Ivy Bridge | ^^ | ^^ |
+| Haswell | ^^ | N/A |
+| Broadwell | ^^ | ^^ |
+| Skylake | ^^ | ^^ |
+| Kaby Lake | ^^ | ^^ |
+| Coffee Lake (8va Gen) y Whiskey Lake | ^^ | ^^ |
+| Coffee Lake (9na Gen) | [SSDT-PMC](https://dortania.github.io/Getting-Started-With-ACPI/Universal/nvram.html) | ^^ |
+| Comet Lake | N/A | ^^ |
+| Ice Lake | ^^ | ^^ |
 
 # Ahora, con todo esto hecho dirígete a [Comenzando con ACPI](https://dortania.github.io/Getting-Started-With-ACPI/)
