@@ -1,10 +1,8 @@
 # Solución de problemas
 
-* Versión soportada: 0.6.0
+* Versión soportada: 0.6.1
 
 Esta sección es para aquellos que tienen problemas al iniciar OpenCore, macOS o que tienen problemas dentro de macOS. Si estás confundido acerca de dónde exactamente en el proceso de arranque de macOS estás atascado, leer la página [Proceso de arranque de macOS](../troubleshooting/boot.md) puede ayudar a aclarar tus dudas.
-
-<extoc></extoc>
 
 Si bien todavía es un trabajo en progreso, los usuarios de laptops que desean convertir una instalación de Clover existente pueden ver la [Conversión de Clover a OpenCore](https://github.com/dortania/OpenCore-Install-Guide/blob/master/clover-conversion) para más información
 
@@ -59,6 +57,10 @@ Algunos problemas:
 * `SetupVirtualMap` puede ser necesario dependiendo del firmware, generalmente este quirk debe evitarse, pero la mayoría de los usuarios de Gigabyte y hardware antiguo (Broadwell y anterior) necesitarán esta peculiaridad para arrancar.
    * Se sabe que las placas madre Z490 fallan con `SetupVirtualMap` habilitado, especialmente en las placas Asus y AsRock.
 * `RebuildAppleMemoryMap` puede no ser un fanático de tu firmware, y el uso de este quirk depende de tener `EnableWriteUnprotector` deshabilitado y `SyncRuntimePermissions` habilitado con la adición de tener una `Tabla de atributos de memoria (MAT)` en tu firmware. Si su firmware no tiene MATs, desactiva tanto `RebuildAppleMemoryMap` como `SyncRuntimePermissions` y luego habilita `EnableWriteUnprotector`.
+  * Si tu firmware no tiene MATs:
+    * Deshabilita ambos `RebuildAppleMemoryMap` y `SyncRuntimePermissions` y luego habilita `EnableWriteUnprotector`.
+  * Si tu firmware soporta MATs:
+    * Habilita tanto `RebuildAppleMemoryMap` como `SyncRuntimePermissions` y luego deshabilita `EnableWriteUnprotector`.
 
 Para verificar si tu placa madre tiene MATs, busca algo así en los logs:
 
@@ -101,9 +103,10 @@ OCABC: MAT support is 1
     * Sin embargo, ciertos firmwares no funcionan con este quirk y este quirk podría ser el causante del kernel panic:
       * La serie Ice Lake de Intel
       * La serie Comet Lake de Intel
-      * Las placas madre B550 y A520 de AMD
+      * Las placas madre B550 y A520 de AMD 
       * Placas madre TRx40 de AMD
       * Máquinas virtuales como QEMU
+      * Actualizaciónes de la BIOS 3006+ en las placas X299 de ASUS (esto también aplica a otras BIOS X299 en la BIOS más reciente).
 
 * `EnableWriteUnprotector`
 
@@ -375,6 +378,7 @@ OpenRuntime.efi desactualizado, asegúrate de que BOOTx64.efi, OpenCore.efi y Op
 * [Kernel Panic en AppleIntelI210Ethernet](appleinteli210ethernet)
 * [Discos SATA no aparecen en Disk Utility](#discos-sata-no-aparecen-en-disk-utility)
 * [Trancado cuando faltan 2 minutos](#trancado-cuando-faltan-2-minutos)
+[Kernel panic en "Wrong CD Clock Frequency" con laptops Icelake](#kernel-panic-en-wrong-cd-clock-frequency-con-laptops-icelake)
 
 ## Stuck on `RTC...`, `PCI Configuration Begins`, `Previous Shutdown...`, `HPET`, `HID: Legacy...`
 
@@ -675,6 +679,12 @@ Para resolver esto, tenemos algunas opciones:
   * LegacyEnable -> YES
   * LegacyOverwrite -> YES
   * WriteFlash -> YES
+
+# Kernel panic en "Wrong CD Clock Frequency" con laptops Icelake
+
+![](../images/troubleshooting/troubleshooting-md/cd-clock.jpg)
+
+Para resolver este kernel panic asegúrate de tener -igfxcdc en tus boot-args.
 
 # Post instalación de macOS
 
