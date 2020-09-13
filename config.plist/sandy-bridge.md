@@ -289,16 +289,16 @@ Configuración para la pantalla de inicio (Deja todo como predeterminado).
 
 :::
 
-::: details More in-depth Info
+::: details Información más detallada
 
 * **AppleDebug**: YES
-  * Enables boot.efi logging, useful for debugging. Note this is only supported on 10.15.4 and newer
+  * Habilita el logging de boot.efi. Esto es útil para hacer depuración. Ten en cuenta que esto es soportado en 10.15.4 y posterior.
 * **ApplePanic**: YES
   * Intenta registrar kernel panics en el disco
 * **DisableWatchDog**: YES
   * Deshabilita el watchdog UEFI, puede ayudar con problemas de arranque temprano
 * **DisplayLevel**: `2147483650`
-  * Muestra aún más información de depuración, requiere la versión de depuración de OpenCore
+  * Muestra aún más información de depuración, requiere la versión DEBUG de OpenCore
 * **SerialInit**: NO
   * Necesario para configurar salida de seriales con OpenCore
 * **SysReport**: NO
@@ -327,7 +327,7 @@ Security se explica por sí sola, **no te lo saltes**. Vamos a cambiar lo siguie
 
 :::
 
-::: details More in-depth Info
+::: details Información más detallada
 
 * **AllowNvramReset**: YES
   * Permite restablecer NVRAM tanto en el selector de arranque como al presionar `Cmd+Opt+P+R`
@@ -375,7 +375,7 @@ Utilizado para el escalado de la interfaz de usuario de OpenCore, el valor prede
 
 :::
 
-::: details More in-depth Info
+::: details Información más detallada
 
 Ruta del Booter, utilizada principalmente para escalar la interfaz de usuario
 

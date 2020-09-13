@@ -209,7 +209,7 @@ Configuraciones relacionadas con el kernel, en nuestro caso habilitaremos lo sig
 
 :::
 
-::: details More in-depth Info
+::: details Información más detallada
 
 * **AppleCpuPmCfgLock**: YES
   * Solo es necesario cuando CFG-Lock no se puede deshabilitar en BIOS, la contraparte de Clover sería AppleIntelCPUPM.
@@ -266,15 +266,20 @@ Configuración para la pantalla de inicio (Deja todo como predeterminado).
 ::: details Información más detallada
 
 * **AppleDebug**: YES
-  * Enables boot.efi logging, useful for debugging. Note this is only supported on 10.15.4 and newer
+  * Habilita el logging de boot.efi. Esto es útil para hacer depuración. Ten en cuenta que esto es soportado en 10.15.4 y posterior.
 * **ApplePanic**: YES
   * Intenta registrar kernel panics en el disco
 * **DisableWatchDog**: YES
   * Deshabilita el watchdog UEFI, puede ayudar con problemas de arranque temprano
+* **DisplayLevel**: `2147483650`
+  * Muestra aún más información de depuración, requiere la versión DEBUG de OpenCore
+* **SerialInit**: NO
+  * Necesario para configurar salida de seriales con OpenCore
+* **SysReport**: NO
+  * Útil para depurar y otros aspectos como volcar tablas ACPI
+  * Ten en cuenta que esto es limitado a las versiones DEBUG de OpenCore.
 * **Target**: `67`
   * Muestra más información de depuración, requiere la versión de depuración de OpenCore
-* **DisplayLevel**: `2147483650`
-  * Muestra aún más información de depuración, requiere la versión de depuración de OpenCore
 
 Estos valores se basan en los calculados en [Depuración de OpenCore](/troubleshooting/debug.md)
 

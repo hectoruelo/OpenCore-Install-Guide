@@ -38,8 +38,8 @@ En nuestro caso necesitaremos un par de SSDTs para recuperar la funcionalidad qu
 
 | SSDTs requeridos | Descripción |
 | :--- | :--- |
-| **[SSDT-PM](https://github.com/Piker-Alpha/ssdtPRGen.sh)** | Necesario para la administración adecuada de la energía de la CPU, deberás ejecutar el script ssdtPRGen.sh de Pike para generar este archivo. Esto se ejecutará en [post-instalación](https://dortania.github.io/OpenCore-Post-Install/).
-| **[SSDT-EC](https://dortania.github.io/Getting-Started-With-ACPI/)** | * Arregla el embedded controller (EC), dirígete a [la guía de comenzando con ACPI](https://dortania.github.io/Getting-Started-With-ACPI/) para más detalles.) |
+| **[SSDT-PM](https://github.com/Piker-Alpha/ssdtPRGen.sh)** | Necesario para la administración adecuada de la energía de la CPU, deberás ejecutar el script ssdtPRGen.sh de Pike para generar este archivo. Esto se ejecutará en [post-instalación](https://inyextciones.github.io/OpenCore-Post-Install/).
+| **[SSDT-EC](https://dortania.github.io/Getting-Started-With-ACPI/)** | Arregla el embedded controller (EC), dirígete a [la guía de comenzando con ACPI](https://dortania.github.io/Getting-Started-With-ACPI/) para más detalles.) |
 | **[SSDT-IMEI](https://dortania.github.io/Getting-Started-With-ACPI/)** | Necesario para agregar dispositivo IMEI faltante en CPUs Ivy Bridge con placas madre de la serie 6 |
 
 
@@ -279,15 +279,20 @@ Configuración para la pantalla de inicio (Deja todo como predeterminado).
 ::: details Información más detallada
 
 * **AppleDebug**: YES
-  * Enables boot.efi logging, useful for debugging. Note this is only supported on 10.15.4 and newer
+  * Habilita el logging de boot.efi. Esto es útil para hacer depuración. Ten en cuenta que esto es soportado en 10.15.4 y posterior.
 * **ApplePanic**: YES
   * Intenta registrar kernel panics en el disco
 * **DisableWatchDog**: YES
   * Deshabilita el watchdog UEFI, puede ayudar con problemas de arranque temprano
+* **DisplayLevel**: `2147483650`
+  * Muestra aún más información de depuración, requiere la versión DEBUG de OpenCore
+* **SerialInit**: NO
+  * Necesario para configurar salida de seriales con OpenCore
+* **SysReport**: NO
+  * Útil para depurar y otros aspectos como volcar tablas ACPI
+  * Ten en cuenta que esto es limitado a las versiones DEBUG de OpenCore.
 * **Target**: `67`
   * Muestra más información de depuración, requiere la versión de depuración de OpenCore
-* **DisplayLevel**: `2147483650`
-  * Muestra aún más información de depuración, requiere la versión de depuración de OpenCore
 
 Estos valores se basan en los calculados en [Depuración de OpenCore](/troubleshooting/debug.md)
 
@@ -357,7 +362,7 @@ Utilizado para el escalado de la interfaz de usuario de OpenCore, el valor prede
 
 :::
 
-::: details More in-depth Info
+::: details Información más detallada
 
 Ruta del Booter, utilizada principalmente para escalar la interfaz de usuario
 
