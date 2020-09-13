@@ -1,4 +1,4 @@
-# Desktop Sandy Bridge (not translated yet)
+# Sandy Bridge de escritorio
 
 | Soporte | Versión |
 | :--- | :--- |
