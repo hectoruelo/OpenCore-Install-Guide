@@ -32,6 +32,7 @@ Si bien todavía es un trabajo en progreso, los usuarios de laptops que desean c
 * [SSDTs no siendo agregados](#ssdts-not-being-added)
 * [Bootear opencore reinicia a la BIOS](#booting-opencore-reboots-to-bios)
 * [OCABC: Incompatible OpenRuntime r4, require r10](#ocabc-incompatible-openruntime-r4-require-r10)
+* [Trancado en `OCB: LoadImage failed - Security Violation`](#trancado-en-ocb-loadimage-failed-security)
 
 ## Trancado en `no vault provided!`
 
@@ -174,6 +175,22 @@ diskutil apfs updatePreboot /volume/disk5s2
 ```
 
 Luego finalmente reinicia, aunque podrías tener que deshabilitar JumpstartHotplug para arrancar normalmente de nuevo.
+
+## Trancado en `OCB: LoadImage failed - Security Violation`
+
+```
+OCSB: No suitable signature - Security Violation
+OCB: Apple Secure Boot prohibits this boot entry, enforcing!
+OCB: LoadImage failed - Security Violation
+```
+
+Esto es debido a manifiestos de modo seguro de Apple antiguados faltantes en tu volumen preboot, lo que hace que falle en cargar si tienes SecureBootModel configurado. La razón de la falta de estos archivos es en realidad un bug en macOS.
+
+Para resolver esto puedes hacer alguna de las siguientes cosas:
+
+* Deshabilitar SecureBootModel (es decir, configurar `Misc -> Secuirty -> SecureBootModel -> Disabled`)
+* Reinstalar macOS con la última versión
+* O copiar los manifestos del Modo Seguro de `/usr/standalone/i386` a `/Volumes/Preboot/<UUID>/System/Library/CoreServices`
 
 ## No puedo ver particiones de macOS
 
@@ -538,7 +555,11 @@ Comúnmente siendo por sistemas que corren relojes AWAC, dirígete a la sección
 
 ## Kernel Panic `Cannot perform kext summary`
 
-Generalmente visto como un problema que rodea al prelinked kernel, específicamente que macOS está teniendo dificultades para interpretar los que inyectamos. Verifica que tus kexts estén en el orden correcto (el kext principal y luego los complementos, Lilu siempre es el primero) y que los kexts con ejecutables los tienen y que los kexts de sólo plist kexts no.
+Generalmente visto como un problema que rodea al prelinked kernel, específicamente que macOS está teniendo dificultades para interpretar los que inyectamos. Verifica que:
+
+* Que tus kexts estén en el orden correcto (el kext principal y luego los complementos, Lilu siempre es el primero)
+* Que los kexts con ejecutables los tienen y que los kexts de sólo plist kexts no (kexts como USBmap.kext, XHCI-unspported.kext, etc no continenen un ejecutable).
+* No incluyas múltiples kexts iguales en tu config.plist (por ejemplo si incluyes varias copias de VoodooInput de múltiples kexts, recomendamos elegir el primer kext en la formación de tu config y deshabilitar el resto.
 
 ## Kernel Panic `AppleIntelMCEReporter`
 
