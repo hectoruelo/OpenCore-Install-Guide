@@ -10,27 +10,27 @@ Si bien todavía es un trabajo en progreso, los usuarios de laptops que desean c
 
 # Arranque de OpenCore
 
-* [Trancado en `no vault provided!`](#stuck-on-no-vault-provided)
-* [Trancado en EndRandomSeed](#stuck-on-endrandomseed)
-* [Trancado en `[EB|#LOG:EXITBS:START]`](#stuck-on-eblogexitbsstart)
-* [Trancado en [EB|LD:OFS] Err(0xE) cuando arrancas desde el volumen preboot](#stuck-on-eb-ld-ofs-err-0xe-when-booting-preboot-volume)
-* [No puedo ver particiones de macOS](#cant-see-macos-partitions)
-* [Pantalla negra luego del picker](#black-screen-after-picker)
-* [Trancado en `OC: OcAppleGenericInput... - Success`](#stuck-on-oc-ocapplegenericinput---success)
-* [Trancado en `OCB: OcScanForBootEntries failure - Not Found`](#stuck-on-ocb-ocscanforbootentries-failure---not-found)
-* [Trancado en `OCB: failed to match a default boot option`](#stuck-on-ocb-failed-to-match-a-default-boot-option)
-* [Trancado en `OCABC: Memory pool allocation failure - Not Found`](#stuck-on-ocabc-memory-pool-allocation-failure---not-found)
-* [Trancado en `OCS: No schema for DSDT, KernelAndKextPatch, RtVariable, SMBIOS, SystemParameters...`](#stuck-on-ocs-no-schema-for-dsdt-kernelandkextpatch-rtvariable-smbios-systemparameters)
-* [Trancado en `OC: Driver XXX.efi at 0 cannot be found`](#stuck-on-oc-driver-xxxefi-at-0-cannot-be-found)
-* [Trancado en `Buffer Too Small`](#stuck-on-buffer-too-small)
-* [Trancado en `Plist only kext has CFBundleExecutable key`](#stuck-on-plist-only-kext-has-cfbundleexecutable-key)
-* [Recibiendo `Failed to parse real field of type 1`](#receiving-failed-to-parse-real-field-of-type-1)
-* [Trancado luego de la selección de la partición de macOS en OpenCore](#stuck-after-selection-macos-partition-on-opencore)
-* [No puedo seleccionar nada en el menú](#cant-select-anything-in-the-picker)
-* [Stuck on `This version of Mac OS X is not supported: Reason Mac...`](#stuck-on-this-version-of-mac-os-x-is-not-supported-reason-mac)
-* [Errores `Couldn't allocate runtime area`](#couldnt-allocate-runtime-area-errors)
-* [SSDTs no siendo agregados](#ssdts-not-being-added)
-* [Bootear opencore reinicia a la BIOS](#booting-opencore-reboots-to-bios)
+* [Trancado en `no vault provided!`](#trancado-en-no-vault-provided)
+* [Trancado en EndRandomSeed](#trancado-en-endrandomseed)
+* [Trancado en `[EB|#LOG:EXITBS:START]`](#trancado-en-eblogexitbsstart)
+* [Trancado en [EB|LD:OFS] Err(0xE) cuando arrancas desde el volumen preboot](#trancado-en-eb-ld-ofs-err-0xe-cuando-arrancas-desde-el-volumen-preboot)
+* [No puedo ver particiones de macOS](#no-puedo-ver-particiones-de-macos)
+* [Pantalla negra luego del picker](#pantalla-negra-luego-del-picker)
+* [Trancado en `OC: OcAppleGenericInput... - Success`](#trancado-en-oc-ocapplegenericinput---success)
+* [Trancado en `OCB: OcScanForBootEntries failure - Not Found`](#trancado-en-ocb-ocscanforbootentries-failure---not-found)
+* [Trancado en `OCB: failed to match a default boot option`](#trancado-en-ocb-failed-to-match-a-default-boot-option)
+* [Trancado en `OCABC: Memory pool allocation failure - Not Found`](#trancado-en-ocabc-memory-pool-allocation-failure---not-found)
+* [Trancado en `OCS: No schema for DSDT, KernelAndKextPatch, RtVariable, SMBIOS, SystemParameters...`](#trancado-en-ocs-no-schema-for-dsdt-kernelandkextpatch-rtvariable-smbios-systemparameters)
+* [Trancado en `OC: Driver XXX.efi at 0 cannot be found`](#trancado-en-oc-driver-xxxefi-at-0-cannot-be-found)
+* [Trancado en `Buffer Too Small`](#trancado-en-buffer-too-small)
+* [Trancado en `Plist only kext has CFBundleExecutable key`](#trancado-en-plist-only-kext-has-cfbundleexecutable-key)
+* [Recibiendo `Failed to parse real field of type 1`](#recibiendo-failed-to-parse-real-field-of-type-1)
+* [Trancado luego de la selección de la partición de macOS en OpenCore](#trancado-luego-de-la-selección-de-la-partición-de-macos-en-opencore)
+* [No puedo seleccionar nada en el menú](#no-puedo-seleccionar-nada-en-el-menú)
+* [Trancado en `This version of Mac OS X is not supported: Reason Mac...`](#trancado-en-this-version-of-mac-os-x-is-not-supported-reason-mac)
+* [Errores `Couldn't allocate runtime area`](#errores-couldnt-allocate-runtime-area)
+* [SSDTs no siendo agregados](#ssdts-no-siendo-agregados)
+* [Bootear opencore reinicia a la BIOS](#bootear-opencore-reinicia-a-la-bios)
 * [OCABC: Incompatible OpenRuntime r4, require r10](#ocabc-incompatible-openruntime-r4-require-r10)
 * [Trancado en `OCB: LoadImage failed - Security Violation`](#trancado-en-ocb-loadimage-failed-security)
 
@@ -52,7 +52,7 @@ Es probable que sea un error ortográfico, las opciones en OpenCore distinguen e
 
 Algunos problemas:
 
-**Problemas del Booter:**
+**Problemas con Booter:**
 
 * `DevirtualiseMmio` puede estar tomando áreas importantes en la memoria que son necesarias para otras cosas, puede que necesites deshabilitar este quirk o incluir en la lista blanca las regiones defectuosas: [Usando DevirtualiseMmio](../extras/kaslr-fix.md#using-devirtualisemmio)
 * `SetupVirtualMap` puede ser necesario dependiendo del firmware, generalmente este quirk debe evitarse, pero la mayoría de los usuarios de Gigabyte y hardware antiguo (Broadwell y anterior) necesitarán esta peculiaridad para arrancar.
@@ -86,7 +86,7 @@ OCABC: MAT support is 1
 
 Esto es en realidad el mismo error que `EndRandomSeed` así que aplican los mismos arreglos (10.15.4 y posterior cambiaron el protocolo del debug por si eres curioso):
 
-**Problemas del Booter:**
+**Problemas con Booter:**
 
 * `RebuildAppleMemoryMap` puede no ser un fanático de tu firmware, y el uso de este quirk depende de tener `EnableWriteUnprotector` deshabilitado y `SyncRuntimePermissions` habilitado con la adición de tener una `Tabla de atributos de memoria (MAT)` en tu firmware. Si su firmware no tiene MATs, desactiva tanto `RebuildAppleMemoryMap` como `SyncRuntimePermissions` y luego habilita `EnableWriteUnprotector`.
 
@@ -372,21 +372,21 @@ OpenRuntime.efi desactualizado, asegúrate de que BOOTx64.efi, OpenCore.efi y Op
 
 # Booteo de macOS
 
-* [Trancado en `RTC...`, `PCI ConfigurationBegins`, `Previous Shutdown...`, `HPET`, `HID: Legacy...`](#stuck-on-rtc-pci-configuration-begins-previous-shutdown-hpet-hid-legacy)
-* [Trancado en ACPI Table loading en B550](#stuck-at-acpi-table-loading-on-b550)
-* ["Waiting for Root Device" o signo de prohibido](#waiting-for-root-device-or-prohibited-sign-error)
-* [Instalador de macOS en ruso](#macos-installer-in-russian)
-* [Instalador de macOS dañado](#macos-installer-being-damaged)
-* [Trancado en o cerca de `IOConsoleUsers: gIOScreenLock...`](#stuck-on-or-near-ioconsoleusers-gioscreenlockgiolockstate-3)
-* [Pantalla revuelta y perturbada en laptops](#scrambled-screen-on-laptops)
-* [Pantalla negra luego de `IOConsoleUsers: gIOScreenLock...` en Navi](#black-screen-after-ioconsoleusers-gioscreenlock-on-navi)
-* [Intel de serie 300 trancados en `apfs_module_start...`](#300-series-intel-stalling-on-apfsmodulestart)
+* [Trancado en `RTC...`, `PCI ConfigurationBegins`, `Previous Shutdown...`, `HPET`, `HID: Legacy...`](#trancado-en-rtc-pci-configuration-begins-previous-shutdown-hpet-hid-legacy)
+* [Trancado en ACPI Table loading en B550](#trancado-en-acpi-table-loading-on-b550)
+* ["Waiting for Root Device" o signo de prohibido](#waiting-for-root-device-o-signo-de-prohibido)
+* [Instalador de macOS en ruso](#instalador-de-macos-en-ruso)
+* [Instalador de macOS dañado](#instalador-de-macos-dañado)
+* [Trancado en o cerca de `IOConsoleUsers: gIOScreenLock...`](#trancado-en-o-cerca-de-ioconsoleusers-gioscreenlockgiolockstate-3)
+* [Pantalla revuelta y perturbada en laptops](#pantalla-revuelta-y-perturbada-en-laptops)
+* [Pantalla negra luego de `IOConsoleUsers: gIOScreenLock...` en Navi](#pantalla-negra-luego-de-ioconsoleusers-gioscreenlock-en-navi)
+* [Intel de serie 300 trancados en `apfs_module_start...`](#intel-de-serie-300-trancados-en-apfsmodulestart)
 * [Kernel Panic `Cannot perform kext summary`](#kernel-panic-cannot-perform-kext-summary)
 * [Kernel Panic `AppleIntelMCEReporter`](#kernel-panic-appleintelmcereporter)
 * [Kernel Panic `AppleIntelCPUPowerManagement`](#kernel-panic-appleintelcpupowermanagement)
-* [Trancado en el instalador de macOS luego de 30 segundos](#frozen-in-the-macos-installer-after-30-seconds)
-* [15h/16h CPU reinicio luego de pantalla de datos y privacidad](#15h16h-cpu-reboot-after-data--privacy-screen)
-* [Teclado funciona pero el trackpad no](#keyboard-works-but-trackpad-does-not)
+* [Trancado en el instalador de macOS luego de 30 segundos](#trancado-en-el-instalador-de-macos-luego-de-30-segundos)
+* [15h/16h CPU reinicio luego de pantalla de datos y privacidad](#15h16h-cpu-reinicio-luego-de-la-pantalla-de-datos-y-privacidad)
+* [Teclado funciona pero el trackpad no](#teclado-funciona-pero-el-trackpad-no)
 * [Suspensión crasheando en AMD](#suspensión-crasheando-en-amd)
 * [Kernel Panic en `Invalid frame pointer`](#kernel-panic-en-invalid-frame-pointer)
 * [`kextd stall[0]: AppleACPICPU`](#kextd-stall0-appleacpicpu)
@@ -830,16 +830,16 @@ En macOS 10.15.4, hubo algunos cambios hechos al AGPM que puede causar problemas
 * [No puedes correr `acpidump.efi`](#no-puedes-correr-acpidumpefi)
 * [Arreglando SSDTTime: `Could not locate or download iasl!`](#arreglando-ssdttime-could-not-locate-or-download-iasl)
 * [Arreglar Python: `Python is not installed or not found on PATH`](#arreglar-python-python-is-not-installed-or-not-found-on-path)
-* [El disco de Windows no puede ver discos APFS](#windows-startup-disk-cant-see-apfs-drives)
-* [Resolución incorrecta con OpenCore](#incorrect-resolution-with-opencore)
-* [No hay salida de temperatura/ventiladores](#no-temperaturefan-sensor-output)
-* [No puedo encontrar el disco de Windows/BootCamp en el menú](#cant-find-windowsbootcamp-drive-in-picker)
-* [Error "You can't change the startup disk to the selected disk"](#you-cant-change-the-startup-disk-to-the-selected-disk-error)
-* [Bootear Windows resulta en una pantalla azul o Linux se crashea](#booting-windows-results-in-bluescreen-or-linux-crashes)
-* [Error al iniciar Windows: `OCB: StartImage failed - Already started`](#booting-windows-error-ocb-startimage-failed---already-started)
+* [El disco de Windows no puede ver discos APFS](#el-disco-de-windows-no-puede-ver-discos-apfs)
+* [Resolución incorrecta con OpenCore](#resolución-incorrecta-con-opencore)
+* [No hay salida de temperatura/ventiladores](#no-hay-salida-de-temperaturaventiladores)
+* [No puedo encontrar el disco de Windows/BootCamp en el menú](#no-puedo-encontrar-el-disco-de-windowsbootcamp-en-el-menú)
+* [Error "You can't change the startup disk to the selected disk"](#error-you-cant-change-the-startup-disk-to-the-selected-disk)
+* [Bootear Windows resulta en una pantalla azul o Linux se crashea](#bootear-windows-resulta-en-una-pantalla-azul-o-linux-se-crashea)
+* [Error al iniciar Windows: `OCB: StartImage failed - Already started`](#error-al-iniciar-windows-ocb-startimage-failed---already-started)
 * [iASL warning, # unresolved](#iasl-warning--unresolved)
-* [No se puede controlar el Volumen/Brillo en monitores externos](#no-volumebrightness-control-on-external-monitors)
-* [Deshabilitando SIP](#disabling-sip)
+* [No se puede controlar el Volumen/Brillo en monitores externos](#no-se-puede-controlar-el-volumenbrillo-en-monitores-externos)
+* [Deshabilitando SIP](#deshabilitando-sip)
 
 ## No puedes correr `acpidump.efi`
 
