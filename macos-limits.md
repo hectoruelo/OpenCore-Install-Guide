@@ -35,6 +35,47 @@ Para el soporte de CPUs, tenemos el siguiente desglose:
 * Las series Bulldozer (15h), Jaguar (16h) y Ryzen (17h) AMD de escritorio.
   * CPUs de laptop **no** son compatibles.
   
+::: details Requerimientos de la CPU
+
+Requerimientos de arquitectura
+
+* CPUs de 32-Bits son soportadas desde 10.4.1 hasta 10.6.8
+  * Ten en cuenta que 10.7.x requiere de un espacio de usuario de 64 bits, lo cual limita las CPUs de 32 bits
+* Las CPUs de 64 bits son soportadas de 10.4.1 en adelante. 
+
+Requerimientos de SEE:
+
+* SSE3 es necesario para todas las versiones de Intel de OS X/macOS
+* SSSE3 es requerido para todas las versiones de 64 bits de OS X/macOS
+  * Para las CPUs que no tengan SSSE3 (como ciertos Pentiums de 64 bits), recomendamos correr un espacio de usuario de 32 bits (`i386-user32`)
+* SSE4 es requerido para macOS 10.12 y posterior
+* SSE4.2 es necesario para macOS 10.14 y posterior
+  * Las CPUs con SSE4.1 son soportadas con [telemetrap.kext](https://forums.macrumors.com/threads/mp3-1-others-sse-4-2-emulation-to-enable-amd-metal-driver.2206682/post-28447707)
+  * Los drivers nuevos de AMD también requieren SSE4.2, para resolver esto dirígete aquí (post en inglés): [MouSSE: SSE4.2 emulation](https://forums.macrumors.com/threads/mp3-1-others-sse-4-2-emulation-to-enable-amd-metal-driver.2206682/)
+
+Requerimientos de Firmware:
+
+* OS X 10.4.1 hasta 10.4.7 requiere EFI32(como la versión IA32(32-bit) de OpenCore)
+  * OS X 10.4.8 hasta 10.7.5 soportan ambos EFI32 y EFI64
+* OS X 10.8 y posterior requieren EFI64(es decir una versión de OpenCore X64(64-bit))
+* OS X 10.7 hasta 10.9 requiere PartitionDxe.efi para arrancar desde la partición de recuperación (recovery en inglés)
+
+Requerimientos del Kernel:
+
+* OS X 10.4 y 10.5 requieren Kexts de 32-bits debido a que sólo soportan un kernelspace de 32 bits
+  * OS X 10.6 y 10.7 soportan kernelspaces de ambos 32 y 64 bits
+* OS X 10.8 y posterior requieren Kexts de 64 bits debido a que sólo soportan un kernelspace de 64 bits
+  * Corre `lipo -archs` para saber la arquitectura que soporta tu kext (recuerda correr esto en el binario y no el bundle .kext)
+
+Notas especiales:
+
+* Lilu y sus plugins requieren de 10.8 y posterior para operar
+  * Recomendamos usar FakeSMC para veriones viejas de OS X
+* OS X 10.6 y anterior requieren de RebuildAppleMemoryMap habilitado
+  * Esto es para resolver un kernel panic temprano
+
+:::
+  
 ::: details Tabla de CPUs soportadas de Intel
 
 *Nota: Los links informativos están en inglés*
