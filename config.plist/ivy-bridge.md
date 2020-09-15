@@ -143,7 +143,7 @@ Esto es necesario si estás emparejando una CPU Ivy Bridge con una placa madre d
 
 | Key | Type | Value |
 | :--- | :--- | :--- |
-| device-id | Data | 3A1C0000 |
+| device-id | Data | 3A1E0000 |
 
 **Nota**: Esto no es necesario si tienes una placa madre de series 7 (B75, Q75, Z75, H77, Q77, Z77)
 
